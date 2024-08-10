@@ -1,7 +1,20 @@
-/* eslint-disable prettier/prettier */
-import { StyleSheet, Text, View, TouchableWithoutFeedback, Dimensions, SafeAreaView } from 'react-native';
+
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableWithoutFeedback,
+  Dimensions,
+  SafeAreaView,
+} from 'react-native';
 import React from 'react';
-import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../constants/theme';
+import {
+  BORDERRADIUS,
+  COLORS,
+  FONTFAMILY,
+  FONTSIZE,
+  SPACING,
+} from '../constants/theme';
 import QRCode from 'react-native-qrcode-svg';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -30,7 +43,8 @@ const Receive: React.FC<TransferProps> = ({ closeBottomSheet2, showToast }) => {
       <SafeAreaView style={styles.receiveContainer}>
         <Text style={styles.headerText}>My Wallet Details</Text>
         <Text style={styles.bodyTitle}>
-          You can only receive tokens supported by AGA Wallet. Receiving tokens from other networks may result in the loss of your assets.
+          You can only receive tokens supported by AGA Wallet. Receiving tokens
+          from other networks may result in the loss of your assets.
         </Text>
         <View style={styles.qrContainer}>
           {!accountAddress ? (

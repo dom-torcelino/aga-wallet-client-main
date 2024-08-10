@@ -1,20 +1,14 @@
-/* eslint-disable prettier/prettier */
+
 import * as React from 'react';
 import Svg, { SvgProps, Path } from 'react-native-svg';
 
-interface HomeIconProps extends SvgProps{
+interface HomeIconProps extends SvgProps {
   fillColor?: string;
   size?: number;
 }
 
 const HomeIcon = ({ fillColor = '#fff', size = 45, ...props }: HomeIconProps) => (
-  <Svg
-    width={size}
-    height={size}
-    fill="none"
-    viewBox="0 0 24 24"
-    {...props}
-  >
+  <Svg width={size} height={size} fill="none" viewBox="0 0 24 24" {...props}>
     <Path
       stroke={fillColor}
       strokeLinecap="round"

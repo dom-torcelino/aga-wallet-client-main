@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 interface Spacing {
   space_2: number;
   space_4: number;
@@ -34,22 +34,22 @@ export const SPACING: Spacing = {
 };
 
 interface Color {
-  primaryColor: string,
-  primaryBGColor: string,
-  secondaryBGColor: string,
-  layeBGColor: string,
-  strokeColor: string,
-  primaryWhite: string
-  secondaryWhite: string
-  borderStroke: string,
-  secondaryTextColor: string,
-  greenTextColor: string,
-  redTextColor: string,
-  primaryGoldHex: string,
-  placeHolderTextColor: string,
-  textColor: string,
-  unreadNotificationBG: string,
-  unreadNotificationBorder: string,
+  primaryColor: string;
+  primaryBGColor: string;
+  secondaryBGColor: string;
+  layeBGColor: string;
+  strokeColor: string;
+  primaryWhite: string;
+  secondaryWhite: string;
+  borderStroke: string;
+  secondaryTextColor: string;
+  greenTextColor: string;
+  redTextColor: string;
+  primaryGoldHex: string;
+  placeHolderTextColor: string;
+  textColor: string;
+  unreadNotificationBG: string;
+  unreadNotificationBorder: string;
 
   primaryRedHex: string;
   primaryOrangeHex: string;
@@ -66,7 +66,7 @@ interface Color {
 }
 
 export const COLORS: Color = {
-  primaryColor:'#D5A952',
+  primaryColor: '#D5A952',
   primaryBGColor: '#000000',
   secondaryBGColor: '#141414',
   layeBGColor: '#272727',

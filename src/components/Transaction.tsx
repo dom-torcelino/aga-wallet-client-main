@@ -1,16 +1,22 @@
-/* eslint-disable prettier/prettier */
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Dimensions } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../constants/theme';
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
 import MoneySendIcon from '../../assets/SVG/MoneySendIcon';
 import MoneyReceivedIcon from '../../assets/SVG/MoneyReceivedIcon';
-import { useAuth } from '../screens/auth/AuthContext';
+import {useAuth} from '../screens/auth/AuthContext';
 import axios from 'axios';
 import TransactionSkeleton from './ui/TransactionSkeleton'; // Import the skeleton loader component
 // @ts-ignore
-import { API_URL } from '@env';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { RootStackParamList } from '../constants/types'; // Import the type
+import {API_URL} from '@env';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
+import {RootStackParamList} from '../constants/types'; // Import the type
 
 interface TransactionData {
   tx_id: number;
@@ -23,33 +29,37 @@ interface TransactionData {
   tx_created_at: string;
   tx_updated_at: string;
   tx_type: string;
-  
 }
 
 interface TransactionProps {
-  onPressTransaction: (item: TransactionData ) => void;
+  onPressTransaction: (item: TransactionData) => void;
 }
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 const groupByDate = (transactions: TransactionData[]) => {
-  return transactions.reduce((grouped: Record<string, TransactionData[]>, transaction) => {
-    const date = new Date(transaction.tx_created_at).toDateString();
-    if (!grouped[date]) {
-      grouped[date] = [];
-    }
-    grouped[date].push(transaction);
-    return grouped;
-  }, {});
+  return transactions.reduce(
+    (grouped: Record<string, TransactionData[]>, transaction) => {
+      const date = new Date(transaction.tx_created_at).toDateString();
+      if (!grouped[date]) {
+        grouped[date] = [];
+      }
+      grouped[date].push(transaction);
+      return grouped;
+    },
+    {},
+  );
 };
 
 const truncateAddress = (address: string) => {
-  return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+  return `${address.substring(0, 6)}...${address.substring(
+    address.length - 4,
+  )}`;
 };
 
 const Transaction: React.FC<TransactionProps> = () => {
   const [transactions, setTransactions] = useState<TransactionData[]>([]);
-  const { token, accountAddress, loggedIn } = useAuth();
+  const {token, accountAddress, loggedIn} = useAuth();
   const [loading, setLoading] = useState(true); // Add a loading state
   const skeletonCount = 5;
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -60,17 +70,22 @@ const Transaction: React.FC<TransactionProps> = () => {
     const fetchTransactions = async () => {
       if (loggedIn && accountAddress) {
         try {
-          console.log('Token:', token?.accessToken); // Log the token to inspect it
+          // console.log('Token:', token?.accessToken); // Log the token to inspect it
 
-          const response = await axios.get(`${API_URL}/v1/wallets/${accountAddress}/transactions?limit=10&offset=0`, {
-            headers: {
-              Authorization: `Bearer ${token?.accessToken}`,
+          const response = await axios.get(
+            `${API_URL}/v1/wallets/${accountAddress}/transactions?limit=10&offset=0`,
+            {
+              headers: {
+                Authorization: `Bearer ${token?.accessToken}`,
+              },
             },
-          });
+          );
 
           if (isMounted && response.status === 200) {
-            const sortedTransactions = response.data.transactions.sort((a: TransactionData, b: TransactionData) =>
-              new Date(b.tx_created_at).getTime() - new Date(a.tx_created_at).getTime()
+            const sortedTransactions = response.data.transactions.sort(
+              (a: TransactionData, b: TransactionData) =>
+                new Date(b.tx_created_at).getTime() -
+                new Date(a.tx_created_at).getTime(),
             );
             setTransactions(sortedTransactions);
           }
@@ -94,12 +109,13 @@ const Transaction: React.FC<TransactionProps> = () => {
   }, [token, accountAddress, loggedIn]);
 
   const groupedData = groupByDate(transactions);
-  const renderItem = ({ item }: { item: TransactionData }) => (
+  const renderItem = ({item}: {item: TransactionData}) => (
     <TouchableOpacity
       key={item.tx_id.toString()}
       style={styles.container}
-      onPress={() => navigation.navigate('TransactionDetails', { transaction: item })}
-    >
+      onPress={() =>
+        navigation.navigate('TransactionDetails', {transaction: item})
+      }>
       <View style={styles.dataContainer}>
         <View style={styles.iconWrapper}>
           {item.tx_type === 't' ? (
@@ -110,31 +126,37 @@ const Transaction: React.FC<TransactionProps> = () => {
         </View>
         <View>
           <Text style={styles.name}>
-            {item.tx_type === 't' ? truncateAddress(item.tx_wallet_recipient_address) : truncateAddress(item.tx_wallet_sender_address)}
+            {item.tx_type === 't'
+              ? truncateAddress(item.tx_wallet_recipient_address)
+              : truncateAddress(item.tx_wallet_sender_address)}
           </Text>
-          <Text style={styles.type}>{item.tx_type === 't' ? 'transfer' : 'received'}</Text>
+          <Text style={styles.type}>
+            {item.tx_type === 't' ? 'transfer' : 'received'}
+          </Text>
         </View>
       </View>
       <Text
         style={[
           styles.amount,
           {
-            color: item.tx_type === 't' ? COLORS.redTextColor : COLORS.greenTextColor,
+            color:
+              item.tx_type === 't'
+                ? COLORS.redTextColor
+                : COLORS.greenTextColor,
           },
-        ]}
-      >
+        ]}>
         {item.tx_type === 't' ? `-${item.tx_amount}` : `+${item.tx_amount}`}
       </Text>
     </TouchableOpacity>
   );
 
-  const renderDateHeader = ({ item: date }: { item: string }) => (
+  const renderDateHeader = ({item: date}: {item: string}) => (
     <View>
       <Text style={styles.dateHeader}>{date}</Text>
       <FlatList
         data={groupedData[date]}
         renderItem={renderItem}
-        keyExtractor={(transaction) => transaction.tx_id.toString()}
+        keyExtractor={transaction => transaction.tx_id.toString()}
       />
     </View>
   );

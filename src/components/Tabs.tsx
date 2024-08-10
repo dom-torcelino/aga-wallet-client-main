@@ -1,5 +1,11 @@
-/* eslint-disable prettier/prettier */
-import { Text, View, TouchableOpacity, FlatList, GestureResponderEvent } from 'react-native';
+
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+  GestureResponderEvent,
+} from 'react-native';
 import React from 'react';
 import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../constants/theme';
 
@@ -9,11 +15,14 @@ interface TabButtonProps {
   onHandleSearchType: (event: GestureResponderEvent) => void;
 }
 
-const TabButton: React.FC<TabButtonProps> = ({ name, activeTab, onHandleSearchType }) => (
+const TabButton: React.FC<TabButtonProps> = ({
+  name,
+  activeTab,
+  onHandleSearchType,
+}) => (
   <TouchableOpacity
     style={tabButtonStyle(name, activeTab)}
-    onPress={onHandleSearchType}
-  >
+    onPress={onHandleSearchType}>
     <Text style={tabTextStyle(name, activeTab)}>{name}</Text>
   </TouchableOpacity>
 );
@@ -33,7 +42,9 @@ const Tabs: React.FC<TabsProps> = ({ tabs, activeTab, setActiveTab }) => {
           <TabButton
             name={item}
             activeTab={activeTab}
-            onHandleSearchType={() => setActiveTab(item as 'All' | 'Slot' | 'Casino' | 'Poker')}
+            onHandleSearchType={() =>
+              setActiveTab(item as 'All' | 'Slot' | 'Casino' | 'Poker')
+            }
             key={index.toString()} // Ensure unique key
           />
         )}
@@ -56,7 +67,8 @@ const tabButtonStyle = (name: string, activeTab: string) => ({
   width: 120,
   marginVertical: SPACING.space_10,
   marginHorizontal: SPACING.space_4,
-  backgroundColor: name === activeTab ? COLORS.primaryColor : COLORS.secondaryBGColor,
+  backgroundColor:
+    name === activeTab ? COLORS.primaryColor : COLORS.secondaryBGColor,
   borderRadius: SPACING.space_32,
   padding: SPACING.space_10,
 });

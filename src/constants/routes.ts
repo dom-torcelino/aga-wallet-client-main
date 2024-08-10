@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 export default {
   LOGIN: 'Login',
   REGISTER: 'Register',

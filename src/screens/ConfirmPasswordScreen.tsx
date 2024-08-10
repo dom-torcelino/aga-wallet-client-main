@@ -1,12 +1,26 @@
-/* eslint-disable prettier/prettier */
+
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation, useRoute, RouteProp, NavigationProp } from '@react-navigation/native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
+import {
+  useNavigation,
+  useRoute,
+  RouteProp,
+  NavigationProp,
+} from '@react-navigation/native';
 import { RootStackParamList } from '../constants/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS } from '../constants/theme';
 
-type ConfirmPasswordRouteProp = RouteProp<RootStackParamList, 'ConfirmPassword'>;
+type ConfirmPasswordRouteProp = RouteProp<
+  RootStackParamList,
+  'ConfirmPassword'
+>;
 
 const ConfirmPasswordScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -71,4 +85,3 @@ const styles = StyleSheet.create({
 });
 
 export default ConfirmPasswordScreen;
-

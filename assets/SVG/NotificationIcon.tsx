@@ -1,20 +1,18 @@
-/* eslint-disable prettier/prettier */
+
 import * as React from 'react';
 import Svg, { SvgProps, Path } from 'react-native-svg';
 
-interface NotificationIconProps extends SvgProps{
-    fillColor?: string;
-    size?: number;
-  }
+interface NotificationIconProps extends SvgProps {
+  fillColor?: string;
+  size?: number;
+}
 
-const NotificationIcon = ({ fillColor = '#fff', size = 45, ...props}: NotificationIconProps) => (
-  <Svg
-    width={size}
-    height={size}
-    fill="none"
-    viewBox="0 0 24 24"
-    {...props}
-  >
+const NotificationIcon = ({
+  fillColor = '#fff',
+  size = 45,
+  ...props
+}: NotificationIconProps) => (
+  <Svg width={size} height={size} fill="none" viewBox="0 0 24 24" {...props}>
     <Path
       fill={fillColor}
       d="m9.009 17.903.084-.745-.898-.1.066.9.748-.055Zm5.982 0 .748.055.065-.9-.897.1.084.745Zm-.09.574.727.18-.728-.18Zm-.083.334-.728-.18.728.18Zm-2.114 2.106.174.73-.174-.73Zm-1.408 0-.174.73.174-.73Zm-2.114-2.106.728-.18-.728.18Zm-.082-.334-.729.18.729-.18ZM12.75 3a.75.75 0 0 0-1.5 0h1.5Zm-1.5 1.005a.75.75 0 0 0 1.5 0h-1.5ZM8.925 18.649c2.044.23 4.106.23 6.15 0l-.168-1.49a26.021 26.021 0 0 1-5.814 0l-.168 1.49Zm6.703.007c.057-.23.094-.463.11-.698l-1.495-.109a2.709 2.709 0 0 1-.071.45l1.456.357Zm-.082.334.082-.334-1.456-.358-.082.334 1.456.358Zm-2.668 2.656a3.617 3.617 0 0 0 2.668-2.656l-1.456-.358a2.117 2.117 0 0 1-1.56 1.555l.348 1.46Zm-1.756 0c.577.139 1.179.139 1.756 0l-.349-1.459c-.348.084-.71.084-1.059 0l-.348 1.46ZM8.453 18.99a3.617 3.617 0 0 0 2.669 2.656l.348-1.459a2.117 2.117 0 0 1-1.56-1.556l-1.457.359Zm-.082-.334.082.334 1.457-.358-.082-.334-1.457.358Zm-.11-.698c.017.235.054.469.11.698l1.457-.358a2.702 2.702 0 0 1-.07-.449l-1.497.109ZM11.25 3v1.005h1.5V3h-1.5Z"

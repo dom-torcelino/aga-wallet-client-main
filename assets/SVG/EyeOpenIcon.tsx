@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import * as React from 'react';
 import Svg, { SvgProps, Path } from 'react-native-svg';
 
@@ -7,14 +7,12 @@ interface EyeOpenIconProps extends SvgProps {
   size?: number;
 }
 
-const EyeOpenIcon = ({fillColor = '#fff', size = 45, ...props}: EyeOpenIconProps) => (
-  <Svg
-    width={size}
-    height={size}
-    fill="none"
-    viewBox="0 0 24 24"
-    {...props}
-  >
+const EyeOpenIcon = ({
+  fillColor = '#fff',
+  size = 45,
+  ...props
+}: EyeOpenIconProps) => (
+  <Svg width={size} height={size} fill="none" viewBox="0 0 24 24" {...props}>
     <Path
       stroke={fillColor}
       strokeLinecap="round"

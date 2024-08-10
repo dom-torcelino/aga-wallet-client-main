@@ -1,8 +1,7 @@
-/* eslint-disable prettier/prettier */
-import { NotificationData, TokenData, TransactionData } from '../data/mockData';
+import {NotificationData, TokenData} from '../data/mockData';
+import {TransactionData} from '../types/TransactionTypes';
 // import { NavigationProp } from '@react-navigation/native'; // Ensure you have the correct import for navigation
 
-/* eslint-disable prettier/prettier */
 export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
@@ -10,8 +9,13 @@ export type RootStackParamList = {
   ResetPassword: undefined;
   WalletCreation: undefined;
   CreatePassword: undefined;
-  ConfirmPassword: { password: string };
-  EnterPassword: { token: TokenData; walletAddress: string; amount: number; recipient_address: string ; };
+  ConfirmPassword: {password: string};
+  EnterPassword: {
+    token: TokenData;
+    walletAddress: string;
+    amount: number;
+    recipient_address: string;
+  };
   Home: undefined;
   'Home Tab': undefined;
   'Home Drawer': undefined;
@@ -24,15 +28,15 @@ export type RootStackParamList = {
   'Settings Navigator': undefined;
   'Settings Detail': undefined;
   'My Profile': undefined;
-  'GameView': undefined;
+  GameView: {game: any};
 
-  SendToken: { token: TokenData };
-  SendAmount: { token: TokenData };
-  TokenDetails: { token: TokenData };
+  SendToken: {token: TokenData};
+  SendAmount: {token: TokenData};
+  TokenDetails: {token: TokenData};
   QrScanner: undefined;
   Transaction: undefined;
-  TransactionDetails: { transaction: TransactionData };
-  NotificationView: {notification: NotificationData };
+  TransactionDetails: {transaction: TransactionData};
+  NotificationView: {notification: NotificationData};
   TransactionSuccess: undefined;
   TransactionFailure: undefined;
 };

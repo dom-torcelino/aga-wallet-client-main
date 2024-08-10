@@ -1,5 +1,5 @@
-/* eslint-disable prettier/prettier */
-import {Dimensions, StyleSheet, View,  TextInput, Text} from 'react-native';
+
+import { Dimensions, StyleSheet, View, TextInput, Text } from 'react-native';
 import React, {
   forwardRef,
   useImperativeHandle,
@@ -15,11 +15,10 @@ import Animated, {
   AnimatedScrollViewProps,
   runOnJS,
 } from 'react-native-reanimated';
-import {Gesture, GestureDetector} from 'react-native-gesture-handler';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import BackDrop from './BackDrop';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS, FONTFAMILY, FONTSIZE } from '../constants/theme';
-
 
 interface Props extends AnimatedScrollViewProps {
   snapTo: string;
@@ -33,9 +32,9 @@ export interface BottomSheetMethods {
 }
 
 const BottomSheetScrollView = forwardRef<BottomSheetMethods, Props>(
-  ({snapTo, children, backgroundColor, backDropColor, ...rest}: Props, ref) => {
+  ({ snapTo, children, backgroundColor, backDropColor, ...rest }: Props, ref) => {
     const inset = useSafeAreaInsets();
-    const {height} = Dimensions.get('screen');
+    const { height } = Dimensions.get('screen');
     const percentage = parseFloat(snapTo.replace('%', '')) / 100;
     const closeHeight = height;
     const openHeight = height - height * percentage;
@@ -176,24 +175,22 @@ const BottomSheetScrollView = forwardRef<BottomSheetMethods, Props>(
                 paddingBottom: inset.bottom,
               },
             ]}>
-              <View style={styles.lineContainer}>
-                  <View style={styles.line} />
-                  <View style={styles.searchBoxContainer}>
-                    <Text style={styles.textStyles}>
-                      Select Assets
-                    </Text>
-                    <TextInput
-                      placeholder="Search Token Name"
-                      style={styles.searchBox}
-                      clearButtonMode="always"
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      value={searchQuery}
-                      onChangeText={(query) => handleSearch(query)}
-                       placeholderTextColor={COLORS.strokeColor}
-                      />
-                  </View>
-                </View>
+            <View style={styles.lineContainer}>
+              <View style={styles.line} />
+              <View style={styles.searchBoxContainer}>
+                <Text style={styles.textStyles}>Select Assets</Text>
+                <TextInput
+                  placeholder="Search Token Name"
+                  style={styles.searchBox}
+                  clearButtonMode="always"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  value={searchQuery}
+                  onChangeText={query => handleSearch(query)}
+                  placeholderTextColor={COLORS.strokeColor}
+                />
+              </View>
+            </View>
             <GestureDetector
               gesture={Gesture.Simultaneous(scrollViewGesture, panScroll)}>
               <Animated.ScrollView

@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import React, { useState } from 'react';
 import {
   StyleSheet,
@@ -12,7 +12,12 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE } from '../../constants/theme';
+import {
+  BORDERRADIUS,
+  COLORS,
+  FONTFAMILY,
+  FONTSIZE,
+} from '../../constants/theme';
 import { RootStackParamList } from '../../constants/types'; // Import the type
 import BackButtonIcon from '../../../assets/SVG/BackButtonIcon';
 import TextInput from '../../components/ui/TextInput';
@@ -69,7 +74,7 @@ const Register: React.FC = () => {
         const errorData = await response.json();
         setError(errorData.message || 'Registration failed');
       }
-    // eslint-disable-next-line no-catch-shadow
+      // eslint-disable-next-line no-catch-shadow
     } catch (error) {
       setLoading(false);
       setError('An error occurred. Please try again.');
@@ -79,16 +84,23 @@ const Register: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.main}>
-      <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled">
         <View style={styles.container}>
-          <TouchableOpacity style={styles.backButtonContainer} onPress={() => navigation.navigate('Login')}>
+          <TouchableOpacity
+            style={styles.backButtonContainer}
+            onPress={() => navigation.navigate('Login')}>
             <BackButtonIcon size={30} style={styles.backButton} />
           </TouchableOpacity>
           <View style={styles.wFull}>
             <View style={styles.imageContainer}>
-              <Image source={require('../../../assets/images/aga-logo.png')} style={styles.imageStyle} />
+              <Image
+                source={require('../../../assets/images/aga-logo.png')}
+                style={styles.imageStyle}
+              />
             </View>
-            <Text style={styles.loginContinueTxt}>Create your account</Text>
+            <Text style={styles.signupTxt}>Sign up</Text>
             <TextInput
               placeholder="Name"
               value={name}
@@ -116,8 +128,16 @@ const Register: React.FC = () => {
 
             {error ? <Text style={styles.errorText}>{error}</Text> : null}
             <View style={styles.loginBtnWrapper}>
-              <TouchableOpacity onPress={handleRegister} activeOpacity={0.7} style={styles.loginBtn} disabled={loading}>
-                {loading ? <ActivityIndicator color={COLORS.primaryBGColor} /> : <Text style={styles.loginText}>Register</Text>}
+              <TouchableOpacity
+                onPress={handleRegister}
+                activeOpacity={0.7}
+                style={styles.loginBtn}
+                disabled={loading}>
+                {loading ? (
+                  <ActivityIndicator color={COLORS.primaryBGColor} />
+                ) : (
+                  <Text style={styles.loginText}>Register</Text>
+                )}
               </TouchableOpacity>
             </View>
           </View>
@@ -179,8 +199,8 @@ const styles = StyleSheet.create({
     maxWidth: '80%',
     maxHeight: 120,
   },
-  loginContinueTxt: {
-    fontSize: FONTSIZE.size_18,
+  signupTxt: {
+    fontSize: FONTSIZE.size_28,
     textAlign: 'left',
     color: COLORS.primaryWhite,
     fontFamily: FONTFAMILY.poppins_regular,

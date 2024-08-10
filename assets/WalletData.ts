@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 const WalletData = [
   {
     id: 'B1',

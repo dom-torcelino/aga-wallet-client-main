@@ -1,20 +1,18 @@
-/* eslint-disable prettier/prettier */
+
 import * as React from 'react';
 import Svg, { SvgProps, Circle, Path } from 'react-native-svg';
 
-interface SettingsIconProps extends SvgProps{
-    fillColor?: string;
-    size?: number;
-  }
+interface SettingsIconProps extends SvgProps {
+  fillColor?: string;
+  size?: number;
+}
 
-const SettingsIcon = ({ fillColor = '#fff', size = 45, ...props }: SettingsIconProps) => (
-  <Svg
-    width={size}
-    height={size}
-    fill="none"
-    viewBox="0 0 24 24"
-    {...props}
-  >
+const SettingsIcon = ({
+  fillColor = '#fff',
+  size = 45,
+  ...props
+}: SettingsIconProps) => (
+  <Svg width={size} height={size} fill="none" viewBox="0 0 24 24" {...props}>
     <Circle cx={12} cy={12} r={3} stroke={fillColor} strokeWidth={1.5} />
     <Path
       stroke={fillColor}

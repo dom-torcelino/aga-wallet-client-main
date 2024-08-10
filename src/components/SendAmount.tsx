@@ -1,22 +1,36 @@
-/* eslint-disable prettier/prettier */
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput, Dimensions, Alert } from 'react-native';
-import React, { useState } from 'react';
-import { RouteProp, useRoute } from '@react-navigation/native';
-import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../constants/theme';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { RootStackParamList } from '../constants/types'; // Import the type
-import { useAuth } from '../screens/auth/AuthContext';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  SafeAreaView,
+  TextInput,
+  Dimensions,
+  Alert,
+} from 'react-native';
+import React, {useState} from 'react';
+import {RouteProp, useRoute} from '@react-navigation/native';
+import {
+  BORDERRADIUS,
+  COLORS,
+  FONTFAMILY,
+  FONTSIZE,
+  SPACING,
+} from '../constants/theme';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
+import {RootStackParamList} from '../constants/types'; // Import the type
+import {useAuth} from '../screens/auth/AuthContext';
 import BackButton from './ui/backButton';
 
-const { height } = Dimensions.get('window');
+const {height} = Dimensions.get('window');
 
 type SendAmountRouteProp = RouteProp<RootStackParamList, 'SendAmount'>;
 
 const SendAmount: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const route = useRoute<SendAmountRouteProp>();
-  const { token, recipient_address } = route.params;
-  const { balance } = useAuth();
+  const {token, recipient_address} = route.params;
+  const {balance} = useAuth();
 
   // State to manage the input value
   const [amount, setAmount] = useState('');
@@ -35,19 +49,28 @@ const SendAmount: React.FC = () => {
       return;
     }
     if (numericAmount > balance) {
-      Alert.alert('Insufficient balance', 'You do not have enough balance to complete this transaction.');
+      Alert.alert(
+        'Insufficient balance',
+        'You do not have enough balance to complete this transaction.',
+      );
       return;
     }
 
-    navigation.navigate('EnterPassword', { token, recipient_address, amount: numericAmount });
+    navigation.navigate('EnterPassword', {
+      token,
+      recipient_address,
+      amount: numericAmount,
+    });
   };
 
   return (
     <SafeAreaView style={styles.main}>
       <View>
-      <BackButton/>
+        <BackButton />
         <View>
-          <Text style={styles.addressHeading}>Available Balance ${balance.toFixed(2)}</Text>
+          <Text style={styles.addressHeading}>
+            Available Balance ${balance.toFixed(2)}
+          </Text>
           <View>
             <TextInput
               style={styles.input}
@@ -64,7 +87,10 @@ const SendAmount: React.FC = () => {
         <View>
           <View style={styles.receiverAddressContainer}>
             <Text style={styles.reminderText}>Sending to:</Text>
-            <Text style={styles.addressValidation} numberOfLines={1} ellipsizeMode="tail">
+            <Text
+              style={styles.addressValidation}
+              numberOfLines={1}
+              ellipsizeMode="tail">
               {recipient_address}
             </Text>
           </View>

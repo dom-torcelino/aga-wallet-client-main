@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import React, { useState } from 'react';
 import {
   StyleSheet,
@@ -41,26 +41,29 @@ const ResetPassword: React.FC = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${process.env.API_URL}/auth/reset-password`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `${process.env.API_URL}/auth/reset-password`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password: newPassword, resetToken }),
         },
-        body: JSON.stringify({ email, password: newPassword, resetToken }),
-      });
+      );
 
       setLoading(false);
 
       if (response.ok) {
-        Alert.alert('Success', 'Password has been reset successfully');
+        // Alert.alert('Success', 'Password has been reset successfully');
         navigation.navigate('Login');
       } else {
         const errorData = await response.json();
-        Alert.alert('Error', errorData.message || 'Failed to reset password');
+        console.error('Error data', errorData);
       }
     } catch (error) {
       setLoading(false);
-      Alert.alert('Error', 'An error occurred. Please try again.');
+      // Alert.alert('Error', 'An error occurred. Please try again.');
       console.error(error);
     }
   };
@@ -68,14 +71,19 @@ const ResetPassword: React.FC = () => {
   return (
     <SafeAreaView style={styles.main}>
       <View style={styles.container}>
-        <TouchableOpacity style={styles.backButtonContainer} onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          style={styles.backButtonContainer}
+          onPress={() => navigation.goBack()}>
           <BackButtonIcon size={30} style={styles.backButton} />
         </TouchableOpacity>
         <View style={styles.wFull}>
           <View />
           <View style={styles.row}>
             <View style={styles.imageContainer}>
-              <Image source={require('../../assets/images/aga-logo.png')} style={styles.imageStyle} />
+              <Image
+                source={require('../../assets/images/aga-logo.png')}
+                style={styles.imageStyle}
+              />
             </View>
           </View>
           <Text style={styles.resetPasswordTxt}>Reset your password</Text>
@@ -114,14 +122,17 @@ const ResetPassword: React.FC = () => {
               onPress={handleResetPassword}
               activeOpacity={0.7}
               style={styles.resetBtn}
-              disabled={loading}
-            >
-              {loading ? <ActivityIndicator color={COLORS.primaryBGColor} /> : <Text style={styles.resetText}>Reset Password</Text>}
+              disabled={loading}>
+              {loading ? (
+                <ActivityIndicator color={COLORS.primaryBGColor} />
+              ) : (
+                <Text style={styles.resetText}>Reset Password</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
         <View style={styles.signUp}>
-          <Text style={styles.signUpText}>Don't have an account? {' '}</Text>
+          <Text style={styles.signUpText}>Don't have an account? </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Register')}>
             <Text style={styles.boldText}>Sign Up</Text>
           </TouchableOpacity>

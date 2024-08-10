@@ -1,47 +1,47 @@
 {
-    "project_info": {
-      "project_number": "68753555206",
-      "project_id": "auth-with-80282",
-      "storage_bucket": "auth-with-80282.appspot.com"
-    },
-    "client": [
-      {
-        "client_info": {
-          "mobilesdk_app_id": "1:68753555206:android:4ba34750005d4169002887",
-          "android_client_info": {
-            "package_name": "com.agawallet"
+  "project_info": {
+    "project_number": "68753555206",
+    "project_id": "auth-with-80282",
+    "storage_bucket": "auth-with-80282.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:68753555206:android:4ba34750005d4169002887",
+        "android_client_info": {
+          "package_name": "com.agawallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "68753555206-mjqp7dtck4bogf98qefl6tr2tt0vde30.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.agawallet",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
         },
-        "oauth_client": [
-          {
-            "client_id": "68753555206-mjqp7dtck4bogf98qefl6tr2tt0vde30.apps.googleusercontent.com",
-            "client_type": 1,
-            "android_info": {
-              "package_name": "com.agawallet",
-              "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+        {
+          "client_id": "68753555206-9abvln0g5a4bmqjf4ed2s3eb1nb07lro.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGfVXyVZ-XrQ6PjsNW0E24moaRnNG1AX8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "68753555206-9abvln0g5a4bmqjf4ed2s3eb1nb07lro.apps.googleusercontent.com",
+              "client_type": 3
             }
-          },
-          {
-            "client_id": "68753555206-9abvln0g5a4bmqjf4ed2s3eb1nb07lro.apps.googleusercontent.com",
-            "client_type": 3
-          }
-        ],
-        "api_key": [
-          {
-            "current_key": "AIzaSyAGfVXyVZ-XrQ6PjsNW0E24moaRnNG1AX8"
-          }
-        ],
-        "services": {
-          "appinvite_service": {
-            "other_platform_oauth_client": [
-              {
-                "client_id": "68753555206-9abvln0g5a4bmqjf4ed2s3eb1nb07lro.apps.googleusercontent.com",
-                "client_type": 3
-              }
-            ]
-          }
+          ]
         }
       }
-    ],
-    "configuration_version": "1"
-  }
+    }
+  ],
+  "configuration_version": "1"
+}

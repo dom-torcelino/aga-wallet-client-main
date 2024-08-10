@@ -1,5 +1,11 @@
-/* eslint-disable prettier/prettier */
-import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
+
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useContext,
+  ReactNode,
+} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface AuthContextProps {
@@ -26,10 +32,10 @@ const AuthContext = createContext<AuthContextProps>({
   loading: true,
   balance: 0,
   accountAddress: null,
-  login: async () => {},
-  logout: () => {},
-  setAccountAddress: () => {},
-  setBalance: () => {},
+  login: async () => { },
+  logout: () => { },
+  setAccountAddress: () => { },
+  setBalance: () => { },
 });
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
@@ -90,7 +96,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, userId, loggedIn, loading, balance, accountAddress, login, logout, setAccountAddress, setBalance }}>
+    <AuthContext.Provider
+      value={{
+        token,
+        userId,
+        loggedIn,
+        loading,
+        balance,
+        accountAddress,
+        login,
+        logout,
+        setAccountAddress,
+        setBalance,
+      }}>
       {children}
     </AuthContext.Provider>
   );

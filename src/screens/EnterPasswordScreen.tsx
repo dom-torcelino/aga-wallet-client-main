@@ -1,7 +1,18 @@
-/* eslint-disable prettier/prettier */
+
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation, useRoute, RouteProp, NavigationProp } from '@react-navigation/native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
+import {
+  useNavigation,
+  useRoute,
+  RouteProp,
+  NavigationProp,
+} from '@react-navigation/native';
 import { RootStackParamList } from '../constants/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS } from '../constants/theme';
@@ -44,17 +55,17 @@ const EnterPasswordScreen: React.FC = () => {
             password,
           }),
         });
-        console.log(authToken?.accessToken)
-        console.log(amount)
-        console.log(sender_address)
-        console.log(recipient_address)
-        console.log(authToken?.accessToken)
+        console.log(authToken?.accessToken);
+        console.log(amount);
+        console.log(sender_address);
+        console.log(recipient_address);
+        console.log(authToken?.accessToken);
         if (response.ok) {
           navigation.navigate('TransactionSuccess');
-        console.log('TransactionSuccess')
+          console.log('TransactionSuccess');
         } else {
           navigation.navigate('TransactionFailure');
-        console.log('TransactionFailure')
+          console.log('TransactionFailure');
         }
       } catch (error) {
         console.error('Transaction failed', error);

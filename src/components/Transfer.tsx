@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import Tokens from './Tokens';
@@ -21,7 +21,7 @@ const Transfer: React.FC<TransferProps> = ({ closeBottomSheet }) => {
 
   return (
     <View style={styles.TransferContainer}>
-      <Tokens title="Tokens" data={mockTokens} onPressToken={onPressToken}  />
+      <Tokens title="Tokens" data={mockTokens} onPressToken={onPressToken} />
     </View>
   );
 };

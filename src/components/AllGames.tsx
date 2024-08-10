@@ -1,17 +1,23 @@
-/* eslint-disable prettier/prettier */
 import React from 'react';
-import { StyleSheet, View, Image, FlatList, TouchableOpacity, Text } from 'react-native';
-import { BORDERRADIUS, COLORS } from '../constants/theme';
-import { GameData } from '../data/mockData';
+import {
+  StyleSheet,
+  View,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
+import {BORDERRADIUS, COLORS} from '../constants/theme';
+import {GameData} from '../data/mockData';
 
 interface AllGamesProps {
   data: GameData[];
 }
 
-const AllGames: React.FC<AllGamesProps> = ({ data = [] }) => {
-  const renderItem = ({ item }: { item: GameData }) => (
+const AllGames: React.FC<AllGamesProps> = ({data = []}) => {
+  const renderItem = ({item}: {item: GameData}) => (
     <TouchableOpacity style={styles.itemContainer} key={item.id.toString()}>
-      <Image source={{ uri: item.image }} style={styles.ImageStyles} />
+      <Image source={{uri: item.image}} style={styles.ImageStyles} />
       <Text style={styles.TextStyles}>{item.name}</Text>
     </TouchableOpacity>
   );
@@ -21,7 +27,7 @@ const AllGames: React.FC<AllGamesProps> = ({ data = [] }) => {
       <FlatList
         data={data}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={item => item.id.toString()}
         numColumns={2}
         scrollEnabled={false}
       />

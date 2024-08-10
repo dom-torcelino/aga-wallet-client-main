@@ -1,23 +1,43 @@
-/* eslint-disable prettier/prettier */
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, SafeAreaView, Dimensions, Image } from 'react-native';
-import React, { useState } from 'react';
-import { RouteProp, useRoute, useNavigation, NavigationProp } from '@react-navigation/native';
-import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../constants/theme';
-import { RootStackParamList } from '../constants/types'; // Import the type
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  SafeAreaView,
+  Dimensions,
+  Image,
+} from 'react-native';
+import React, {useState} from 'react';
+import {
+  RouteProp,
+  useRoute,
+  useNavigation,
+  NavigationProp,
+} from '@react-navigation/native';
+import {
+  BORDERRADIUS,
+  COLORS,
+  FONTFAMILY,
+  FONTSIZE,
+  SPACING,
+} from '../constants/theme';
+import {RootStackParamList} from '../constants/types'; // Import the type
 import ScanIcon from '../../assets/SVG/ScanIcon';
-import { useBottomSheet } from './BottomSheetContext';
+import {useBottomSheet} from './BottomSheetContext';
 import BackButton from './ui/backButton';
+import {useAuth} from '../screens/auth/AuthContext';
 
-const { height } = Dimensions.get('window');
+const {height} = Dimensions.get('window');
 
 type SendTokenRouteProp = RouteProp<RootStackParamList, 'SendToken'>;
 
 const SendToken: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const { pressHandler } = useBottomSheet();
+  const {pressHandler} = useBottomSheet();
   const route = useRoute<SendTokenRouteProp>();
-  const { token } = route.params;
- 
+  const {token} = route.params;
+  const {balance} = useAuth();
 
   const [recipient_address, setRecipient_address] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -30,26 +50,33 @@ const SendToken: React.FC = () => {
   const onPressButton = () => {
     if (validateAddress(recipient_address)) {
       setErrorMessage('');
-      navigation.navigate('SendAmount', { token, recipient_address });
-      
+      navigation.navigate('SendAmount', {token, recipient_address});
     } else {
-      setErrorMessage('The wallet address is not valid. Please check and try again.');
+      setErrorMessage(
+        'The wallet address is not valid. Please check and try again.',
+      );
     }
   };
-
- 
 
   return (
     <SafeAreaView style={styles.main}>
       <View>
-        <BackButton/>
+        <BackButton />
         <View style={styles.container}>
           <View style={styles.coinType}>
             <View style={styles.coinTypeLeft}>
-              <Image source={typeof token.image === 'string' ? { uri: token.image } : token.image} style={styles.image} />
+              <Image
+                source={
+                  typeof token.image === 'string'
+                    ? {uri: token.image}
+                    : token.image
+                }
+                style={styles.image}
+              />
               <View>
                 <Text style={styles.coin}>{token.coin}</Text>
-                <Text style={styles.crypto}>{token.crypto}</Text>
+                {/* <Text style={styles.crypto}>{token.crypto}</Text> */}
+                <Text style={styles.crypto}>{balance.toFixed(2)}</Text>
               </View>
             </View>
             <TouchableOpacity onPress={pressHandler}>
@@ -66,7 +93,7 @@ const SendToken: React.FC = () => {
               placeholder="e.g : 16HFHicyvB9RXFTxrBazas..."
               placeholderTextColor={COLORS.placeHolderTextColor}
               value={recipient_address}
-              onChangeText={(text) => {
+              onChangeText={text => {
                 setRecipient_address(text);
                 setErrorMessage(''); // Clear error message on input change
               }}
@@ -75,28 +102,45 @@ const SendToken: React.FC = () => {
               <ScanIcon size={30} style={styles.backButton} />
             </TouchableOpacity>
           </View>
-          {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
-          <Text style={styles.addressValidation} numberOfLines={1} ellipsizeMode="tail">
+          {errorMessage ? (
+            <Text style={styles.errorText}>{errorMessage}</Text>
+          ) : null}
+          <Text
+            style={styles.addressValidation}
+            numberOfLines={1}
+            ellipsizeMode="tail">
             {recipient_address || "Enter the recipient's wallet address."}
           </Text>
         </View>
         <View>
           <View style={styles.reminderContainer}>
             <Text style={styles.reminderText}>•</Text>
-            <Text style={styles.reminderText}>Mistransferred assets cannot be recovered due to the nature of the blockchain.</Text>
+            <Text style={styles.reminderText}>
+              Mistransferred assets cannot be recovered due to the nature of the
+              blockchain.
+            </Text>
           </View>
           <View style={styles.reminderContainer}>
             <Text style={styles.reminderText}>•</Text>
-            <Text style={styles.reminderText}>When transferring to an exchange or external wallet, please make sure it’s transferred to the same blockchain network.</Text>
+            <Text style={styles.reminderText}>
+              When transferring to an exchange or external wallet, please make
+              sure it’s transferred to the same blockchain network.
+            </Text>
           </View>
           <View style={styles.reminderContainer}>
             <Text style={styles.reminderText}>•</Text>
-            <Text style={styles.reminderText}>Transferring by username is a function that can be used when transferring between AGA wallet users.</Text>
+            <Text style={styles.reminderText}>
+              Transferring by username is a function that can be used when
+              transferring between AGA wallet users.
+            </Text>
           </View>
         </View>
       </View>
       <View style={styles.nextButtonContainer}>
-        <TouchableOpacity onPress={onPressButton} activeOpacity={0.7} style={styles.nextButton}>
+        <TouchableOpacity
+          onPress={onPressButton}
+          activeOpacity={0.7}
+          style={styles.nextButton}>
           <Text style={styles.buttonText}>Continue</Text>
         </TouchableOpacity>
       </View>

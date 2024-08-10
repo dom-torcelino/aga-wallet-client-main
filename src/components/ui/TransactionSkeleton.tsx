@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import React from 'react';
 import ContentLoader, { Circle, Rect } from 'react-content-loader/native';
 import { View, StyleSheet, Dimensions } from 'react-native';
@@ -14,23 +14,21 @@ const TransactionSkeleton = () => {
       viewBox={`0 0 ${width - SPACING.space_20 * 2} 90`}
       backgroundColor={COLORS.secondaryBGColor}
       foregroundColor={COLORS.layeBGColor}
-      style={styles.skeleton}
-    >
-        <View style={styles.skeletonContainer}>
+      style={styles.skeleton}>
+      <View style={styles.skeletonContainer}>
         {/* <Circle cx="30" cy="35" r="30" /> */}
-        <Rect x="0" y="0" rx="14" ry="14" width="97%" height="80"  />
-        </View>
-      
+        <Rect x="0" y="0" rx="14" ry="14" width="97%" height="80" />
+      </View>
     </ContentLoader>
   );
 };
 
 const styles = StyleSheet.create({
-    skeletonContainer: {
+  skeletonContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    },
+  },
   skeleton: {
     marginTop: SPACING.space_4,
   },

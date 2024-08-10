@@ -1,21 +1,18 @@
-/* eslint-disable prettier/prettier */
+
 import * as React from 'react';
 import Svg, { SvgProps, Path, Circle } from 'react-native-svg';
 
-interface GameControllerProps extends SvgProps{
-    fillColor?: string;
-    size?: number;
-  }
+interface GameControllerProps extends SvgProps {
+  fillColor?: string;
+  size?: number;
+}
 
-
-const GameController = ({ fillColor = '#fff', size = 45, ...props }: GameControllerProps) => (
-  <Svg
-    width={size}
-    height={size}
-    fill="none"
-    viewBox="0 0 192 192"
-    {...props}
-  >
+const GameController = ({
+  fillColor = '#fff',
+  size = 45,
+  ...props
+}: GameControllerProps) => (
+  <Svg width={size} height={size} fill="none" viewBox="0 0 192 192" {...props}>
     <Path
       stroke={fillColor}
       strokeLinejoin="round"
@@ -30,8 +27,20 @@ const GameController = ({ fillColor = '#fff', size = 45, ...props }: GameControl
     />
     <Circle cx={126} cy={69} r={6} fill={fillColor} />
     <Circle cx={126} cy={93} r={6} fill={fillColor} />
-    <Circle cx={138} cy={81} r={6} fill={fillColor} transform="rotate(90 138 81)" />
-    <Circle cx={114} cy={81} r={6} fill={fillColor} transform="rotate(90 114 81)" />
+    <Circle
+      cx={138}
+      cy={81}
+      r={6}
+      fill={fillColor}
+      transform="rotate(90 138 81)"
+    />
+    <Circle
+      cx={114}
+      cy={81}
+      r={6}
+      fill={fillColor}
+      transform="rotate(90 114 81)"
+    />
   </Svg>
 );
 export default GameController;

@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 'use strict';
 
 import React from 'react';
@@ -16,13 +16,12 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import BackButtonIcon from '../assets/SVG/BackButtonIcon';
-import { BORDERRADIUS} from './constants/theme';
+import { BORDERRADIUS } from './constants/theme';
 import { RootStackParamList } from './constants/types';
 
 interface QrScannerProps {
   setRecipient_address: (address: string) => void;
 }
-
 
 const CustomMarker: React.FC = () => {
   return (
@@ -60,7 +59,9 @@ const QrScanner: React.FC<QrScannerProps> = ({ setRecipient_address }) => {
       <View style={styles.overlayLeft} />
       <View style={styles.overlayRight} />
       <View style={styles.topContentContainer}>
-        <TouchableOpacity style={styles.backButtonContainer} onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          style={styles.backButtonContainer}
+          onPress={() => navigation.goBack()}>
           <BackButtonIcon size={30} style={styles.backButton} />
         </TouchableOpacity>
         <Text style={styles.textBold}>Scan a wallet QR code</Text>

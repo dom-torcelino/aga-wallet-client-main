@@ -1,13 +1,8 @@
-/* eslint-disable prettier/prettier */
+
 import * as React from 'react';
-import Svg, {SvgProps, Path} from 'react-native-svg';
+import Svg, { SvgProps, Path } from 'react-native-svg';
 const SendMoney = (props: SvgProps) => (
-  <Svg
-    width={30}
-    height={30}
-    fill="none"
-    viewBox="0 0 24 24"
-    {...props}>
+  <Svg width={30} height={30} fill="none" viewBox="0 0 24 24" {...props}>
     <Path
       fill="#292D32"
       d="M10.25 10.03c0 .54.15.62.49.74l.51.18v-1.7h-.3c-.38 0-.7.35-.7.78ZM12.75 14.75h.3c.39 0 .7-.35.7-.78 0-.54-.15-.62-.49-.74l-.51-.18v1.7Z"

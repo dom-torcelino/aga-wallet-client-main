@@ -1,38 +1,51 @@
-/* eslint-disable prettier/prettier */
-import {Text, StyleSheet,  TouchableWithoutFeedback } from 'react-native';
+import {Text, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import React from 'react';
-import Animated, { interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
+import Animated, {
+  interpolate,
+  SharedValue,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
 
 type Props = {
-    topAnimation: SharedValue<number>;
-    openHeight: number;
-    closeHeight: number;
-    close: () => void;
-    backDropColor: string;
+  topAnimation: SharedValue<number>;
+  openHeight: number;
+  closeHeight: number;
+  close: () => void;
+  backDropColor: string;
 };
 
-const BackDrop = ({topAnimation, openHeight, closeHeight, close, backDropColor}: Props) => {
-
-    const backDropAnimation = useAnimatedStyle(() => {
-        const opacity = interpolate(
-            topAnimation.value,
-            [closeHeight, openHeight],
-            [0, 0.5]
-        );
-        const display = opacity === 0 ? 'none' : 'flex';
-        return {
-            opacity,
-            display,
-        };
-    });
+const BackDrop = ({
+  topAnimation,
+  openHeight,
+  closeHeight,
+  close,
+  backDropColor,
+}: Props) => {
+  const backDropAnimation = useAnimatedStyle(() => {
+    const opacity = interpolate(
+      topAnimation.value,
+      [closeHeight, openHeight],
+      [0, 0.5],
+    );
+    const display = opacity === 0 ? 'none' : 'flex';
+    return {
+      opacity,
+      display,
+    };
+  });
   return (
     <TouchableWithoutFeedback
-        onPress={() => {
-            close();
-        }}>
-    <Animated.View style={[styles.container, backDropAnimation, {backgroundColor: backDropColor}]}>
-      <Text>BackDrop</Text>
-    </Animated.View>
+      onPress={() => {
+        close();
+      }}>
+      <Animated.View
+        style={[
+          styles.container,
+          backDropAnimation,
+          {backgroundColor: backDropColor},
+        ]}>
+        <Text>BackDrop</Text>
+      </Animated.View>
     </TouchableWithoutFeedback>
   );
 };
@@ -40,9 +53,9 @@ const BackDrop = ({topAnimation, openHeight, closeHeight, close, backDropColor}:
 export default BackDrop;
 
 const styles = StyleSheet.create({
-    container: {
-        ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'black',
-        display: 'none',
-    },
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'black',
+    display: 'none',
+  },
 });

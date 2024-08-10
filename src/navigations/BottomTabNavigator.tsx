@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 /* eslint-disable react/no-unstable-nested-components*/
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Dimensions } from 'react-native';
@@ -14,7 +14,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 // import authFetch from '../utils/authFetch';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { RootStackParamList} from '../constants/types';
+import { RootStackParamList } from '../constants/types';
 // @ts-ignore
 import { API_URL } from '@env';
 
@@ -25,7 +25,6 @@ const BottomTabNavigator = () => {
   const [data, setData] = useState<any>(null);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
-
   useEffect(() => {
     const checkWallet = async () => {
       try {
@@ -34,7 +33,7 @@ const BottomTabNavigator = () => {
           navigation.navigate('Login');
           return;
         }
-  
+
         const { token, userId } = JSON.parse(userToken); // Adjusted to extract userId
         const response = await fetch(`${API_URL}/v1/users/${userId}/wallets`, {
           headers: {
@@ -53,7 +52,6 @@ const BottomTabNavigator = () => {
         // console.log(wallets);
         if (wallets.length === 0) {
           navigation.navigate('WalletCreation');
-
         } else {
           setData(wallets);
           // console.log('have a wallet');
@@ -68,54 +66,52 @@ const BottomTabNavigator = () => {
   }, [navigation]);
 
   return (
-    <GestureHandlerRootView style = {{ flex: 1 }}>
-       <Tab.Navigator
-      screenOptions={{
-        tabBarHideOnKeyboard: true,
-        headerShown: false,
-        tabBarShowLabel: false,
-        tabBarStyle: styles.tabBarStyle,
-      }}>
-
-    <Tab.Screen
-        name="Wallet"
-        component={WalletScreen}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <WalletIcon
-              size={28}
-              fillColor={focused ? COLORS.primaryColor : COLORS.primaryWhite }
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Game"
-        component={GameScreen}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <GameController
-              size={36}
-              fillColor={focused ? COLORS.primaryColor : COLORS.primaryWhite }
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Settings"
-        component={SettingsScreen}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <SettingsIcon
-              size={28}
-              fillColor={focused ? COLORS.primaryColor : COLORS.primaryWhite }
-            />
-          ),
-        }}
-      />
-    </Tab.Navigator>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Tab.Navigator
+        screenOptions={{
+          tabBarHideOnKeyboard: true,
+          headerShown: false,
+          tabBarShowLabel: false,
+          tabBarStyle: styles.tabBarStyle,
+        }}>
+        <Tab.Screen
+          name="Wallet"
+          component={WalletScreen}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <WalletIcon
+                size={28}
+                fillColor={focused ? COLORS.primaryColor : COLORS.primaryWhite}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Game"
+          component={GameScreen}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <GameController
+                size={36}
+                fillColor={focused ? COLORS.primaryColor : COLORS.primaryWhite}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <SettingsIcon
+                size={28}
+                fillColor={focused ? COLORS.primaryColor : COLORS.primaryWhite}
+              />
+            ),
+          }}
+        />
+      </Tab.Navigator>
     </GestureHandlerRootView>
-
   );
 };
 
