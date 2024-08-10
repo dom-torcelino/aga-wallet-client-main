@@ -98,7 +98,7 @@ const AuthNavigator = () => {
       <Stack.Screen
         name="Home"
         component={BottomTabNavigator}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, gestureEnabled: false}}
       />
       <Stack.Screen
         name="SendToken"
