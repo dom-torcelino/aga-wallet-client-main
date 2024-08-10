@@ -1,19 +1,19 @@
 /* eslint-disable prettier/prettier */
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../constants/theme';
-import BackButtonIcon from '../../assets/SVG/BackButtonIcon';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../constants/theme';
+
 import { RootStackParamList } from '../constants/types'; // Import the type
 import moment from 'moment';
+import BackButton from './ui/backButton';
 
 type TransactionDetailsRouteProp = RouteProp<RootStackParamList, 'TransactionDetails'>;
 
 const TransactionDetails: React.FC = () => {
   const route = useRoute<TransactionDetailsRouteProp>();
   const { transaction } = route.params;
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
 
   const formatTransactionType = (type: string) => {
     return type === 't' ? 'Transferred' : 'Received';
@@ -29,11 +29,7 @@ const TransactionDetails: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
-          <TouchableOpacity style={styles.backButtonContainer} onPress={() => navigation.goBack()}>
-            <BackButtonIcon size={30} style={styles.backButton} />
-          </TouchableOpacity>
-      </View>
+      <BackButton/>
       <View style={styles.settingsWrapper}>
         <Text style={styles.label}>{formatTransactionType(transaction.tx_type)}</Text>
         <Text style={styles.amountText}>{transaction.tx_amount}</Text>
@@ -63,12 +59,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primaryBGColor,
     padding: 20,
   },
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
+
   settingsWrapper: {
     backgroundColor: COLORS.secondaryBGColor,
     padding: SPACING.space_15,
@@ -93,15 +84,7 @@ const styles = StyleSheet.create({
     color: COLORS.primaryWhite,
     marginBottom: 10,
   },
-  backButtonContainer: {
-    borderRadius: BORDERRADIUS.radius_25,
-    overflow: 'hidden',
-    backgroundColor: COLORS.secondaryBGColor,
-    padding: 6,
-  },
-  backButton: {
-    marginRight: 2,
-  },
+
 });
 
 export default TransactionDetails;

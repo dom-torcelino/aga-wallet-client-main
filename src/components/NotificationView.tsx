@@ -1,19 +1,16 @@
 /* eslint-disable prettier/prettier */
-import { View, TouchableOpacity, FlatList } from 'react-native';
+import { View, FlatList } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { BORDERRADIUS, COLORS, SPACING } from '../constants/theme';
-import BackButtonIcon from '../../assets/SVG/BackButtonIcon';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { RootStackParamList } from '../constants/types';
+import { COLORS, SPACING } from '../constants/theme';
 import { useAuth } from '../screens/auth/AuthContext';
-import TransactionSkeleton from './ui/TransactionSkeleton'; 
+import TransactionSkeleton from './ui/TransactionSkeleton';
+import BackButton from './ui/backButton';
 // @ts-ignore
 import { API_URL } from '@env';
 import axios from 'axios';
 
 const NotificationView: React.FC = () => {
-    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const { token, loggedIn } = useAuth();
     const [notifications, setNotifications] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -65,11 +62,7 @@ const NotificationView: React.FC = () => {
 
   return (
     <View style={styles.container}>
-        <View style={styles.headerContainer}>
-          <TouchableOpacity style={styles.backButtonContainer} onPress={() => navigation.goBack()}>
-            <BackButtonIcon size={30} style={styles.backButton} />
-          </TouchableOpacity>
-        </View>
+        <BackButton/>
         {loading ? (
             <FlatList
                 data={Array(skeletonCount).fill('')}
@@ -95,12 +88,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.primaryBGColor,
         padding: 20,
     },
-    headerContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 20,
-    },
+
     notificationWrapper: {
         backgroundColor: COLORS.secondaryBGColor,
         padding: SPACING.space_15,
@@ -124,15 +112,15 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 20,
     },
-    backButtonContainer: {
-        borderRadius: BORDERRADIUS.radius_25,
-        overflow: 'hidden',
-        backgroundColor: COLORS.secondaryBGColor,
-        padding: 6,
-    },
-    backButton: {
-        marginRight: 2,
-    },
+    // backButtonContainer: {
+    //     borderRadius: BORDERRADIUS.radius_25,
+    //     overflow: 'hidden',
+    //     backgroundColor: COLORS.secondaryBGColor,
+    //     padding: 6,
+    // },
+    // backButton: {
+    //     marginRight: 2,
+    // },
 });
 
 export default NotificationView;

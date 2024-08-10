@@ -1,12 +1,12 @@
 /* eslint-disable prettier/prettier */
-import { StatusBar, StyleSheet, View, Text, TextInput, TouchableOpacity, SafeAreaView, Dimensions, Image } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, SafeAreaView, Dimensions, Image } from 'react-native';
 import React, { useState } from 'react';
 import { RouteProp, useRoute, useNavigation, NavigationProp } from '@react-navigation/native';
 import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../constants/theme';
-import BackButtonIcon from '../../assets/SVG/BackButtonIcon';
 import { RootStackParamList } from '../constants/types'; // Import the type
 import ScanIcon from '../../assets/SVG/ScanIcon';
 import { useBottomSheet } from './BottomSheetContext';
+import BackButton from './ui/backButton';
 
 const { height } = Dimensions.get('window');
 
@@ -42,10 +42,8 @@ const SendToken: React.FC = () => {
   return (
     <SafeAreaView style={styles.main}>
       <View>
+        <BackButton/>
         <View style={styles.container}>
-          <TouchableOpacity style={styles.backButtonContainer} onPress={() => navigation.goBack()}>
-            <BackButtonIcon size={30} style={styles.backButton} />
-          </TouchableOpacity>
           <View style={styles.coinType}>
             <View style={styles.coinTypeLeft}>
               <Image source={typeof token.image === 'string' ? { uri: token.image } : token.image} style={styles.image} />
@@ -215,14 +213,6 @@ const styles = StyleSheet.create({
     color: COLORS.primaryWhite,
     lineHeight: 34,
     paddingVertical: SPACING.space_10,
-  },
-  backButtonContainer: {
-    top: 0,
-    zIndex: 1,
-    borderRadius: BORDERRADIUS.radius_25,
-    overflow: 'hidden',
-    backgroundColor: COLORS.secondaryBGColor,
-    padding: 6,
   },
   backButton: {
     marginRight: 2,

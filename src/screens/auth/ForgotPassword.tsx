@@ -67,10 +67,10 @@ const ForgotPassword: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.main}>
-      <View style={styles.container}>
       <TouchableOpacity style={styles.backButtonContainer} onPress={() => navigation.goBack()}>
         <BackButtonIcon size={30} style={styles.backButton}/>
       </TouchableOpacity>
+      <View style={styles.container}>
         <View style={styles.wFull}>
           <View />
           <View style={styles.row}>

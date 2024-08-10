@@ -3,10 +3,10 @@ import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput, Dime
 import React, { useState } from 'react';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../constants/theme';
-import BackButtonIcon from '../../assets/SVG/BackButtonIcon';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../constants/types'; // Import the type
 import { useAuth } from '../screens/auth/AuthContext';
+import BackButton from './ui/backButton';
 
 const { height } = Dimensions.get('window');
 
@@ -45,11 +45,7 @@ const SendAmount: React.FC = () => {
   return (
     <SafeAreaView style={styles.main}>
       <View>
-        <View style={styles.container}>
-          <TouchableOpacity style={styles.backButtonContainer} onPress={() => navigation.goBack()}>
-            <BackButtonIcon size={30} style={styles.backButton} />
-          </TouchableOpacity>
-        </View>
+      <BackButton/>
         <View>
           <Text style={styles.addressHeading}>Available Balance ${balance.toFixed(2)}</Text>
           <View>
@@ -89,11 +85,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 16,
     backgroundColor: COLORS.primaryBGColor,
-  },
-  container: {
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    marginBottom: SPACING.space_18,
   },
   coinType: {
     width: '100%',
@@ -182,18 +173,6 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryWhite,
     width: '70%',
-  },
-
-  backButtonContainer: {
-    top: 0,
-    zIndex: 1,
-    borderRadius: BORDERRADIUS.radius_25,
-    overflow: 'hidden',
-    backgroundColor: COLORS.secondaryBGColor,
-    padding: 6,
-  },
-  backButton: {
-    marginRight: 2,
   },
   nextButtonContainer: {
     height: height * 0.07,
