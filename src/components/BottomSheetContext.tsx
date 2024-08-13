@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 // BottomSheetContext.tsx
 import React, { createContext, useContext, ReactNode } from 'react';
 
@@ -7,7 +7,9 @@ interface BottomSheetContextType {
   pressHandler2: () => void;
 }
 
-const BottomSheetContext = createContext<BottomSheetContextType | undefined>(undefined);
+const BottomSheetContext = createContext<BottomSheetContextType | undefined>(
+  undefined,
+);
 
 interface BottomSheetProviderProps {
   children: ReactNode;
@@ -15,8 +17,12 @@ interface BottomSheetProviderProps {
   pressHandler2: () => void;
 }
 
-export const BottomSheetProvider: React.FC<BottomSheetProviderProps> = ({ children, pressHandler, pressHandler2 }) => (
-  <BottomSheetContext.Provider value={{ pressHandler , pressHandler2 }}>
+export const BottomSheetProvider: React.FC<BottomSheetProviderProps> = ({
+  children,
+  pressHandler,
+  pressHandler2,
+}) => (
+  <BottomSheetContext.Provider value={{ pressHandler, pressHandler2 }}>
     {children}
   </BottomSheetContext.Provider>
 );

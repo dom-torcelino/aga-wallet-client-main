@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { StatusBar, StyleSheet, View, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 import { COLORS, SPACING } from '../constants/theme';
@@ -18,13 +18,17 @@ const shuffleArray = (array: any[]) => {
 };
 
 const GameScreen: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'All' | 'Slot' | 'Casino' | 'Poker'>('All');
+  const [activeTab, setActiveTab] = useState<
+    'All' | 'Slot' | 'Casino' | 'Poker'
+  >('All');
 
   const filterData = () => {
     if (activeTab === 'All') {
       return shuffleArray(games); // Shuffle the games when "All" is selected
     }
-    return games.filter(game => game.type.toLowerCase() === activeTab.toLowerCase());
+    return games.filter(
+      game => game.type.toLowerCase() === activeTab.toLowerCase(),
+    );
   };
 
   return (
@@ -33,8 +37,7 @@ const GameScreen: React.FC = () => {
       <HeaderBar title={'Game'} />
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.ScrollViewFlex}
-      >
+        contentContainerStyle={styles.ScrollViewFlex}>
         <View style={styles.carouselContainer}>
           <CarouselSlider />
         </View>

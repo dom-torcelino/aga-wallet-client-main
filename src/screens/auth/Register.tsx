@@ -1,5 +1,4 @@
-/* eslint-disable prettier/prettier */
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,16 +10,21 @@ import {
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE } from '../../constants/theme';
-import { RootStackParamList } from '../../constants/types'; // Import the type
+import {useNavigation, NavigationProp} from '@react-navigation/native';
+import {
+  BORDERRADIUS,
+  COLORS,
+  FONTFAMILY,
+  FONTSIZE,
+} from '../../constants/theme';
+import {RootStackParamList} from '../../constants/types'; // Import the type
 import BackButtonIcon from '../../../assets/SVG/BackButtonIcon';
 import TextInput from '../../components/ui/TextInput';
-import { useAuth } from './AuthContext'; // Import the useAuth hook
+import {useAuth} from './AuthContext'; // Import the useAuth hook
 // @ts-ignore
-import { API_URL } from '@env';
+import {API_URL} from '@env';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 const Register: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -30,7 +34,7 @@ const Register: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
-  const { login, setAccountAddress } = useAuth(); // Destructure the login and setAccountAddress functions from useAuth
+  const {login, setAccountAddress} = useAuth(); // Destructure the login and setAccountAddress functions from useAuth
 
   const validateEmail = (email: string) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -55,13 +59,13 @@ const Register: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password, name }),
+        body: JSON.stringify({email, password, name}),
       });
       setLoading(false);
       if (response.ok) {
         const registerData = await response.json();
-        const { token, user, accountAddress } = registerData;
-        const { user_id } = user;
+        const {token, user, accountAddress} = registerData;
+        const {user_id} = user;
         await login(token, user_id); // Use the login function from AuthContext
         setAccountAddress(accountAddress); // Use the setAccountAddress function from AuthContext
         navigation.navigate('Home');
@@ -69,7 +73,7 @@ const Register: React.FC = () => {
         const errorData = await response.json();
         setError(errorData.message || 'Registration failed');
       }
-    // eslint-disable-next-line no-catch-shadow
+      // eslint-disable-next-line no-catch-shadow
     } catch (error) {
       setLoading(false);
       setError('An error occurred. Please try again.');
@@ -79,16 +83,23 @@ const Register: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.main}>
-      <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled">
         <View style={styles.container}>
-          <TouchableOpacity style={styles.backButtonContainer} onPress={() => navigation.navigate('Login')}>
+          <TouchableOpacity
+            style={styles.backButtonContainer}
+            onPress={() => navigation.navigate('Login')}>
             <BackButtonIcon size={30} style={styles.backButton} />
           </TouchableOpacity>
           <View style={styles.wFull}>
             <View style={styles.imageContainer}>
-              <Image source={require('../../../assets/images/aga-logo.png')} style={styles.imageStyle} />
+              <Image
+                source={require('../../../assets/images/aga-logo.png')}
+                style={styles.imageStyle}
+              />
             </View>
-            <Text style={styles.loginContinueTxt}>Create your account</Text>
+            <Text style={styles.signupTxt}>Sign up</Text>
             <TextInput
               placeholder="Name"
               value={name}
@@ -116,8 +127,16 @@ const Register: React.FC = () => {
 
             {error ? <Text style={styles.errorText}>{error}</Text> : null}
             <View style={styles.loginBtnWrapper}>
-              <TouchableOpacity onPress={handleRegister} activeOpacity={0.7} style={styles.loginBtn} disabled={loading}>
-                {loading ? <ActivityIndicator color={COLORS.primaryBGColor} /> : <Text style={styles.loginText}>Register</Text>}
+              <TouchableOpacity
+                onPress={handleRegister}
+                activeOpacity={0.7}
+                style={styles.loginBtn}
+                disabled={loading}>
+                {loading ? (
+                  <ActivityIndicator color={COLORS.primaryBGColor} />
+                ) : (
+                  <Text style={styles.loginText}>Register</Text>
+                )}
               </TouchableOpacity>
             </View>
           </View>
@@ -147,7 +166,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   container: {
-    padding: 15,
+    padding: 10,
     width: '100%',
     position: 'relative',
     alignItems: 'center',
@@ -170,7 +189,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    marginBottom: 40,
+    // marginBottom: 10,
   },
   imageStyle: {
     width: width * 0.46,
@@ -179,8 +198,8 @@ const styles = StyleSheet.create({
     maxWidth: '80%',
     maxHeight: 120,
   },
-  loginContinueTxt: {
-    fontSize: FONTSIZE.size_18,
+  signupTxt: {
+    fontSize: FONTSIZE.size_28,
     textAlign: 'left',
     color: COLORS.primaryWhite,
     fontFamily: FONTFAMILY.poppins_regular,

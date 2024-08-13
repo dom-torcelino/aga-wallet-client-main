@@ -1,20 +1,18 @@
-/* eslint-disable prettier/prettier */
+
 import * as React from 'react';
 import Svg, { SvgProps, Path } from 'react-native-svg';
 
-interface MoneySendIconProps extends SvgProps{
-    fillColor?: string;
-    size?: number;
+interface MoneySendIconProps extends SvgProps {
+  fillColor?: string;
+  size?: number;
 }
 
-const MoneySendIcon = ({fillColor = '#fff', size = 45, ...props}: MoneySendIconProps) => (
-  <Svg
-    width={size}
-    height={size}
-    fill="none"
-    viewBox="0 0 24 24"
-    {...props}
-  >
+const MoneySendIcon = ({
+  fillColor = '#fff',
+  size = 45,
+  ...props
+}: MoneySendIconProps) => (
+  <Svg width={size} height={size} fill="none" viewBox="0 0 24 24" {...props}>
     <Path
       stroke={fillColor}
       strokeLinecap="round"

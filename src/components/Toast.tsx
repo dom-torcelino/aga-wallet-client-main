@@ -1,5 +1,4 @@
-/* eslint-disable prettier/prettier */
-import { Image, StyleSheet, Text } from 'react-native';
+import {Image, StyleSheet, Text} from 'react-native';
 import React, {
   useState,
   useCallback,
@@ -15,7 +14,7 @@ import Animated, {
   withSpring,
   runOnJS,
 } from 'react-native-reanimated';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 
 interface ToastParams {
   type: 'success' | 'warning' | 'error';
@@ -33,9 +32,9 @@ const Toast = forwardRef(({}, ref) => {
   // If you're not using react-native-bars, please use the one below by uncommenting it
   const TOP_VALUE = 10;
   // const TOP_VALUE = Platform.OS === 'ios' ? 60 : 20;
-  
+
   const show = useCallback(
-    ({ type, text, duration }: ToastParams) => {
+    ({type, text, duration}: ToastParams) => {
       setShowing(true);
       setToastType(type);
       setToastText(text);
@@ -44,7 +43,7 @@ const Toast = forwardRef(({}, ref) => {
         withTiming(TOP_VALUE),
         withDelay(
           duration,
-          withTiming(-100, undefined, (finish) => {
+          withTiming(-100, undefined, finish => {
             if (finish) {
               runOnJS(setShowing)(false);
             }
@@ -73,7 +72,7 @@ const Toast = forwardRef(({}, ref) => {
     .onBegin(() => {
       context.value = toastTopAnimation.value;
     })
-    .onUpdate((event) => {
+    .onUpdate(event => {
       if (event.translationY < 100) {
         toastTopAnimation.value = withSpring(
           context.value + event.translationY,
@@ -84,9 +83,9 @@ const Toast = forwardRef(({}, ref) => {
         );
       }
     })
-    .onEnd((event) => {
+    .onEnd(event => {
       if (event.translationY < 0) {
-        toastTopAnimation.value = withTiming(-100, undefined, (finish) => {
+        toastTopAnimation.value = withTiming(-100, undefined, finish => {
           if (finish) {
             runOnJS(setShowing)(false);
           }
@@ -96,7 +95,7 @@ const Toast = forwardRef(({}, ref) => {
           withTiming(TOP_VALUE),
           withDelay(
             toastDuration,
-            withTiming(-100, undefined, (finish) => {
+            withTiming(-100, undefined, finish => {
               if (finish) {
                 runOnJS(setShowing)(false);
               }
@@ -119,8 +118,7 @@ const Toast = forwardRef(({}, ref) => {
                 ? styles.warningToastContainer
                 : styles.errorToastContainer,
               animatedTopStyles,
-            ]}
-          >
+            ]}>
             <Image
               source={
                 toastType === 'success'
@@ -139,8 +137,7 @@ const Toast = forwardRef(({}, ref) => {
                   : toastType === 'warning'
                   ? styles.warningToastText
                   : styles.errorToastText,
-              ]}
-            >
+              ]}>
               {toastText}
             </Text>
           </Animated.View>

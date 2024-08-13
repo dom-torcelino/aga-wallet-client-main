@@ -1,22 +1,34 @@
-/* eslint-disable prettier/prettier */
-import { StyleSheet, Text, View, TouchableWithoutFeedback, Dimensions, SafeAreaView } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableWithoutFeedback,
+  Dimensions,
+  SafeAreaView,
+} from 'react-native';
 import React from 'react';
-import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../constants/theme';
+import {
+  BORDERRADIUS,
+  COLORS,
+  FONTFAMILY,
+  FONTSIZE,
+  SPACING,
+} from '../constants/theme';
 import QRCode from 'react-native-qrcode-svg';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import WalletAddressLoading from './ui/WalletAddressLoading';
-import { useAuth } from '../screens/auth/AuthContext';
+import {useAuth} from '../screens/auth/AuthContext';
 
 interface TransferProps {
   closeBottomSheet2: () => void;
   showToast: (message: string) => void;
 }
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
-const Receive: React.FC<TransferProps> = ({ closeBottomSheet2, showToast }) => {
-  const { accountAddress } = useAuth();
+const Receive: React.FC<TransferProps> = ({closeBottomSheet2, showToast}) => {
+  const {accountAddress} = useAuth();
   const SIZE = width * 0.6;
 
   const copyToClipboard = () => {
@@ -26,11 +38,12 @@ const Receive: React.FC<TransferProps> = ({ closeBottomSheet2, showToast }) => {
   };
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{flex: 1}}>
       <SafeAreaView style={styles.receiveContainer}>
         <Text style={styles.headerText}>My Wallet Details</Text>
         <Text style={styles.bodyTitle}>
-          You can only receive tokens supported by AGA Wallet. Receiving tokens from other networks may result in the loss of your assets.
+          You can only receive tokens supported by AGA Wallet. Receiving tokens
+          from other networks may result in the loss of your assets.
         </Text>
         <View style={styles.qrContainer}>
           {!accountAddress ? (
@@ -54,7 +67,7 @@ const Receive: React.FC<TransferProps> = ({ closeBottomSheet2, showToast }) => {
 
 const styles = StyleSheet.create({
   receiveContainer: {
-    paddingHorizontal: SPACING.space_20,
+    paddingHorizontal: SPACING.space_16,
     paddingVertical: SPACING.space_20,
     flex: 1,
     justifyContent: 'space-between',
@@ -64,7 +77,7 @@ const styles = StyleSheet.create({
     color: COLORS.primaryWhite,
     fontFamily: FONTFAMILY.poppins_semibold,
     textAlign: 'center',
-    marginVertical: SPACING.space_10,
+    // marginVertical: SPACING.space_10,
   },
   bodyTitle: {
     fontSize: FONTSIZE.size_14,

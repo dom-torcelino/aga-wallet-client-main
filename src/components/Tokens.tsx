@@ -1,11 +1,18 @@
-/* eslint-disable prettier/prettier */
-import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity, Dimensions } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../constants/theme';
-import { useAuth } from '../screens/auth/AuthContext';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
+import {useAuth} from '../screens/auth/AuthContext';
 import TransactionSkeleton from './ui/TransactionSkeleton'; // Import the skeleton loader component
 // @ts-ignore
-import { API_URL } from '@env';
+import {API_URL} from '@env';
 
 interface TokenData {
   id: number;
@@ -20,12 +27,12 @@ interface TokensProps {
   onPressToken: (item: TokenData) => void;
 }
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 const IMAGE_SIZE = width * 0.11;
 const skeletonCount = 5;
 
-const Tokens: React.FC<TokensProps> = ({ onPressToken }) => {
-  const { userId, token, loggedIn } = useAuth();
+const Tokens: React.FC<TokensProps> = ({onPressToken}) => {
+  const {userId, token, loggedIn, balance} = useAuth();
   const [tokenData, setTokenData] = useState<TokenData[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -45,18 +52,23 @@ const Tokens: React.FC<TokensProps> = ({ onPressToken }) => {
 
           if (isMounted) {
             if (result && result.assets) {
-              const transformedData = result.assets.map((asset: any) => ({
-                id: asset.asset_id,
-                coin: asset.asset_symbol,
-                coinName: asset.asset_name,
-                image: asset.asset_icon,
-                crypto: 'N/A',
-                fiat: 'N/A',
-              })).filter((item: any) => item.id !== undefined); // Filter out items without an id
+              const transformedData = result.assets
+                .map((asset: any) => ({
+                  id: asset.asset_id,
+                  coin: asset.asset_symbol,
+                  coinName: asset.asset_name,
+                  image: asset.asset_icon,
+                  crypto: '0',
+                  fiat: '0',
+                }))
+                .filter((item: any) => item.id !== undefined); // Filter out items without an id
 
               setTokenData(transformedData);
             } else {
-              console.error('Error: assets property is missing in the response', result);
+              console.error(
+                'Error: assets property is missing in the response',
+                result,
+              );
             }
             setLoading(false);
           }
@@ -76,7 +88,7 @@ const Tokens: React.FC<TokensProps> = ({ onPressToken }) => {
     };
   }, [userId, token, loggedIn]);
 
-  const renderItem = ({ item }: { item: TokenData }) => {
+  const renderItem = ({item}: {item: TokenData}) => {
     if (!item.id) {
       return null;
     }
@@ -84,11 +96,10 @@ const Tokens: React.FC<TokensProps> = ({ onPressToken }) => {
     return (
       <TouchableOpacity
         style={styles.tokenContainer}
-        onPress={() => onPressToken(item)}
-      >
+        onPress={() => onPressToken(item)}>
         <View style={styles.leftSideContainer}>
           <View style={styles.coinContainer}>
-            <Image source={{ uri: item.image }} style={styles.TokenImage} />
+            <Image source={{uri: item.image}} style={styles.TokenImage} />
           </View>
           <View>
             <Text style={styles.coin}>{item.coin}</Text>
@@ -97,7 +108,8 @@ const Tokens: React.FC<TokensProps> = ({ onPressToken }) => {
         </View>
         <View style={styles.rightSideContainer}>
           <Text style={styles.crypto}>{item.crypto}</Text>
-          <Text style={styles.fiat}>(${item.fiat})</Text>
+          {/* <Text style={styles.fiat}>(${item.fiat})</Text> */}
+          <Text style={styles.fiat}>${balance.toFixed(2)}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -108,7 +120,9 @@ const Tokens: React.FC<TokensProps> = ({ onPressToken }) => {
       <FlatList
         data={loading ? Array(skeletonCount).fill({}) : tokenData}
         renderItem={loading ? () => <TransactionSkeleton /> : renderItem}
-        keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
+        keyExtractor={(item, index) =>
+          item.id ? item.id.toString() : index.toString()
+        }
         scrollEnabled={false}
       />
     </View>
@@ -117,7 +131,7 @@ const Tokens: React.FC<TokensProps> = ({ onPressToken }) => {
 
 const styles = StyleSheet.create({
   tokenStyles: {
-    marginBottom: 90,
+    marginBottom: 70,
   },
   loadingContainer: {
     flex: 1,

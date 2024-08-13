@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,18 +11,24 @@ import {
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE } from '../../constants/theme';
-import { RootStackParamList, AuthResponse } from '../../constants/types';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
+import {
+  BORDERRADIUS,
+  COLORS,
+  FONTFAMILY,
+  FONTSIZE,
+} from '../../constants/theme';
+import {RootStackParamList, AuthResponse} from '../../constants/types';
 import TextInput from '../../components/ui/TextInput';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { LoginManager, AccessToken, Settings } from 'react-native-fbsdk-next';
-import { useAuth } from './AuthContext';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
+import {LoginManager, AccessToken, Settings} from 'react-native-fbsdk-next';
+import {useAuth} from './AuthContext';
 
 // @ts-ignore
-import { API_URL } from '@env';
+import {API_URL} from '@env';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 const Login: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -30,12 +36,13 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
-  const { login } = useAuth();
+  const {login} = useAuth();
 
   useEffect(() => {
     Settings.initializeSDK();
     GoogleSignin.configure({
-      webClientId: '68753555206-9abvln0g5a4bmqjf4ed2s3eb1nb07lro.apps.googleusercontent.com',
+      webClientId:
+        '68753555206-9abvln0g5a4bmqjf4ed2s3eb1nb07lro.apps.googleusercontent.com',
     });
   }, []);
 
@@ -63,13 +70,13 @@ const Login: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({email, password}),
       });
       setLoading(false);
       if (response.ok) {
         const loginData: AuthResponse = await response.json();
-        const { token, user } = loginData;
-        const { user_id } = user;
+        const {token, user} = loginData;
+        const {user_id} = user;
         await login(token, user_id);
         navigation.navigate('Home');
       } else {
@@ -86,8 +93,8 @@ const Login: React.FC = () => {
   async function onGoogleButtonPress() {
     try {
       await GoogleSignin.signOut();
-      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-      const { user } = await GoogleSignin.signIn();
+      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+      const {user} = await GoogleSignin.signIn();
       console.log(user);
       const accessToken = (await GoogleSignin.getTokens()).accessToken;
       const response = await fetch(`${API_URL}/v1/auth/google`, {
@@ -95,50 +102,13 @@ const Login: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ access_token: accessToken }),
+        body: JSON.stringify({access_token: accessToken}),
       });
       setLoading(false);
       if (response.ok) {
         const data: AuthResponse = await response.json();
-        const { token, user } = data;
-        const { user_id } = user;
-        await login(token, user_id);
-        navigation.navigate('Home');
-      } else {
-        const errorData = await response.json();
-        setError(errorData.message || 'Login failed');
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  async function onFacebookButtonPress() {
-    try {
-      const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
-
-      if (result.isCancelled) {
-        throw 'User cancelled the login process';
-      }
-      const accessTokenData = await AccessToken.getCurrentAccessToken();
-
-      if (!accessTokenData) {
-        throw 'Something went wrong obtaining access token';
-      }
-      const accessToken = accessTokenData.accessToken;
-
-      const response = await fetch(`${API_URL}/v1/auth/facebook`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ access_token: accessToken }),
-      });
-      setLoading(false);
-      if (response.ok) {
-        const data: AuthResponse = await response.json();
-        const { token, user } = data;
-        const { user_id } = user;
+        const {token, user} = data;
+        const {user_id} = user;
         await login(token, user_id);
         navigation.navigate('Home');
       } else {
@@ -150,15 +120,88 @@ const Login: React.FC = () => {
     }
   }
 
+  // async function onFacebookButtonPress() {
+  //   try {
+  //     const result = await LoginManager.logInWithPermissions([
+  //       'public_profile',
+  //       'email',
+  //     ]);
+
+  //     if (result.isCancelled) {
+  //       throw 'User cancelled the login process';
+  //     }
+  //     const accessTokenData = await AccessToken.getCurrentAccessToken();
+
+  //     if (!accessTokenData) {
+  //       throw 'Something went wrong obtaining access token';
+  //     }
+  //     const accessToken = accessTokenData.accessToken;
+
+  //     const response = await fetch(`${API_URL}/v1/auth/facebook`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({access_token: accessToken}),
+  //     });
+  //     setLoading(false);
+  //     if (response.ok) {
+  //       const data: AuthResponse = await response.json();
+  //       const {token, user} = data;
+  //       const {user_id} = user;
+  //       await login(token, user_id);
+  //       navigation.navigate('Home');
+  //     } else {
+  //       const errorData = await response.json();
+  //       setError(errorData.message || 'Login failed');
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  async function onFacebookButtonPress() {
+
+    try {
+    // Attempt login with permissions
+    const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+
+    if (result.isCancelled) {
+      throw 'User cancelled the login process';
+    }
+
+    // Once signed in, get the users AccessToken
+    const data = await AccessToken.getCurrentAccessToken();
+
+    if (!data) {
+      throw 'Something went wrong obtaining access token';
+    }
+
+    // Create a Firebase credential with the AccessToken
+    const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
+
+    // Sign-in the user with the credential
+    auth().signInWithCredential(facebookCredential);
+    console.log('User sign in successfully');
+    } catch (error) {
+      console.log('login error', error);
+    }
+  }
+
   return (
     <SafeAreaView style={styles.main}>
-      <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled">
         <View style={styles.imageContainer}>
-          <Image source={require('../../../assets/images/aga-logo.png')} style={styles.imageStyle} />
+          <Image
+            source={require('../../../assets/images/aga-logo.png')}
+            style={styles.imageStyle}
+          />
         </View>
         <View style={styles.container}>
           <View style={styles.wFull}>
-            <Text style={styles.loginContinueTxt}>Login to your account</Text>
+            <Text style={styles.loginContinueTxt}>Log In</Text>
             <TextInput
               placeholder="Email"
               value={email}
@@ -172,18 +215,26 @@ const Login: React.FC = () => {
               secureTextEntry={true}
             />
             {error ? <Text style={styles.errorText}>{error}</Text> : null}
-            <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('ForgotPassword')}>
               <Text style={styles.forgotPassText}>Forgot Password?</Text>
             </TouchableOpacity>
 
             <View style={styles.loginBtnWrapper}>
-              <TouchableOpacity onPress={handleLogin} activeOpacity={0.7} style={styles.loginBtn}>
-                {loading ? <ActivityIndicator color={COLORS.primaryBGColor} /> : <Text style={styles.loginText}>Log In</Text>}
+              <TouchableOpacity
+                onPress={handleLogin}
+                activeOpacity={0.7}
+                style={styles.loginBtn}>
+                {loading ? (
+                  <ActivityIndicator color={COLORS.primaryBGColor} />
+                ) : (
+                  <Text style={styles.loginText}>Log In</Text>
+                )}
               </TouchableOpacity>
             </View>
 
             <View style={styles.signUp}>
-              <Text style={styles.signUpText}>Don't have an account? {' '}</Text>
+              <Text style={styles.signUpText}>Don't have an account? </Text>
               <TouchableOpacity onPress={() => navigation.navigate('Register')}>
                 <Text style={styles.signupBtn}>Sign Up</Text>
               </TouchableOpacity>
@@ -197,13 +248,23 @@ const Login: React.FC = () => {
           </View>
 
           <View style={styles.socialSignIn}>
-            <TouchableOpacity style={styles.socialSignInBtn} onPress={onFacebookButtonPress}>
-              <Image source={require('../../../assets/images/facebook_icon.png')} style={styles.socialImage} />
+            <TouchableOpacity
+              style={styles.socialSignInBtn}
+              onPress={onFacebookButtonPress}>
+              <Image
+                source={require('../../../assets/images/facebook_icon.png')}
+                style={styles.socialImage}
+              />
               <Text style={styles.socialSignInText}>Facebook</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.socialSignInBtn} onPress={onGoogleButtonPress}>
-              <Image source={require('../../../assets/images/google_icon.png')} style={styles.socialImage} />
+            <TouchableOpacity
+              style={styles.socialSignInBtn}
+              onPress={onGoogleButtonPress}>
+              <Image
+                source={require('../../../assets/images/google_icon.png')}
+                style={styles.socialImage}
+              />
               <Text style={styles.socialSignInText}>Google</Text>
             </TouchableOpacity>
           </View>
@@ -227,7 +288,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   container: {
-    padding: 15,
+    padding: 10,
     width: '100%',
     position: 'relative',
     alignItems: 'center',
@@ -236,7 +297,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: 10,
+
   },
   imageStyle: {
     width: width * 0.46,
@@ -246,11 +307,11 @@ const styles = StyleSheet.create({
     maxHeight: 120,
   },
   loginContinueTxt: {
-    fontSize: width < 350 ? FONTSIZE.size_16 : FONTSIZE.size_18,
+    fontSize: width < 350 ? FONTSIZE.size_24 : FONTSIZE.size_28,
     textAlign: 'left',
     color: COLORS.primaryWhite,
     fontFamily: FONTFAMILY.poppins_regular,
-    marginBottom: 16,
+    marginBottom: 10,
   },
   loginBtnWrapper: {
     height: height * 0.07,

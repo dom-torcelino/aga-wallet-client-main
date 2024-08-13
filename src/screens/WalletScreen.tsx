@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { StatusBar, StyleSheet, View, RefreshControl } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { COLORS, SPACING } from '../constants/theme';
@@ -16,11 +16,12 @@ import { RootStackParamList } from '../constants/types';
 import { API_URL } from '@env';
 import { useAuth } from './auth/AuthContext';
 
-const walletTabs = ['Assets', 'Transaction' ];
+const walletTabs = ['Assets', 'Transaction'];
 
 const WalletScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const { token, userId, setAccountAddress, setBalance, balance, loggedIn } = useAuth();
+  const { token, userId, setAccountAddress, setBalance, balance, loggedIn } =
+    useAuth();
   const [activeTab, setActiveTab] = useState(walletTabs[0]);
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -30,7 +31,9 @@ const WalletScreen: React.FC = () => {
     const getWalletData = async () => {
       try {
         if (!loggedIn || !token || !userId) {
-          throw new Error('User is not logged in or no user token/userId found');
+          throw new Error(
+            'User is not logged in or no user token/userId found',
+          );
         }
 
         const response = await fetch(`${API_URL}/v1/users/${userId}/wallets`, {
@@ -50,7 +53,7 @@ const WalletScreen: React.FC = () => {
           throw new Error('Failed to fetch wallet address');
         }
       } catch (error) {
-        if (isMounted){
+        if (isMounted) {
           // console.error('Failed to fetch wallet data:', error);
         }
       }
@@ -62,7 +65,7 @@ const WalletScreen: React.FC = () => {
 
     return () => {
       isMounted = false;
-    }
+    };
   }, [token, userId, loggedIn, setAccountAddress, setBalance]);
 
   const onPressToken = (item: TokenData) => {
@@ -76,13 +79,21 @@ const WalletScreen: React.FC = () => {
   const displayTabContent = () => {
     switch (activeTab) {
       case 'Transaction':
-        return <Transaction title="Transaction"
-        // data={mockTransactions}
-        onPressTransaction={onPressTransaction}
-        />;
+        return (
+          <Transaction
+            title="Transaction"
+            // data={mockTransactions}
+            onPressTransaction={onPressTransaction}
+          />
+        );
       case 'Assets':
-        return <Tokens title="Assets" data={mockTokens} onPressToken={onPressToken} />;
-        
+        return (
+          <Tokens
+            title="Assets"
+            data={mockTokens}
+            onPressToken={onPressToken}
+          />
+        );
       default:
         return null;
     }
@@ -99,11 +110,18 @@ const WalletScreen: React.FC = () => {
     <View style={styles.ScreenContainer}>
       <StatusBar backgroundColor={COLORS.primaryBGColor} />
       <HeaderBar title={'Wallet'} />
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollViewFlex} refreshControl={
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.ScrollViewFlex}
+        refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
         <CardBalance balance={balance} />
-        <Tabs tabs={walletTabs} activeTab={activeTab} setActiveTab={setActiveTab} />
+        <Tabs
+          tabs={walletTabs}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+        />
         {displayTabContent()}
       </ScrollView>
     </View>

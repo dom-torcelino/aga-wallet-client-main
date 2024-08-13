@@ -1,21 +1,14 @@
-/* eslint-disable prettier/prettier */
+
 import * as React from 'react';
 import Svg, { SvgProps, Path } from 'react-native-svg';
 
-interface ScanIconProps extends SvgProps{
-    fillColor?: string;
-    size?: number;
-  }
+interface ScanIconProps extends SvgProps {
+  fillColor?: string;
+  size?: number;
+}
 
 const ScanIcon = ({ fillColor = '#fff', size = 45, ...props }: ScanIconProps) => (
-  <Svg
-
-    width={size}
-    height={size}
-    fill="none"
-    viewBox="0 0 24 24"
-    {...props}
-  >
+  <Svg width={size} height={size} fill="none" viewBox="0 0 24 24" {...props}>
     <Path
       fill={fillColor}
       fillRule="evenodd"

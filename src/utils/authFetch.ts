@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const authFetch = async (url: string, options: RequestInit = {}) => {
@@ -7,7 +7,7 @@ const authFetch = async (url: string, options: RequestInit = {}) => {
   const headers = {
     'Content-Type': 'application/json',
     ...options.headers,
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    ...(token ? {Authorization: `Bearer ${token}`} : {}),
   };
 
   const response = await fetch(url, {

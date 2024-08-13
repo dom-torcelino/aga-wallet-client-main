@@ -1,20 +1,18 @@
-/* eslint-disable prettier/prettier */
+
 import * as React from 'react';
 import Svg, { SvgProps, Path } from 'react-native-svg';
 
-interface WalletIconProps extends SvgProps{
-    fillColor?: string;
-    size?: number;
-  }
+interface WalletIconProps extends SvgProps {
+  fillColor?: string;
+  size?: number;
+}
 
-const WalletIcon = ({ fillColor = '#fff', size = 45, ...props }: WalletIconProps) => (
-  <Svg
-    width={size}
-    height={size}
-    fill="none"
-    viewBox="0 0 24 24"
-    {...props}
-  >
+const WalletIcon = ({
+  fillColor = '#fff',
+  size = 45,
+  ...props
+}: WalletIconProps) => (
+  <Svg width={size} height={size} fill="none" viewBox="0 0 24 24" {...props}>
     <Path
       fill={fillColor}
       fillRule="evenodd"

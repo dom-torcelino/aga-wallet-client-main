@@ -1,12 +1,18 @@
-/* eslint-disable prettier/prettier */
-import { StatusBar, StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
+
+import {
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 import React from 'react';
 import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../constants/theme';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../constants/types';
 import { useAuth } from './auth/AuthContext'; // Import the useAuth hook
 import HeaderBar from '../components/HeaderBar';
-
 
 const { width } = Dimensions.get('window');
 
@@ -28,15 +34,15 @@ const SettingsScreen: React.FC = () => {
       <StatusBar backgroundColor={COLORS.primaryBGColor} />
       <HeaderBar title={'Settings'} />
       {/* <Text style={styles.headerText}>Settings</Text> */}
-      <View style={styles.settingsContainer} >
+      <View style={styles.settingsContainer}>
         <TouchableOpacity style={styles.buttonContainer}>
-        <Text style={styles.textColor}>Currency</Text>
-        <Text style={styles.textColor}>USD(Default)</Text>
+          <Text style={styles.textColor}>Currency</Text>
+          <Text style={styles.textColor}>USD(Default)</Text>
           {/* <Text style={styles.textColor}>0x2B5B...3C71</Text>
           <Text style={styles.secondaryText}>joh*************@gmail.com</Text> */}
         </TouchableOpacity>
       </View>
-      <View style={styles.settingsContainer} >
+      <View style={styles.settingsContainer}>
         {/* <TouchableOpacity style={styles.buttonContainer}>
           <Text style={styles.textColor}>Personal Information</Text>
         </TouchableOpacity>
@@ -55,7 +61,7 @@ const SettingsScreen: React.FC = () => {
           <Text style={styles.textColor}>1.0.0</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.settingsContainer} >
+      <View style={styles.settingsContainer}>
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Text style={styles.logoutText}>Log out</Text>
         </TouchableOpacity>
@@ -88,7 +94,7 @@ const styles = StyleSheet.create({
 
     justifyContent: 'space-between',
   },
-  
+
   textColor: {
     fontSize: FONTSIZE.size_18,
     // color: COLORS.secondaryTextColor,
@@ -96,7 +102,6 @@ const styles = StyleSheet.create({
     fontFamily: FONTFAMILY.poppins_regular,
   },
 
-  
   secondaryText: {
     fontSize: FONTSIZE.size_14,
     color: COLORS.secondaryTextColor,
@@ -114,7 +119,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: FONTFAMILY.poppins_medium,
   },
-
 });
 
 export default SettingsScreen;

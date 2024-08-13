@@ -1,19 +1,21 @@
-/* eslint-disable prettier/prettier */
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import { RouteProp, useRoute } from '@react-navigation/native';
-import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../constants/theme';
-import BackButtonIcon from '../../assets/SVG/BackButtonIcon';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { RootStackParamList } from '../constants/types'; // Import the type
-import moment from 'moment';
+import {RouteProp, useRoute} from '@react-navigation/native';
+import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
 
-type TransactionDetailsRouteProp = RouteProp<RootStackParamList, 'TransactionDetails'>;
+import {RootStackParamList} from '../constants/types'; // Import the type
+import moment from 'moment';
+import BackButton from './ui/BackButton';
+
+
+type TransactionDetailsRouteProp = RouteProp<
+  RootStackParamList,
+  'TransactionDetails'
+>;
 
 const TransactionDetails: React.FC = () => {
   const route = useRoute<TransactionDetailsRouteProp>();
-  const { transaction } = route.params;
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const {transaction} = route.params;
 
   const formatTransactionType = (type: string) => {
     return type === 't' ? 'Transferred' : 'Received';
@@ -29,20 +31,22 @@ const TransactionDetails: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
-          <TouchableOpacity style={styles.backButtonContainer} onPress={() => navigation.goBack()}>
-            <BackButtonIcon size={30} style={styles.backButton} />
-          </TouchableOpacity>
-      </View>
+      <BackButton />
       <View style={styles.settingsWrapper}>
-        <Text style={styles.label}>{formatTransactionType(transaction.tx_type)}</Text>
+        <Text style={styles.label}>
+          {formatTransactionType(transaction.tx_type)}
+        </Text>
         <Text style={styles.amountText}>{transaction.tx_amount}</Text>
 
         <Text style={styles.label}>From</Text>
-        <Text style={styles.detail}>{transaction.tx_wallet_sender_address}</Text>
+        <Text style={styles.detail}>
+          {transaction.tx_wallet_sender_address}
+        </Text>
 
         <Text style={styles.label}>To</Text>
-        <Text style={styles.detail}>{transaction.tx_wallet_recipient_address}</Text>
+        <Text style={styles.detail}>
+          {transaction.tx_wallet_recipient_address}
+        </Text>
 
         <Text style={styles.label}>Transaction ID</Text>
         <Text style={styles.detail}>{transaction.tx_id}</Text>
@@ -51,7 +55,9 @@ const TransactionDetails: React.FC = () => {
         <Text style={styles.detail}>{statusType(transaction.tx_status)}</Text>
 
         <Text style={styles.label}>Date</Text>
-        <Text style={styles.detail}>{formatDate(transaction.tx_created_at)}</Text>
+        <Text style={styles.detail}>
+          {formatDate(transaction.tx_created_at)}
+        </Text>
       </View>
     </View>
   );
@@ -63,12 +69,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primaryBGColor,
     padding: 20,
   },
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
+
   settingsWrapper: {
     backgroundColor: COLORS.secondaryBGColor,
     padding: SPACING.space_15,
@@ -92,15 +93,6 @@ const styles = StyleSheet.create({
     fontFamily: FONTFAMILY.poppins_regular,
     color: COLORS.primaryWhite,
     marginBottom: 10,
-  },
-  backButtonContainer: {
-    borderRadius: BORDERRADIUS.radius_25,
-    overflow: 'hidden',
-    backgroundColor: COLORS.secondaryBGColor,
-    padding: 6,
-  },
-  backButton: {
-    marginRight: 2,
   },
 });
 

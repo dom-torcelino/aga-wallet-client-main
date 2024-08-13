@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
@@ -11,7 +11,9 @@ const TransactionFailureScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Transaction Failed</Text>
-      <TouchableOpacity onPress={() => navigation.navigate('SendToken')} style={styles.button}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('SendToken')}
+        style={styles.button}>
         <Text style={styles.buttonText}>Try Again</Text>
       </TouchableOpacity>
     </View>

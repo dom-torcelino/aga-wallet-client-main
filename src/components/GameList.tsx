@@ -1,27 +1,34 @@
-/* eslint-disable prettier/prettier */
 import React from 'react';
-import { StyleSheet, View, Image, FlatList, TouchableOpacity, Text, Dimensions } from 'react-native';
-import { BORDERRADIUS, COLORS } from '../constants/theme';
-import { GameData } from '../data/mockData';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { RootStackParamList } from '../constants/types'; 
+import {
+  StyleSheet,
+  View,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  Text,
+  Dimensions,
+} from 'react-native';
+import {BORDERRADIUS, COLORS} from '../constants/theme';
+import {GameData} from '../data/mockData';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
+import {RootStackParamList} from '../constants/types';
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 const itemWidth = (width - 62) / 2;
 
 interface GameListProps {
   data: GameData[];
 }
 
-const GameList: React.FC<GameListProps> = ({ data = [] }) => {
-    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+const GameList: React.FC<GameListProps> = ({data = []}) => {
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
-  const renderItem = ({ item }: { item: GameData }) => (
+  const renderItem = ({item}: {item: GameData}) => (
     <TouchableOpacity
-        style={styles.itemContainer}
-        key={item.id.toString()}
-        onPress={() => navigation.navigate('GameView', { game: item })}>
-      <Image source={{ uri: item.image }} style={styles.ImageStyles} />
+      style={styles.itemContainer}
+      key={item.id.toString()}
+      onPress={() => navigation.navigate('GameView', {game: item})}>
+      <Image source={{uri: item.image}} style={styles.ImageStyles} />
       <Text style={styles.TextStyles}>{item.name}</Text>
     </TouchableOpacity>
   );
@@ -31,7 +38,7 @@ const GameList: React.FC<GameListProps> = ({ data = [] }) => {
       <FlatList
         data={data}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={item => item.id.toString()}
         numColumns={2}
         scrollEnabled={false}
       />

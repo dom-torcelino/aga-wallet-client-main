@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 'use strict';
 
 import React from 'react';
@@ -13,18 +12,17 @@ import {
   TextStyle,
 } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import { RNCamera } from 'react-native-camera';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
+import {RNCamera} from 'react-native-camera';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
 import BackButtonIcon from '../assets/SVG/BackButtonIcon';
-import { BORDERRADIUS} from './constants/theme';
-import { RootStackParamList } from './constants/types';
+import {BORDERRADIUS} from './constants/theme';
+import {RootStackParamList} from './constants/types';
 
 interface QrScannerProps {
   setRecipient_address: (address: string) => void;
 }
 
-
-const CustomMarker: React.FC = () => {
+const CustomMarker: React.FC = React.memo(() => {
   return (
     <View style={styles.markerContainer}>
       <View style={[styles.corner, styles.topLeft]} />
@@ -33,14 +31,19 @@ const CustomMarker: React.FC = () => {
       <View style={[styles.corner, styles.bottomRight]} />
     </View>
   );
-};
+});
 
-const QrScanner: React.FC<QrScannerProps> = ({ setRecipient_address }) => {
+const QrScanner: React.FC<QrScannerProps> = ({setRecipient_address}) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const [error, setError] = React.useState<string | null>(null);
 
-  const onSuccess = (e: { data: string }) => {
-    setRecipient_address(e.data);
-    navigation.goBack();
+  const onSuccess = ({data}: {data: string}) => {
+    try {
+      setRecipient_address(data);
+      navigation.goBack();
+    } catch (err) {
+      setError('Failed to process the QR code.');
+    }
   };
 
   return (
@@ -55,12 +58,16 @@ const QrScanner: React.FC<QrScannerProps> = ({ setRecipient_address }) => {
         topViewStyle={styles.zeroContainer}
         bottomViewStyle={styles.zeroContainer}
       />
+      {error && <Text style={styles.errorText}>{error}</Text>}
+      {/* Overlay and other components */}
       <View style={styles.overlayTop} />
       <View style={styles.overlayBottom} />
       <View style={styles.overlayLeft} />
       <View style={styles.overlayRight} />
       <View style={styles.topContentContainer}>
-        <TouchableOpacity style={styles.backButtonContainer} onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          style={styles.backButtonContainer}
+          onPress={() => navigation.goBack()}>
           <BackButtonIcon size={30} style={styles.backButton} />
         </TouchableOpacity>
         <Text style={styles.textBold}>Scan a wallet QR code</Text>
@@ -210,6 +217,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 5,
     borderRightWidth: 5,
   } as ViewStyle,
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
+    marginTop: 10,
+} as TextStyle,
 });
 
 AppRegistry.registerComponent('default', () => QrScanner);

@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import React, { useState } from 'react';
 import {
   StyleSheet,
@@ -11,7 +11,12 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
-import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE } from '../../constants/theme';
+import {
+  BORDERRADIUS,
+  COLORS,
+  FONTFAMILY,
+  FONTSIZE,
+} from '../../constants/theme';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../../constants/types'; // Import the type
 import BackButtonIcon from '../../../assets/SVG/BackButtonIcon';
@@ -30,7 +35,6 @@ const ForgotPassword: React.FC = () => {
     return re.test(String(email).toLowerCase());
   };
 
-
   const handleSend = async () => {
     if (!validateEmail(email)) {
       setError('Please enter a valid email address.');
@@ -39,7 +43,7 @@ const ForgotPassword: React.FC = () => {
 
     setLoading(true);
     setError('');
-    try{
+    try {
       const response = await fetch(`${process.env.API_URL}/v1/auth/login`, {
         method: 'PUT',
         headers: {
@@ -51,57 +55,72 @@ const ForgotPassword: React.FC = () => {
       setLoading(false);
 
       if (response.ok) {
-        Alert.alert('Success', 'Verification code has been sent to your email address');
+        Alert.alert(
+          'Success',
+          'Verification code has been sent to your email address',
+        );
         navigation.navigate('ResetPassword');
       } else {
         const errorData = await response.json();
-        Alert.alert('Error', errorData.message || 'Failed to send verification code');
+        Alert.alert(
+          'Error',
+          errorData.message || 'Failed to send verification code',
+        );
       }
-
     } catch (error) {
       setLoading(false);
       Alert.alert('Error', 'An error occured. Please try again.');
-      console.error(error)
+      console.error(error);
     }
   };
 
   return (
     <SafeAreaView style={styles.main}>
-      <View style={styles.container}>
-      <TouchableOpacity style={styles.backButtonContainer} onPress={() => navigation.goBack()}>
-        <BackButtonIcon size={30} style={styles.backButton}/>
+      <TouchableOpacity
+        style={styles.backButtonContainer}
+        onPress={() => navigation.goBack()}>
+        <BackButtonIcon size={30} style={styles.backButton} />
       </TouchableOpacity>
+      <View style={styles.container}>
         <View style={styles.wFull}>
           <View />
           <View style={styles.row}>
             <View style={styles.imageContainer}>
-              <Image source={require('../../../assets/images/aga-logo.png')} style={styles.imageStyle} />
+              <Image
+                source={require('../../../assets/images/aga-logo.png')}
+                style={styles.imageStyle}
+              />
             </View>
           </View>
-          <Text style={styles.ForgotPasswordTxt}>Please Enter Your Email Address To Recieve a Verification Code.</Text>
+          <Text style={styles.ForgotPasswordTxt}>
+            Please Enter Your Email Address To Recieve a Verification Code.
+          </Text>
           <TextInput
-              placeholder="Email"
-              value={email}
-              onChangeText={setEmail}
-              secureTextEntry={false}
-            />
-            {error ? <Text style={styles.errorText}>{error}</Text> : null}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            secureTextEntry={false}
+          />
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
           <View style={styles.loginBtnWrapper}>
             <TouchableOpacity
               onPress={handleSend}
               activeOpacity={0.7}
-              style={styles.loginBtn}
-            >
-              {loading ? <ActivityIndicator color={COLORS.primaryBGColor} /> : <Text style={styles.loginText}>Send</Text>}
+              style={styles.loginBtn}>
+              {loading ? (
+                <ActivityIndicator color={COLORS.primaryBGColor} />
+              ) : (
+                <Text style={styles.loginText}>Send</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
         <View style={styles.signUp}>
-            <Text style={styles.signUpText}>Don't have an account? {' '}</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-              <Text style={styles.boldText}>Sign Up</Text>
-            </TouchableOpacity>
-          </View>
+          <Text style={styles.signUpText}>Don't have an account? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+            <Text style={styles.boldText}>Sign Up</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );

@@ -1,5 +1,5 @@
-/* eslint-disable prettier/prettier */
-import { useState, useEffect } from 'react';
+
+import {useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const useAuth = () => {
@@ -13,12 +13,22 @@ const useAuth = () => {
       try {
         const storedToken = await AsyncStorage.getItem('userToken');
         const storedUserId = await AsyncStorage.getItem('userId');
-        const storedAccountAddress = await AsyncStorage.getItem('accountAddress');
+        const storedAccountAddress = await AsyncStorage.getItem(
+          'accountAddress',
+        );
 
-        if (storedToken) setToken(storedToken);
-        if (storedUserId) setUserId(storedUserId);
-        if (storedAccountAddress) setAccountAddress(storedAccountAddress);
-        if (storedToken && storedUserId) setLoggedIn(true);
+        if (storedToken) {
+          setToken(storedToken);
+        }
+        if (storedUserId) {
+          setUserId(storedUserId);
+        }
+        if (storedAccountAddress) {
+          setAccountAddress(storedAccountAddress);
+        }
+        if (storedToken && storedUserId) {
+          setLoggedIn(true);
+        }
       } catch (error) {
         console.error('Failed to retrieve data from AsyncStorage', error);
       }
@@ -35,14 +45,20 @@ const useAuth = () => {
     setToken: async (newToken: string) => {
       setToken(newToken);
       await AsyncStorage.setItem('userToken', newToken);
-      if (newToken && userId) setLoggedIn(true);
-      else setLoggedIn(false);
+      if (newToken && userId) {
+        setLoggedIn(true);
+      } else {
+        setLoggedIn(false);
+      }
     },
     setUserId: async (newUserId: string) => {
       setUserId(newUserId);
       await AsyncStorage.setItem('userId', newUserId);
-      if (newUserId && token) setLoggedIn(true);
-      else setLoggedIn(false);
+      if (newUserId && token) {
+        setLoggedIn(true);
+      } else {
+        setLoggedIn(false);
+      }
     },
     setAccountAddress: async (newAccountAddress: string) => {
       setAccountAddress(newAccountAddress);
