@@ -5,7 +5,12 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-import {BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE} from '../../constants/theme';
+import {
+  BORDERRADIUS,
+  COLORS,
+  FONTFAMILY,
+  FONTSIZE,
+} from '../../constants/theme';
 const {height} = Dimensions.get('window');
 
 interface TextInputProps {

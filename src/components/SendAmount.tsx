@@ -8,7 +8,7 @@ import {
   Dimensions,
   Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {
   BORDERRADIUS,
@@ -35,6 +35,7 @@ const SendAmount: React.FC = () => {
   // State to manage the input value
   const [amount, setAmount] = useState('');
 
+
   // Handle input change to ensure numeric input and limit to 10 characters
   const handleInputChange = (text: string) => {
     // Allow only numeric values and limit length to 10 characters
@@ -49,10 +50,7 @@ const SendAmount: React.FC = () => {
       return;
     }
     if (numericAmount > balance) {
-      Alert.alert(
-        'Insufficient balance',
-        'You do not have enough balance to complete this transaction.',
-      );
+      console.log('Insufficient Balance');
       return;
     }
 
@@ -73,6 +71,7 @@ const SendAmount: React.FC = () => {
           </Text>
           <View>
             <TextInput
+              autoFocus={true}
               style={styles.input}
               placeholder="$10,000"
               placeholderTextColor="#888"

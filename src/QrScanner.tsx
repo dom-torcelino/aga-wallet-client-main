@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   AppRegistry,
   StyleSheet,
@@ -13,14 +13,20 @@ import {
 } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {RNCamera} from 'react-native-camera';
-import {useNavigation, NavigationProp} from '@react-navigation/native';
+import {
+  useNavigation,
+  NavigationProp,
+  useRoute,
+  RouteProp,
+} from '@react-navigation/native';
 import BackButtonIcon from '../assets/SVG/BackButtonIcon';
 import {BORDERRADIUS} from './constants/theme';
 import {RootStackParamList} from './constants/types';
+import {Vibration} from 'react-native';
 
-interface QrScannerProps {
-  setRecipient_address: (address: string) => void;
-}
+// interface QrScannerProps {
+//   setRecipient_address: (address: string) => void;
+// }
 
 const CustomMarker: React.FC = React.memo(() => {
   return (
@@ -33,12 +39,23 @@ const CustomMarker: React.FC = React.memo(() => {
   );
 });
 
-const QrScanner: React.FC<QrScannerProps> = ({setRecipient_address}) => {
+type setRecipientAddressProp = RouteProp<RootStackParamList, 'QrScanner'>;
+
+const QrScanner: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const route = useRoute<setRecipientAddressProp>();
+  const {setRecipient_address} = route.params;
   const [error, setError] = React.useState<string | null>(null);
+
+  useEffect(() => {
+    navigation.setOptions({
+      setRecipient_address,
+    });
+  }, [navigation, setRecipient_address]);
 
   const onSuccess = ({data}: {data: string}) => {
     try {
+      Vibration.vibrate();
       setRecipient_address(data);
       navigation.goBack();
     } catch (err) {
@@ -50,7 +67,7 @@ const QrScanner: React.FC<QrScannerProps> = ({setRecipient_address}) => {
     <View style={styles.container}>
       <QRCodeScanner
         onRead={onSuccess}
-        flashMode={RNCamera.Constants.FlashMode.torch}
+        // flashMode={RNCamera.Constants.FlashMode.torch}
         showMarker={false}
         // customMarker={}
         containerStyle={styles.qrContainer}
@@ -148,7 +165,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    height: '36.6%',
+    height: '33.8%',
     backgroundColor: overlayColor,
     zIndex: 1,
   } as ViewStyle,
@@ -157,25 +174,25 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: '36.6%',
+    height: '34.0%',
     backgroundColor: overlayColor,
     zIndex: 1,
   } as ViewStyle,
   overlayLeft: {
     position: 'absolute',
-    top: '36.6%',
-    bottom: '36.6%',
+    top: '33.8%',
+    bottom: '34%',
     left: 0,
-    width: '22%',
+    width: '17%',
     backgroundColor: overlayColor,
     zIndex: 1,
   } as ViewStyle,
   overlayRight: {
     position: 'absolute',
-    top: '36.6%',
-    bottom: '36.6%',
+    top: '33.8%',
+    bottom: '34%',
     right: 0,
-    width: '22%',
+    width: '17%',
     backgroundColor: overlayColor,
     zIndex: 1,
   } as ViewStyle,
@@ -196,32 +213,32 @@ const styles = StyleSheet.create({
   topLeft: {
     top: 0,
     left: 0,
-    borderTopWidth: 5,
-    borderLeftWidth: 5,
+    borderTopWidth: 3,
+    borderLeftWidth: 3,
   } as ViewStyle,
   topRight: {
     top: 0,
     right: 0,
-    borderTopWidth: 5,
-    borderRightWidth: 5,
+    borderTopWidth: 3,
+    borderRightWidth: 3,
   } as ViewStyle,
   bottomLeft: {
     bottom: 0,
     left: 0,
-    borderBottomWidth: 5,
-    borderLeftWidth: 5,
+    borderBottomWidth: 3,
+    borderLeftWidth: 3,
   } as ViewStyle,
   bottomRight: {
     bottom: 0,
     right: 0,
-    borderBottomWidth: 5,
-    borderRightWidth: 5,
+    borderBottomWidth: 3,
+    borderRightWidth: 3,
   } as ViewStyle,
   errorText: {
     color: 'red',
     textAlign: 'center',
     marginTop: 10,
-} as TextStyle,
+  } as TextStyle,
 });
 
 AppRegistry.registerComponent('default', () => QrScanner);

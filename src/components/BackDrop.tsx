@@ -44,7 +44,7 @@ const BackDrop = ({
           backDropAnimation,
           {backgroundColor: backDropColor},
         ]}>
-        <Text>BackDrop</Text>
+        {/* <Text>BackDrop</Text> */}
       </Animated.View>
     </TouchableWithoutFeedback>
   );
