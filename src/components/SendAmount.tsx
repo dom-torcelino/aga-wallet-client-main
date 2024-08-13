@@ -20,7 +20,7 @@ import {
 import {useNavigation, NavigationProp} from '@react-navigation/native';
 import {RootStackParamList} from '../constants/types'; // Import the type
 import {useAuth} from '../screens/auth/AuthContext';
-import BackButton from './ui/backButton';
+import BackButton from './ui/BackButton';
 
 const {height} = Dimensions.get('window');
 

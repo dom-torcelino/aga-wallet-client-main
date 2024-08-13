@@ -5,7 +5,8 @@ import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
 // import { TokenData } from '../data/mockData';
 import {useAuth} from '../screens/auth/AuthContext';
 import {RootStackParamList} from '../constants/types'; // Import the type
-import BackButton from './ui/backButton';
+import BackButton from './ui/BackButton';
+
 
 type TokenDetailsRouteProp = RouteProp<RootStackParamList, 'TokenDetails'>;
 

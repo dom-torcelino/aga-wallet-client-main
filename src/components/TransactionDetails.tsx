@@ -1,12 +1,12 @@
-
-import { StyleSheet, Text, View } from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import { RouteProp, useRoute } from '@react-navigation/native';
-import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../constants/theme';
+import {RouteProp, useRoute} from '@react-navigation/native';
+import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
 
-import { RootStackParamList } from '../constants/types'; // Import the type
+import {RootStackParamList} from '../constants/types'; // Import the type
 import moment from 'moment';
-import BackButton from './ui/backButton';
+import BackButton from './ui/BackButton';
+
 
 type TransactionDetailsRouteProp = RouteProp<
   RootStackParamList,
@@ -15,7 +15,7 @@ type TransactionDetailsRouteProp = RouteProp<
 
 const TransactionDetails: React.FC = () => {
   const route = useRoute<TransactionDetailsRouteProp>();
-  const { transaction } = route.params;
+  const {transaction} = route.params;
 
   const formatTransactionType = (type: string) => {
     return type === 't' ? 'Transferred' : 'Received';

@@ -21,6 +21,7 @@ import {
 import {RootStackParamList, AuthResponse} from '../../constants/types';
 import TextInput from '../../components/ui/TextInput';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
 import {LoginManager, AccessToken, Settings} from 'react-native-fbsdk-next';
 import {useAuth} from './AuthContext';
 
@@ -119,43 +120,71 @@ const Login: React.FC = () => {
     }
   }
 
+  // async function onFacebookButtonPress() {
+  //   try {
+  //     const result = await LoginManager.logInWithPermissions([
+  //       'public_profile',
+  //       'email',
+  //     ]);
+
+  //     if (result.isCancelled) {
+  //       throw 'User cancelled the login process';
+  //     }
+  //     const accessTokenData = await AccessToken.getCurrentAccessToken();
+
+  //     if (!accessTokenData) {
+  //       throw 'Something went wrong obtaining access token';
+  //     }
+  //     const accessToken = accessTokenData.accessToken;
+
+  //     const response = await fetch(`${API_URL}/v1/auth/facebook`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({access_token: accessToken}),
+  //     });
+  //     setLoading(false);
+  //     if (response.ok) {
+  //       const data: AuthResponse = await response.json();
+  //       const {token, user} = data;
+  //       const {user_id} = user;
+  //       await login(token, user_id);
+  //       navigation.navigate('Home');
+  //     } else {
+  //       const errorData = await response.json();
+  //       setError(errorData.message || 'Login failed');
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
   async function onFacebookButtonPress() {
+
     try {
-      const result = await LoginManager.logInWithPermissions([
-        'public_profile',
-        'email',
-      ]);
+    // Attempt login with permissions
+    const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
 
-      if (result.isCancelled) {
-        throw 'User cancelled the login process';
-      }
-      const accessTokenData = await AccessToken.getCurrentAccessToken();
+    if (result.isCancelled) {
+      throw 'User cancelled the login process';
+    }
 
-      if (!accessTokenData) {
-        throw 'Something went wrong obtaining access token';
-      }
-      const accessToken = accessTokenData.accessToken;
+    // Once signed in, get the users AccessToken
+    const data = await AccessToken.getCurrentAccessToken();
 
-      const response = await fetch(`${API_URL}/v1/auth/facebook`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({access_token: accessToken}),
-      });
-      setLoading(false);
-      if (response.ok) {
-        const data: AuthResponse = await response.json();
-        const {token, user} = data;
-        const {user_id} = user;
-        await login(token, user_id);
-        navigation.navigate('Home');
-      } else {
-        const errorData = await response.json();
-        setError(errorData.message || 'Login failed');
-      }
+    if (!data) {
+      throw 'Something went wrong obtaining access token';
+    }
+
+    // Create a Firebase credential with the AccessToken
+    const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
+
+    // Sign-in the user with the credential
+    auth().signInWithCredential(facebookCredential);
+    console.log('User sign in successfully');
     } catch (error) {
-      console.log(error);
+      console.log('login error', error);
     }
   }
 
@@ -264,14 +293,10 @@ const styles = StyleSheet.create({
     position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
-   
-    
-    
   },
   imageContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    // paddingBottom: 10,
 
   },
   imageStyle: {

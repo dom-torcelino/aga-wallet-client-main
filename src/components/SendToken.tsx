@@ -25,7 +25,7 @@ import {
 import {RootStackParamList} from '../constants/types'; // Import the type
 import ScanIcon from '../../assets/SVG/ScanIcon';
 import {useBottomSheet} from './BottomSheetContext';
-import BackButton from './ui/backButton';
+import BackButton from './ui/BackButton';
 import {useAuth} from '../screens/auth/AuthContext';
 
 const {height} = Dimensions.get('window');

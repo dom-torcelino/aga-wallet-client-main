@@ -5,7 +5,7 @@ import { StyleSheet, Text } from 'react-native';
 import { COLORS, SPACING } from '../constants/theme';
 import { useAuth } from '../screens/auth/AuthContext';
 import TransactionSkeleton from './ui/TransactionSkeleton';
-import BackButton from './ui/backButton';
+import BackButton from './ui/BackButton';
 // @ts-ignore
 import { API_URL } from '@env';
 import axios from 'axios';

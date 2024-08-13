@@ -1,4 +1,3 @@
-
 import React, {
   createContext,
   useState,
@@ -9,13 +8,13 @@ import React, {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface AuthContextProps {
-  token: { accessToken: string } | null;
+  token: {accessToken: string} | null;
   userId: number | null;
   loggedIn: boolean;
   loading: boolean;
   balance: number;
   accountAddress: string | null;
-  login: (token: { accessToken: string }, userId: number) => Promise<void>;
+  login: (token: {accessToken: string}, userId: number) => Promise<void>;
   logout: () => void;
   setAccountAddress: (address: string) => void;
   setBalance: (balance: number) => void;
@@ -32,14 +31,14 @@ const AuthContext = createContext<AuthContextProps>({
   loading: true,
   balance: 0,
   accountAddress: null,
-  login: async () => { },
-  logout: () => { },
-  setAccountAddress: () => { },
-  setBalance: () => { },
+  login: async () => {},
+  logout: () => {},
+  setAccountAddress: () => {},
+  setBalance: () => {},
 });
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [token, setToken] = useState<{ accessToken: string } | null>(null);
+export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
+  const [token, setToken] = useState<{accessToken: string} | null>(null);
   const [userId, setUserId] = useState<number | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
@@ -52,7 +51,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const userToken = await AsyncStorage.getItem('userToken');
         if (userToken) {
           const parsedToken = JSON.parse(userToken);
-          const { token, userId } = parsedToken;
+          const {token, userId} = parsedToken;
           // Assuming backend manages token validation
           setToken(token);
           setUserId(userId);
@@ -70,9 +69,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     loadToken();
   }, []);
 
-  const login = async (token: { accessToken: string }, userId: number) => {
+  const login = async (token: {accessToken: string}, userId: number) => {
     try {
-      await AsyncStorage.setItem('userToken', JSON.stringify({ token, userId }));
+      await AsyncStorage.setItem('userToken', JSON.stringify({token, userId}));
       setToken(token);
       setUserId(userId);
       setLoggedIn(true);
