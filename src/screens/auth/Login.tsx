@@ -72,13 +72,16 @@ const Login: React.FC = () => {
         },
         body: JSON.stringify({email, password}),
       });
+
       setLoading(false);
       if (response.ok) {
         const loginData: AuthResponse = await response.json();
         const {token, user} = loginData;
         const {user_id} = user;
         await login(token, user_id);
+        console.log('Navigating to Home');
         navigation.navigate('Home');
+        console.log('Log In Sucess');
       } else {
         const errorData = await response.json();
         setError(errorData.message || 'Login failed');
@@ -88,7 +91,9 @@ const Login: React.FC = () => {
       setError('An error occurred. Please try again.');
       console.error(error);
     }
+
   };
+  
 
   async function onGoogleButtonPress() {
     try {
@@ -215,10 +220,10 @@ const Login: React.FC = () => {
               secureTextEntry={true}
             />
             {error ? <Text style={styles.errorText}>{error}</Text> : null}
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => navigation.navigate('ForgotPassword')}>
               <Text style={styles.forgotPassText}>Forgot Password?</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <View style={styles.loginBtnWrapper}>
               <TouchableOpacity
@@ -381,7 +386,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   socialSignInBtn: {
-    width: width * 0.4,
+    width: width * 0.42,
     borderRadius: BORDERRADIUS.radius_15,
     flexDirection: 'row',
     height: height * 0.07,
@@ -395,6 +400,7 @@ const styles = StyleSheet.create({
   socialImage: {
     width: width * 0.07,
     height: height * 0.04,
+    resizeMode: 'contain',
     marginRight: 16,
     maxWidth: 30,
     maxHeight: 30,

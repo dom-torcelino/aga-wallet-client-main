@@ -1,4 +1,3 @@
-
 import {
   Text,
   View,
@@ -7,7 +6,7 @@ import {
   GestureResponderEvent,
 } from 'react-native';
 import React from 'react';
-import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../constants/theme';
+import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
 
 interface TabButtonProps {
   name: string;
@@ -33,12 +32,12 @@ interface TabsProps {
   setActiveTab: (tab: 'All' | 'Slot' | 'Casino' | 'Poker') => void;
 }
 
-const Tabs: React.FC<TabsProps> = ({ tabs, activeTab, setActiveTab }) => {
+const Tabs: React.FC<TabsProps> = ({tabs, activeTab, setActiveTab}) => {
   return (
     <View>
       <FlatList
         data={tabs}
-        renderItem={({ item, index }) => (
+        renderItem={({item, index}) => (
           <TabButton
             name={item}
             activeTab={activeTab}

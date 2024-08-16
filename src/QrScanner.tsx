@@ -12,7 +12,7 @@ import {
   TextStyle,
 } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import {RNCamera} from 'react-native-camera';
+// import {RNCamera} from 'react-native-camera';
 import {
   useNavigation,
   NavigationProp,

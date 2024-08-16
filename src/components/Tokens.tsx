@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.secondaryBGColor,
-    marginTop: SPACING.space_15,
+    marginTop: SPACING.space_10,
     borderWidth: 1,
     borderColor: COLORS.borderStroke,
     borderRadius: 12,

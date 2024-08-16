@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "68753555206-8314ntcv4lqjil269l10lik7sseqspmc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.agawallet",
+            "certificate_hash": "353bddafa6c27069342bf86443343ca187068f7a"
+          }
+        },
+        {
           "client_id": "68753555206-mjqp7dtck4bogf98qefl6tr2tt0vde30.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

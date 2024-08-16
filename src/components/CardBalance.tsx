@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import React, {useState} from 'react';
 import {
   BORDERRADIUS,
@@ -46,19 +46,21 @@ const CardBalance: React.FC<CardBalanceProps> = ({balance}) => {
   return (
     <View style={styles.CardContainer}>
       <View>
-        <TouchableOpacity onPress={toggleBalanceVisibility}>
-          <View style={styles.balanceTitleContainer}>
-            <Text style={styles.balanceTitle}>Total balance</Text>
-            {balanceVisible ? (
-              <EyeOpenIcon size={25} fillColor={COLORS.primaryWhite} />
-            ) : (
-              <EyeCloseIcon size={25} fillColor={COLORS.primaryWhite} />
-            )}
+        <TouchableWithoutFeedback onPress={toggleBalanceVisibility}>
+          <View>
+            <View style={styles.balanceTitleContainer}>
+              <Text style={styles.balanceTitle}>Total balance</Text>
+              {balanceVisible ? (
+                <EyeOpenIcon size={25} fillColor={COLORS.primaryWhite} />
+              ) : (
+                <EyeCloseIcon size={25} fillColor={COLORS.primaryWhite} />
+              )}
+            </View>
+            <Text style={styles.balanceStyle}>
+              $ {balanceVisible ? balance.toLocaleString() : '*****'}
+            </Text>
           </View>
-          <Text style={styles.balanceStyle}>
-            $ {balanceVisible ? balance.toLocaleString() : '*****'}
-          </Text>
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
       </View>
       <View style={styles.ButtonContainer}>
         <CustomButton

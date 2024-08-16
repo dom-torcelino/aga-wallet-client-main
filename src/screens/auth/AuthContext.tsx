@@ -6,6 +6,8 @@ import React, {
   ReactNode,
 } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios'; // Example if you are using axios for API calls
+import {API_URL} from '@env'; // Assuming you're using dotenv for environment variables
 
 interface AuthContextProps {
   token: {accessToken: string} | null;
@@ -52,10 +54,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
         if (userToken) {
           const parsedToken = JSON.parse(userToken);
           const {token, userId} = parsedToken;
-          // Assuming backend manages token validation
-          setToken(token);
-          setUserId(userId);
-          setLoggedIn(true);
+
+          // Example of token validation
+          const isValid = await validateToken(token.accessToken);
+
+          if (isValid) {
+            setToken(token);
+            setUserId(userId);
+            setLoggedIn(true);
+          } else {
+            await logout(); // Log out if the token is invalid
+          }
         } else {
           setLoggedIn(false);
         }
@@ -69,13 +78,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     loadToken();
   }, []);
 
+  const validateToken = async (accessToken: string) => {
+    try {
+      const response = await axios.post(`${API_URL}/validate-token`, {
+        token: accessToken,
+      });
+      return response.data.isValid;
+    } catch (error) {
+      // console.error('Token validation failed', error);
+      console.log('Token validation failed');
+      return false;
+    }
+  };
+
   const login = async (token: {accessToken: string}, userId: number) => {
     try {
       await AsyncStorage.setItem('userToken', JSON.stringify({token, userId}));
       setToken(token);
       setUserId(userId);
       setLoggedIn(true);
-      setAccountAddress(null);
+      setAccountAddress(null); // Optionally reset account address
     } catch (error) {
       console.error('Failed to login', error);
     }

@@ -14,7 +14,7 @@ import {useNavigation, NavigationProp} from '@react-navigation/native';
 import {RootStackParamList} from '../constants/types';
 
 const {width} = Dimensions.get('window');
-const itemWidth = (width - 62) / 2;
+const itemWidth = (width - 50) / 2;
 
 interface GameListProps {
   data: GameData[];
@@ -48,12 +48,12 @@ const GameList: React.FC<GameListProps> = ({data = []}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 90,
+    marginBottom: 60,
   },
   itemContainer: {
     width: itemWidth, // Set item width dynamically
     alignItems: 'flex-start',
-    marginBottom: 10,
+    // marginBottom: 10,
     margin: 6,
     borderRadius: BORDERRADIUS.radius_15,
     backgroundColor: COLORS.secondaryBGColor,

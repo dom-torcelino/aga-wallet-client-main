@@ -39,9 +39,9 @@ export type RootStackParamList = {
   QrScanner: {setRecipient_address: (address: string) => void};
   Transaction: undefined;
   TransactionDetails: {transaction: TransactionData};
-  NotificationView: {notification: NotificationData};
-  TransactionSuccess: undefined;
+  TransactionSuccessScreen: {transactionId: number};
   TransactionFailure: undefined;
+  NotificationView: {notification: NotificationData};
 };
 
 export interface User {

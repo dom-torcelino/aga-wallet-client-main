@@ -35,7 +35,6 @@ const SendAmount: React.FC = () => {
   // State to manage the input value
   const [amount, setAmount] = useState('');
 
-
   // Handle input change to ensure numeric input and limit to 10 characters
   const handleInputChange = (text: string) => {
     // Allow only numeric values and limit length to 10 characters
@@ -61,19 +60,21 @@ const SendAmount: React.FC = () => {
     });
   };
 
+  
+
   return (
     <SafeAreaView style={styles.main}>
       <View>
         <BackButton />
         <View>
           <Text style={styles.addressHeading}>
-            Available Balance ${balance.toFixed(2)}
+            Available Balance {balance.toFixed(2)}
           </Text>
           <View>
             <TextInput
               autoFocus={true}
               style={styles.input}
-              placeholder="$10,000"
+              placeholder="10,000"
               placeholderTextColor="#888"
               keyboardType="numeric"
               inputMode="numeric"

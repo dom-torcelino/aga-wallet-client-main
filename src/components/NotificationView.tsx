@@ -1,55 +1,57 @@
-
-import { View, FlatList } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
-import { COLORS, SPACING } from '../constants/theme';
-import { useAuth } from '../screens/auth/AuthContext';
+import {
+  View,
+  FlatList,
+  StyleSheet,
+  Text,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {COLORS, SPACING, FONTFAMILY} from '../constants/theme';
+import {useAuth} from '../screens/auth/AuthContext';
 import TransactionSkeleton from './ui/TransactionSkeleton';
 import BackButton from './ui/BackButton';
 // @ts-ignore
-import { API_URL } from '@env';
+import {API_URL} from '@env';
 import axios from 'axios';
 
 const NotificationView: React.FC = () => {
-  const { token, loggedIn } = useAuth();
+  const {token, loggedIn} = useAuth();
   const [notifications, setNotifications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const skeletonCount = 8;
 
+  const fetchNotification = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/v1/notifications`, {
+        headers: {
+          Authorization: `Bearer ${token?.accessToken}`,
+        },
+      });
+
+      if (response.status === 200) {
+        setNotifications(response.data.notifications);
+      }
+    } catch (error) {
+      console.error('Error fetching notification:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     let isMounted = true;
 
-    const fetchNotification = async () => {
-      if (loggedIn) {
-        try {
-          const response = await axios.get(`${API_URL}/v1/notifications`, {
-            headers: {
-              Authorization: `Bearer ${token?.accessToken}`,
-            },
-          });
-          if (isMounted && response.status === 200) {
-            setNotifications(response.data.notifications);
-          }
-        } catch (error) {
-          if (isMounted) {
-            console.error('Error fetching notification:', error);
-          }
-        } finally {
-          if (isMounted) {
-            setLoading(false);
-          }
-        }
-      }
-    };
-
-    fetchNotification();
+    if (loggedIn && isMounted) {
+      fetchNotification();
+    }
 
     return () => {
       isMounted = false;
     };
   }, [token, loggedIn]);
 
-  const renderNotificationItem = ({ item }: { item: any }) => (
+  const renderNotificationItem = ({item}: {item: any}) => (
     <View style={styles.notificationWrapper}>
       <Text style={styles.notificationMessage}>
         {item.notification_message}
@@ -62,9 +64,17 @@ const NotificationView: React.FC = () => {
 
   const renderSkeletonItem = () => <TransactionSkeleton />;
 
+  const handleReloadNotifications = () => {
+    setLoading(true);
+    setNotifications([]);
+    fetchNotification(); // Re-fetch notifications when reload button is pressed
+  };
+
   return (
     <View style={styles.container}>
-      <BackButton />
+      <View style={styles.backButton}>
+        <BackButton />
+      </View>
       {loading ? (
         <FlatList
           data={Array(skeletonCount).fill('')}
@@ -78,9 +88,26 @@ const NotificationView: React.FC = () => {
           keyExtractor={item => item.notification_id.toString()}
         />
       ) : (
-        <Text style={styles.noNotificationText}>
-          No notifications available.
-        </Text>
+        <View style={styles.EmptyContainer}>
+          <Image
+            source={require('../../assets/images/emptyState/EmptyNotification.png')}
+            style={styles.emptyStateImage}
+            resizeMode="contain"
+          />
+          <Text style={styles.emptyStateHeaderText}>
+            No notifications found
+          </Text>
+          <Text style={styles.bodyText}>
+            You currently have no notifications. {'\n'}Check back later for
+            updates.
+          </Text>
+          <TouchableOpacity
+            onPress={handleReloadNotifications}
+            activeOpacity={0.7}
+            style={styles.reloadBtn}>
+            <Text style={styles.reloadText}>Reload Notifications</Text>
+          </TouchableOpacity>
+        </View>
       )}
     </View>
   );
@@ -90,15 +117,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.primaryBGColor,
-    padding: 20,
   },
-
+  backButton: {
+    paddingHorizontal: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   notificationWrapper: {
     backgroundColor: COLORS.secondaryBGColor,
     padding: SPACING.space_15,
     borderRadius: 12,
     borderWidth: 1,
     borderColor: COLORS.borderStroke,
+    marginHorizontal: 10,
     marginBottom: 10,
   },
   notificationMessage: {
@@ -116,15 +147,45 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
   },
-  // backButtonContainer: {
-  //     borderRadius: BORDERRADIUS.radius_25,
-  //     overflow: 'hidden',
-  //     backgroundColor: COLORS.secondaryBGColor,
-  //     padding: 6,
-  // },
-  // backButton: {
-  //     marginRight: 2,
-  // },
+  EmptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.primaryBGColor,
+    paddingHorizontal: SPACING.space_16,
+  },
+  emptyStateImage: {
+    width: 150,
+    height: 150,
+    marginVertical: 10,
+  },
+  emptyStateHeaderText: {
+    fontSize: 20,
+    color: COLORS.primaryWhite,
+    fontFamily: FONTFAMILY.poppins_medium,
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  bodyText: {
+    fontSize: 16,
+    fontFamily: FONTFAMILY.poppins_regular,
+    color: COLORS.secondaryTextColor,
+    textAlign: 'center',
+    marginBottom: SPACING.space_24,
+  },
+  reloadBtn: {
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.primaryGoldHex,
+    padding: 10,
+    borderRadius: 10,
+  },
+  reloadText: {
+    fontSize: 16,
+    color: COLORS.primaryBGColor,
+    fontFamily: FONTFAMILY.poppins_semibold,
+  },
 });
 
 export default NotificationView;

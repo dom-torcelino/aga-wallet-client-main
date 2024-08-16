@@ -2,21 +2,23 @@ import {
   StyleSheet,
   Text,
   View,
-  FlatList,
+  SectionList,
   TouchableOpacity,
   Dimensions,
+  ActivityIndicator,
+  Image,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
+import axios from 'axios';
+import {useAuth} from '../screens/auth/AuthContext';
+import TransactionSkeleton from './ui/TransactionSkeleton'; // Import the skeleton loader component
+import {useNavigation, NavigationProp} from '@react-navigation/native';
+import {RootStackParamList} from '../constants/types'; // Import the type
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
 import MoneySendIcon from '../../assets/SVG/MoneySendIcon';
 import MoneyReceivedIcon from '../../assets/SVG/MoneyReceivedIcon';
-import {useAuth} from '../screens/auth/AuthContext';
-import axios from 'axios';
-import TransactionSkeleton from './ui/TransactionSkeleton'; // Import the skeleton loader component
 // @ts-ignore
 import {API_URL} from '@env';
-import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {RootStackParamList} from '../constants/types'; // Import the type
 
 interface TransactionData {
   tx_id: number;
@@ -31,23 +33,21 @@ interface TransactionData {
   tx_type: string;
 }
 
-interface TransactionProps {
-  onPressTransaction: (item: TransactionData) => void;
-}
-
 const {width} = Dimensions.get('window');
 
 const groupByDate = (transactions: TransactionData[]) => {
   return transactions.reduce(
-    (grouped: Record<string, TransactionData[]>, transaction) => {
+    (grouped: {title: string; data: TransactionData[]}[], transaction) => {
       const date = new Date(transaction.tx_created_at).toDateString();
-      if (!grouped[date]) {
-        grouped[date] = [];
+      const group = grouped.find(g => g.title === date);
+      if (group) {
+        group.data.push(transaction);
+      } else {
+        grouped.push({title: date, data: [transaction]});
       }
-      grouped[date].push(transaction);
       return grouped;
     },
-    {},
+    [],
   );
 };
 
@@ -57,23 +57,27 @@ const truncateAddress = (address: string) => {
   )}`;
 };
 
-const Transaction: React.FC<TransactionProps> = () => {
+const Transaction: React.FC = () => {
   const [transactions, setTransactions] = useState<TransactionData[]>([]);
+  const [transactionCount, setTransactionCount] = useState<number>(0);
+  const [limit, setLimit] = useState<number>(10); // Initial limit set to 10
   const {token, accountAddress, loggedIn} = useAuth();
-  const [loading, setLoading] = useState(true); // Add a loading state
+  const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const skeletonCount = 5;
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   useEffect(() => {
-    let isMounted = true; // Add a flag to track if the component is mounted
+    let isMounted = true;
 
     const fetchTransactions = async () => {
       if (loggedIn && accountAddress) {
         try {
-          // console.log('Token:', token?.accessToken); // Log the token to inspect it
-
           const response = await axios.get(
-            `${API_URL}/v1/wallets/${accountAddress}/transactions?limit=10&offset=0`,
+            `${API_URL}/v1/wallets/${accountAddress}/transactions?limit=${limit}&offset=${Math.max(
+              0,
+              transactionCount - limit,
+            )}`,
             {
               headers: {
                 Authorization: `Bearer ${token?.accessToken}`,
@@ -87,15 +91,16 @@ const Transaction: React.FC<TransactionProps> = () => {
                 new Date(b.tx_created_at).getTime() -
                 new Date(a.tx_created_at).getTime(),
             );
+            setTransactionCount(response.data.metadata.count);
             setTransactions(sortedTransactions);
           }
         } catch (error) {
           if (isMounted) {
-            console.error('Error fetching transactions:', error);
+            // console.error('Error fetching transactions:', error);
           }
         } finally {
           if (isMounted) {
-            setLoading(false); // Set loading to false after fetching data
+            setLoading(false);
           }
         }
       }
@@ -106,9 +111,48 @@ const Transaction: React.FC<TransactionProps> = () => {
     return () => {
       isMounted = false;
     };
-  }, [token, accountAddress, loggedIn]);
+  }, [token, accountAddress, loggedIn, transactionCount, limit]);
+
+  useEffect(() => {
+    const intervalId = setInterval(async () => {
+      if (loggedIn && accountAddress) {
+        try {
+          const response = await axios.get(
+            `${API_URL}/v1/wallets/${accountAddress}/transactions?limit=1&offset=0`,
+            {
+              headers: {
+                Authorization: `Bearer ${token?.accessToken}`,
+              },
+            },
+          );
+
+          if (
+            response.status === 200 &&
+            response.data.metadata.count > transactionCount
+          ) {
+            // setTransactionCount(response.data.metadata.count);
+          }
+        } catch (error) {
+          // console.error('Error polling transactions:', error);
+        }
+      }
+    }, 10000); // Poll every 10 seconds
+
+    return () => clearInterval(intervalId);
+  }, [transactionCount, loggedIn, accountAddress, token]);
 
   const groupedData = groupByDate(transactions);
+
+  const loadMore = async () => {
+    if (transactions.length >= transactionCount) {
+      return; // No more transactions to load
+    }
+
+    setLoadingMore(true);
+    setLimit(prevLimit => prevLimit + 10); // Increase the limit by 10
+    setLoadingMore(false);
+  };
+
   const renderItem = ({item}: {item: TransactionData}) => (
     <TouchableOpacity
       key={item.tx_id.toString()}
@@ -150,31 +194,77 @@ const Transaction: React.FC<TransactionProps> = () => {
     </TouchableOpacity>
   );
 
-  const renderDateHeader = ({item: date}: {item: string}) => (
-    <View>
-      <Text style={styles.dateHeader}>{date}</Text>
-      <FlatList
-        data={groupedData[date]}
-        renderItem={renderItem}
-        keyExtractor={transaction => transaction.tx_id.toString()}
+  const renderSectionHeader = ({
+    section: {title},
+  }: {
+    section: {title: string};
+  }) => <Text style={styles.dateHeader}>{title}</Text>;
+
+  const renderFooter = () => {
+    if (!loadingMore) {
+      return null;
+    }
+
+    return (
+      <View style={styles.footer}>
+        <ActivityIndicator size="large" color={COLORS.primaryWhite} />
+      </View>
+    );
+  };
+
+  const renderEmptyState = () => (
+    <View style={styles.emptyStateContainer}>
+      <Image
+        source={require('../../assets/images/emptyState/EmptyTransaction.png')}
+        style={styles.emptyStateImage}
+        resizeMode="contain"
       />
+      <Text style={styles.emptyStateHeaderText}>Empty Transaction</Text>
+      <Text style={styles.bodyText}>
+        It seems there are no transaction added yet{' '}
+      </Text>
     </View>
   );
 
   return (
-    <FlatList
-      data={loading ? Array(skeletonCount).fill('') : Object.keys(groupedData)} // Show skeletons while loading
-      renderItem={loading ? () => <TransactionSkeleton /> : renderDateHeader}
-      keyExtractor={(item, index) => (loading ? index.toString() : item)}
-      contentContainerStyle={styles.TransactionStyles}
-      scrollEnabled={false}
-    />
+    <View style={styles.TransactionStyles}>
+      <SectionList
+        sections={
+          loading
+            ? [{title: '', data: Array(skeletonCount).fill(null)}]
+            : groupedData
+        }
+        renderItem={loading ? () => <TransactionSkeleton /> : renderItem}
+        renderSectionHeader={renderSectionHeader}
+        keyExtractor={(item, index) =>
+          loading ? index.toString() : item.tx_id.toString()
+        }
+        ListFooterComponent={renderFooter}
+        ListEmptyComponent={
+          !loading && transactions.length === 0 ? renderEmptyState : null
+        }
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.1} // Fetch more data when the list is close to the end
+      />
+      {transactions.length < transactionCount && !loading && (
+        <TouchableOpacity
+          style={styles.loadMoreButton}
+          onPress={loadMore}
+          disabled={loadingMore}>
+          {loadingMore ? (
+            <ActivityIndicator size="small" color={COLORS.primaryWhite} />
+          ) : (
+            <Text style={styles.loadMoreText}>Load More</Text>
+          )}
+        </TouchableOpacity>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   TransactionStyles: {
-    marginBottom: 90,
+    marginBottom: 60,
   },
   dateHeader: {
     fontSize: FONTSIZE.size_14,
@@ -186,7 +276,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.secondaryBGColor,
-    marginTop: SPACING.space_15,
+    marginTop: SPACING.space_10,
     borderWidth: 1,
     borderColor: COLORS.borderStroke,
     borderRadius: 12,
@@ -218,6 +308,49 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_20,
     fontFamily: FONTFAMILY.poppins_regular,
     color: COLORS.primaryWhite,
+  },
+  loadMoreButton: {
+    backgroundColor: COLORS.layeBGColor,
+    padding: 10,
+    marginVertical: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: COLORS.borderStroke,
+  },
+  loadMoreText: {
+    color: COLORS.textColor,
+    fontSize: FONTSIZE.size_16,
+    fontFamily: FONTFAMILY.poppins_medium,
+  },
+  footer: {
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyStateContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 20,
+    // backgroundColor: 'red',
+  },
+  emptyStateHeaderText: {
+    fontSize: FONTSIZE.size_20,
+    fontFamily: FONTFAMILY.poppins_medium,
+    color: COLORS.primaryWhite,
+  },
+  emptyStateImage: {
+    width: 150,
+    height: 150,
+    marginVertical: 10,
+  },
+  bodyText: {
+    fontSize: FONTSIZE.size_16,
+    fontFamily: FONTFAMILY.poppins_regular,
+    color: COLORS.secondaryTextColor,
+    textAlign: 'center',
+    paddingHorizontal: 20,
   },
 });
 

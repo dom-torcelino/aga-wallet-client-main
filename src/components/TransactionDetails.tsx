@@ -7,7 +7,6 @@ import {RootStackParamList} from '../constants/types'; // Import the type
 import moment from 'moment';
 import BackButton from './ui/BackButton';
 
-
 type TransactionDetailsRouteProp = RouteProp<
   RootStackParamList,
   'TransactionDetails'

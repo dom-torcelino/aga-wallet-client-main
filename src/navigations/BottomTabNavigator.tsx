@@ -1,24 +1,23 @@
-
 /* eslint-disable react/no-unstable-nested-components*/
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Dimensions } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, Dimensions} from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import GameScreen from '../screens/GameScreen';
 import WalletScreen from '../screens/WalletScreen';
 import SettingsScreen from '../screens/SettingsScreen';
-import { COLORS } from '../constants/theme';
+import {COLORS} from '../constants/theme';
 import GameController from '../../assets/SVG/GameController';
 import WalletIcon from '../../assets/SVG/WalletIcon';
 import SettingsIcon from '../../assets/SVG/Settings';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 // import authFetch from '../utils/authFetch';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { RootStackParamList } from '../constants/types';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
+import {RootStackParamList} from '../constants/types';
 // @ts-ignore
-import { API_URL } from '@env';
+import {API_URL} from '@env';
 
-const { height } = Dimensions.get('window');
+const {height} = Dimensions.get('window');
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
@@ -34,7 +33,7 @@ const BottomTabNavigator = () => {
           return;
         }
 
-        const { token, userId } = JSON.parse(userToken); // Adjusted to extract userId
+        const {token, userId} = JSON.parse(userToken); // Adjusted to extract userId
         const response = await fetch(`${API_URL}/v1/users/${userId}/wallets`, {
           headers: {
             Authorization: `Bearer ${token.accessToken}`, // Assuming Bearer token
@@ -66,7 +65,7 @@ const BottomTabNavigator = () => {
   }, [navigation]);
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{flex: 1}}>
       <Tab.Navigator
         screenOptions={{
           tabBarHideOnKeyboard: true,
@@ -78,9 +77,9 @@ const BottomTabNavigator = () => {
           name="Wallet"
           component={WalletScreen}
           options={{
-            tabBarIcon: ({ focused }) => (
+            tabBarIcon: ({focused}) => (
               <WalletIcon
-                size={28}
+                size={24}
                 fillColor={focused ? COLORS.primaryColor : COLORS.primaryWhite}
               />
             ),
@@ -90,9 +89,9 @@ const BottomTabNavigator = () => {
           name="Game"
           component={GameScreen}
           options={{
-            tabBarIcon: ({ focused }) => (
+            tabBarIcon: ({focused}) => (
               <GameController
-                size={36}
+                size={32}
                 fillColor={focused ? COLORS.primaryColor : COLORS.primaryWhite}
               />
             ),
@@ -102,9 +101,9 @@ const BottomTabNavigator = () => {
           name="Settings"
           component={SettingsScreen}
           options={{
-            tabBarIcon: ({ focused }) => (
+            tabBarIcon: ({focused}) => (
               <SettingsIcon
-                size={28}
+                size={24}
                 fillColor={focused ? COLORS.primaryColor : COLORS.primaryWhite}
               />
             ),

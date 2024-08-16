@@ -29,7 +29,7 @@ const {width} = Dimensions.get('window');
 
 const Receive: React.FC<TransferProps> = ({closeBottomSheet2, showToast}) => {
   const {accountAddress} = useAuth();
-  const SIZE = width * 0.6;
+  const SIZE = width * 0.5;
 
   const copyToClipboard = () => {
     Clipboard.setString(accountAddress || '');
