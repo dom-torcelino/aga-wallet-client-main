@@ -113,11 +113,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   logoutText: {
-    fontSize: FONTSIZE.size_18,
+    fontSize: FONTSIZE.size_16,
     // color: COLORS.secondaryTextColor,
     color: COLORS.textColor,
     textAlign: 'center',
-    fontFamily: FONTFAMILY.poppins_medium,
+    fontFamily: FONTFAMILY.poppins_semibold,
   },
 });
 

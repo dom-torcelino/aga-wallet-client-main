@@ -8,7 +8,7 @@ import {
   Dimensions,
   Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {
   BORDERRADIUS,
@@ -49,10 +49,7 @@ const SendAmount: React.FC = () => {
       return;
     }
     if (numericAmount > balance) {
-      Alert.alert(
-        'Insufficient balance',
-        'You do not have enough balance to complete this transaction.',
-      );
+      console.log('Insufficient Balance');
       return;
     }
 
@@ -63,18 +60,21 @@ const SendAmount: React.FC = () => {
     });
   };
 
+  
+
   return (
     <SafeAreaView style={styles.main}>
       <View>
         <BackButton />
         <View>
           <Text style={styles.addressHeading}>
-            Available Balance ${balance.toFixed(2)}
+            Available Balance {balance.toFixed(2)}
           </Text>
           <View>
             <TextInput
+              autoFocus={true}
               style={styles.input}
-              placeholder="$10,000"
+              placeholder="10,000"
               placeholderTextColor="#888"
               keyboardType="numeric"
               inputMode="numeric"

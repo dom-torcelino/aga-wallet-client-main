@@ -22,7 +22,7 @@ import {
   FONTSIZE,
   SPACING,
 } from '../constants/theme';
-import {RootStackParamList} from '../constants/types'; // Import the type
+import {RootStackParamList} from '../constants/types';
 import ScanIcon from '../../assets/SVG/ScanIcon';
 import {useBottomSheet} from './BottomSheetContext';
 import BackButton from './ui/BackButton';
@@ -98,7 +98,10 @@ const SendToken: React.FC = () => {
                 setErrorMessage(''); // Clear error message on input change
               }}
             />
-            <TouchableOpacity onPress={() => navigation.navigate('QrScanner')}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('QrScanner', {setRecipient_address})
+              }>
               <ScanIcon size={30} style={styles.backButton} />
             </TouchableOpacity>
           </View>

@@ -1,20 +1,19 @@
-
-import { StatusBar, StyleSheet, View, ScrollView } from 'react-native';
-import React, { useState } from 'react';
-import { COLORS, SPACING } from '../constants/theme';
+import {StatusBar, StyleSheet, View, ScrollView} from 'react-native';
+import React, {useState} from 'react';
+import {COLORS, SPACING} from '../constants/theme';
 import HeaderBar from '../components/HeaderBar';
 import CarouselSlider from '../components/Carousel';
 import Tabs from '../components/Tabs';
 import GameList from '../components/GameList';
-import { games } from '../data/mockData';
+import {games} from '../data/mockData';
 
 const gameTabs = ['All', 'Slot', 'Casino', 'Poker'];
 
 const shuffleArray = (array: any[]) => {
   return array
-    .map(value => ({ value, sort: Math.random() }))
+    .map(value => ({value, sort: Math.random()}))
     .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value);
+    .map(({value}) => value);
 };
 
 const GameScreen: React.FC = () => {
@@ -56,7 +55,7 @@ const styles = StyleSheet.create({
   ScreenContainer: {
     flex: 1,
     backgroundColor: COLORS.primaryBGColor,
-    paddingHorizontal: SPACING.space_20,
+    paddingHorizontal: SPACING.space_16,
   },
   carouselContainer: {
     marginVertical: SPACING.space_10,

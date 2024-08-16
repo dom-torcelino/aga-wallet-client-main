@@ -31,14 +31,17 @@ export type RootStackParamList = {
   GameView: {game: any};
 
   SendToken: {token: TokenData};
-  SendAmount: {token: TokenData};
+  SendAmount: {
+    token: TokenData;
+    setRecipient_address: (address: string) => void;
+  };
   TokenDetails: {token: TokenData};
-  QrScanner: undefined;
+  QrScanner: {setRecipient_address: (address: string) => void};
   Transaction: undefined;
   TransactionDetails: {transaction: TransactionData};
-  NotificationView: {notification: NotificationData};
-  TransactionSuccess: undefined;
+  TransactionSuccessScreen: {transactionId: number};
   TransactionFailure: undefined;
+  NotificationView: {notification: NotificationData};
 };
 
 export interface User {
