@@ -48,8 +48,6 @@ const closeConfig = {
 };
 
 const AuthNavigator = () => {
-  // const {loggedIn} = useAuth();
-
   return (
     <Stack.Navigator
       screenOptions={{
@@ -65,9 +63,7 @@ const AuthNavigator = () => {
           close: closeConfig,
         },
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-      }}
-      // initialRouteName={loggedIn ? 'Home' : 'Login'}
-    >
+      }}>
       <Stack.Screen
         name="Login"
         component={Login}
