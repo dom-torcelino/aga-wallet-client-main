@@ -7,8 +7,8 @@ import {
   Dimensions,
   Image,
 } from 'react-native';
-import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {RootStackParamList} from '../constants/types';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { RootStackParamList } from '../types/types';
 import {
   BORDERRADIUS,
   COLORS,
@@ -17,7 +17,7 @@ import {
   SPACING,
 } from '../constants/theme';
 
-const {height, width} = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
 const TransactionFailureScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();

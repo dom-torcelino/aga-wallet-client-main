@@ -13,7 +13,7 @@ import {
   RouteProp,
   NavigationProp,
 } from '@react-navigation/native';
-import {RootStackParamList} from '../constants/types';
+import {RootStackParamList} from '../types/types';
 import {
   BORDERRADIUS,
   COLORS,
@@ -34,12 +34,13 @@ const EnterPasswordScreen: React.FC = () => {
   const {token: authToken, accountAddress: sender_address} = useAuth();
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState<boolean>(false);
-
-  console.log(authToken, recipient_address, sender_address);
+  const [error, setError] = useState<string | null>(null); // Error state
 
   const handleConfirm = async () => {
     if (password) {
       setLoading(true); // Start loading
+      setError(null); // Clear previous errors
+
       try {
         const response = await fetch(`${API_URL}/v1/transactions/send`, {
           method: 'POST',
@@ -58,16 +59,16 @@ const EnterPasswordScreen: React.FC = () => {
         if (response.ok) {
           navigation.navigate('TransactionSuccessScreen');
         } else {
-          navigation.navigate('TransactionFailure');
+          setError('Incorrect password and try again.');
         }
       } catch (error) {
         console.error('Transaction failed', error);
-        navigation.navigate('TransactionFailure');
+        setError('An error occurred. Please try again later.');
       } finally {
         setLoading(false); // Stop loading after transaction
       }
     } else {
-      alert('Password does not match. Please try again.');
+      setError('Password is required.');
     }
   };
 
@@ -77,12 +78,16 @@ const EnterPasswordScreen: React.FC = () => {
       <TextInput
         autoFocus={true}
         value={password}
-        onChangeText={setPassword}
-        placeholder="0.00"
+        maxLength={64}
+        onChangeText={text => {
+          setPassword(text);
+          setError(null); // Clear error when user starts typing
+        }}
         secureTextEntry={true}
-        inputMode="numeric"
         style={styles.input}
       />
+      {/* Display error message if there is one */}
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
       {loading ? (
         <ActivityIndicator size="large" color={COLORS.primaryGoldHex} />
@@ -117,6 +122,12 @@ const styles = StyleSheet.create({
     color: COLORS.primaryWhite,
     fontSize: FONTSIZE.size_20,
     borderRadius: BORDERRADIUS.radius_10,
+  },
+  errorText: {
+    color: 'red',
+    fontSize: FONTSIZE.size_14,
+    textAlign: 'center',
+    marginBottom: 24,
   },
   button: {
     backgroundColor: COLORS.primaryGoldHex,

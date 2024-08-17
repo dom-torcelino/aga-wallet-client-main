@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,24 +11,24 @@ import {
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
-import {useNavigation, NavigationProp} from '@react-navigation/native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 import {
   BORDERRADIUS,
   COLORS,
   FONTFAMILY,
   FONTSIZE,
 } from '../../constants/theme';
-import {RootStackParamList, AuthResponse} from '../../constants/types';
+import { RootStackParamList, AuthResponse } from '../../types/types';
 import TextInput from '../../components/ui/TextInput';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
-import {LoginManager, AccessToken, Settings} from 'react-native-fbsdk-next';
-import {useAuth} from './AuthContext';
+import { LoginManager, AccessToken, Settings } from 'react-native-fbsdk-next';
+import { useAuth } from './AuthContext';
 
 // @ts-ignore
-import {API_URL} from '@env';
+import { API_URL } from '@env';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const Login: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -36,7 +36,7 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
-  const {login} = useAuth();
+  const { login } = useAuth();
 
   useEffect(() => {
     Settings.initializeSDK();
@@ -70,14 +70,14 @@ const Login: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({email, password}),
+        body: JSON.stringify({ email, password }),
       });
 
       setLoading(false);
       if (response.ok) {
         const loginData: AuthResponse = await response.json();
-        const {token, user} = loginData;
-        const {user_id} = user;
+        const { token, user } = loginData;
+        const { user_id } = user;
         await login(token, user_id);
         console.log('Navigating to Home');
         navigation.navigate('Home');
@@ -93,13 +93,13 @@ const Login: React.FC = () => {
     }
 
   };
-  
+
 
   async function onGoogleButtonPress() {
     try {
       await GoogleSignin.signOut();
-      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
-      const {user} = await GoogleSignin.signIn();
+      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+      const { user } = await GoogleSignin.signIn();
       console.log(user);
       const accessToken = (await GoogleSignin.getTokens()).accessToken;
       const response = await fetch(`${API_URL}/v1/auth/google`, {
@@ -107,13 +107,13 @@ const Login: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({access_token: accessToken}),
+        body: JSON.stringify({ access_token: accessToken }),
       });
       setLoading(false);
       if (response.ok) {
         const data: AuthResponse = await response.json();
-        const {token, user} = data;
-        const {user_id} = user;
+        const { token, user } = data;
+        const { user_id } = user;
         await login(token, user_id);
         navigation.navigate('Home');
       } else {
@@ -168,26 +168,26 @@ const Login: React.FC = () => {
   async function onFacebookButtonPress() {
 
     try {
-    // Attempt login with permissions
-    const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+      // Attempt login with permissions
+      const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
 
-    if (result.isCancelled) {
-      throw 'User cancelled the login process';
-    }
+      if (result.isCancelled) {
+        throw 'User cancelled the login process';
+      }
 
-    // Once signed in, get the users AccessToken
-    const data = await AccessToken.getCurrentAccessToken();
+      // Once signed in, get the users AccessToken
+      const data = await AccessToken.getCurrentAccessToken();
 
-    if (!data) {
-      throw 'Something went wrong obtaining access token';
-    }
+      if (!data) {
+        throw 'Something went wrong obtaining access token';
+      }
 
-    // Create a Firebase credential with the AccessToken
-    const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
+      // Create a Firebase credential with the AccessToken
+      const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
 
-    // Sign-in the user with the credential
-    auth().signInWithCredential(facebookCredential);
-    console.log('User sign in successfully');
+      // Sign-in the user with the credential
+      auth().signInWithCredential(facebookCredential);
+      console.log('User sign in successfully');
     } catch (error) {
       console.log('login error', error);
     }

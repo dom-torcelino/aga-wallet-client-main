@@ -3,7 +3,7 @@ import React from 'react';
 import {BORDERRADIUS, COLORS} from '../constants/theme';
 
 import {useRoute, RouteProp} from '@react-navigation/native';
-import {RootStackParamList} from '../constants/types';
+import {RootStackParamList} from '../types/types';
 import BackButton from './ui/BackButton';
 
 type GameViewRouteProp = RouteProp<RootStackParamList, 'GameView'>;

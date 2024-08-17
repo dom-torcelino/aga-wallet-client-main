@@ -3,7 +3,7 @@ import {StatusBar} from 'react-native';
 import {
   NavigationContainer,
   DarkTheme,
-  useNavigation,
+  useNavigation, DefaultTheme
 } from '@react-navigation/native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
@@ -17,6 +17,15 @@ import AuthNavigator from './src/navigations/AuthNavigator';
 import Toast from './src/components/Toast';
 import {AuthProvider} from './src/screens/auth/AuthContext';
 import {BackHandler} from 'react-native';
+
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: 'tomato',
+    background: 'white',
+  },
+};
 
 const App: React.FC = () => {
   const bottomSheetRef = useRef<BottomSheetMethods>(null);

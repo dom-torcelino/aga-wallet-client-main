@@ -1,10 +1,10 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import React from 'react';
-import {RouteProp, useRoute} from '@react-navigation/native';
-import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
+import { RouteProp, useRoute } from '@react-navigation/native';
+import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../constants/theme';
 // import { TokenData } from '../data/mockData';
-import {useAuth} from '../screens/auth/AuthContext';
-import {RootStackParamList} from '../constants/types'; // Import the type
+import { useAuth } from '../screens/auth/AuthContext';
+import { RootStackParamList } from '../types/types'; // Import the type
 import BackButton from './ui/BackButton';
 
 
@@ -12,8 +12,8 @@ type TokenDetailsRouteProp = RouteProp<RootStackParamList, 'TokenDetails'>;
 
 const TokenDetails: React.FC = () => {
   const route = useRoute<TokenDetailsRouteProp>();
-  const {token} = route.params;
-  const {balance} = useAuth();
+  const { token } = route.params;
+  const { balance } = useAuth();
 
   return (
     <View style={styles.container}>
@@ -22,7 +22,7 @@ const TokenDetails: React.FC = () => {
         <Text style={styles.coinName}>{token.coinName}</Text>
         <Image
           source={
-            typeof token.image === 'string' ? {uri: token.image} : token.image
+            typeof token.image === 'string' ? { uri: token.image } : token.image
           }
           style={styles.image}
         />

@@ -1,5 +1,4 @@
-
-import { Dimensions, StyleSheet, View, TextInput, Text } from 'react-native';
+import {Dimensions, StyleSheet, View, TextInput, Text} from 'react-native';
 import React, {
   forwardRef,
   useImperativeHandle,
@@ -15,10 +14,10 @@ import Animated, {
   AnimatedScrollViewProps,
   runOnJS,
 } from 'react-native-reanimated';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import BackDrop from './BackDrop';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { COLORS, FONTFAMILY, FONTSIZE } from '../constants/theme';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {COLORS, FONTFAMILY, FONTSIZE} from '../constants/theme';
 
 interface Props extends AnimatedScrollViewProps {
   snapTo: string;
@@ -32,9 +31,9 @@ export interface BottomSheetMethods {
 }
 
 const BottomSheetScrollView = forwardRef<BottomSheetMethods, Props>(
-  ({ snapTo, children, backgroundColor, backDropColor, ...rest }: Props, ref) => {
+  ({snapTo, children, backgroundColor, backDropColor, ...rest}: Props, ref) => {
     const inset = useSafeAreaInsets();
-    const { height } = Dimensions.get('screen');
+    const {height} = Dimensions.get('screen');
     const percentage = parseFloat(snapTo.replace('%', '')) / 100;
     const closeHeight = height;
     const openHeight = height - height * percentage;

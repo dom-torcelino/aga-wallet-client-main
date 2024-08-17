@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -8,10 +8,10 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
-import {useNavigation, NavigationProp} from '@react-navigation/native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 import axios from 'axios';
-import {useAuth} from '../screens/auth/AuthContext';
-import {RootStackParamList} from '../constants/types';
+import { useAuth } from '../screens/auth/AuthContext';
+import { RootStackParamList } from '../types/types';
 import {
   BORDERRADIUS,
   COLORS,
@@ -20,16 +20,16 @@ import {
   SPACING,
 } from '../constants/theme';
 // @ts-ignore
-import {API_URL} from '@env';
+import { API_URL } from '@env';
 import moment from 'moment';
 
-const {height, width} = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
 const TransactionSuccessScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [lastTransaction, setLastTransaction] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const {token, accountAddress, loggedIn} = useAuth();
+  const { token, accountAddress, loggedIn } = useAuth();
   const formatDate = (date: string) => {
     return moment(date).format('MMMM DD, YYYY, h:mm:ss A');
   };
@@ -53,8 +53,7 @@ const TransactionSuccessScreen: React.FC = () => {
           // Fetch the most recent transaction using the count - 1 as the offset
           if (totalTransactions > 0) {
             const lastTransactionResponse = await axios.get(
-              `${API_URL}/v1/wallets/${accountAddress}/transactions?limit=1&offset=${
-                totalTransactions - 1
+              `${API_URL}/v1/wallets/${accountAddress}/transactions?limit=1&offset=${totalTransactions - 1
               }`,
               {
                 headers: {

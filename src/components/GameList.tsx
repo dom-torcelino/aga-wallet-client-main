@@ -11,7 +11,7 @@ import {
 import {BORDERRADIUS, COLORS} from '../constants/theme';
 import {GameData} from '../data/mockData';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {RootStackParamList} from '../constants/types';
+import {RootStackParamList} from '../types/types';
 
 const {width} = Dimensions.get('window');
 const itemWidth = (width - 50) / 2;
@@ -48,7 +48,7 @@ const GameList: React.FC<GameListProps> = ({data = []}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 60,
+    marginBottom: 20,
   },
   itemContainer: {
     width: itemWidth, // Set item width dynamically

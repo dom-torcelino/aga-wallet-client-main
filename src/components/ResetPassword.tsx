@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,12 +11,12 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE } from '../constants/theme';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { RootStackParamList } from '../constants/types'; // Import the type
+import {BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE} from '../constants/theme';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
+import {RootStackParamList} from '../types/types'; // Import the type
 import BackButtonIcon from '../../assets/SVG/BackButtonIcon';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 const ResetPassword: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -48,7 +47,7 @@ const ResetPassword: React.FC = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ email, password: newPassword, resetToken }),
+          body: JSON.stringify({email, password: newPassword, resetToken}),
         },
       );
 

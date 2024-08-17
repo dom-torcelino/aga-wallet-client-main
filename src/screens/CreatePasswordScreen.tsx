@@ -9,7 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { RootStackParamList } from '../constants/types';
+import { RootStackParamList } from '../types/types';
 import { COLORS } from '../constants/theme';
 
 const CreatePasswordScreen: React.FC = () => {

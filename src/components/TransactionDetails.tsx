@@ -3,7 +3,7 @@ import React from 'react';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
 
-import {RootStackParamList} from '../constants/types'; // Import the type
+import {RootStackParamList} from '../types/types'; // Import the type
 import moment from 'moment';
 import BackButton from './ui/BackButton';
 

@@ -23,7 +23,7 @@ import {
   useIsFocused,
 } from '@react-navigation/native';
 import {mockTokens, TokenData} from '../data/mockData';
-import {RootStackParamList} from '../constants/types';
+import {RootStackParamList} from '../types/types';
 import {API_URL} from '@env';
 import {useAuth} from './auth/AuthContext';
 import {useCallback} from 'react';

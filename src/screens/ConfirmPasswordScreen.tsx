@@ -13,7 +13,7 @@ import {
   RouteProp,
   NavigationProp,
 } from '@react-navigation/native';
-import { RootStackParamList } from '../constants/types';
+import { RootStackParamList } from '../types/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS } from '../constants/theme';
 

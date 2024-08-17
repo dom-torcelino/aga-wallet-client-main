@@ -3,7 +3,7 @@ import React from 'react';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
 import NotificationIcon from '../../assets/SVG/NotificationIcon';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {RootStackParamList} from '../constants/types';
+import {RootStackParamList} from '../types/types';
 // import ScanIcon from '../assets/SVG/ScanIcon';
 
 interface HeaderBarProps {

@@ -6,7 +6,6 @@ import {
   SafeAreaView,
   TextInput,
   Dimensions,
-  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import {RouteProp, useRoute} from '@react-navigation/native';
@@ -18,7 +17,7 @@ import {
   SPACING,
 } from '../constants/theme';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {RootStackParamList} from '../constants/types';
+import {RootStackParamList} from '../types/types';
 import {useAuth} from '../screens/auth/AuthContext';
 import BackButton from './ui/BackButton';
 
@@ -84,7 +83,6 @@ const SendAmount: React.FC = () => {
           onChangeText={handleInputChange}
         />
         {/* Display error message if there is one */}
-        
 
         <View>
           <View style={styles.receiverAddressContainer}>

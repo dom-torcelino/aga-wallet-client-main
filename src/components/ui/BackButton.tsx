@@ -2,7 +2,7 @@ import React from 'react';
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
 import BackButtonIcon from '../../../assets/SVG/BackButtonIcon';
-import {RootStackParamList} from '../../constants/types';
+import {RootStackParamList} from '../../types/types';
 import {BORDERRADIUS, COLORS} from '../../constants/theme';
 
 const BackButton: React.FC = () => {

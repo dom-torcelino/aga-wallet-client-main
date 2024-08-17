@@ -13,7 +13,7 @@ import axios from 'axios';
 import {useAuth} from '../screens/auth/AuthContext';
 import TransactionSkeleton from './ui/TransactionSkeleton'; // Import the skeleton loader component
 import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {RootStackParamList} from '../constants/types'; // Import the type
+import {RootStackParamList} from '../types/types'; // Import the type
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
 import MoneySendIcon from '../../assets/SVG/MoneySendIcon';
 import MoneyReceivedIcon from '../../assets/SVG/MoneyReceivedIcon';
@@ -264,7 +264,7 @@ const Transaction: React.FC = () => {
 
 const styles = StyleSheet.create({
   TransactionStyles: {
-    marginBottom: 60,
+    // marginBottom: 20,
   },
   dateHeader: {
     fontSize: FONTSIZE.size_14,

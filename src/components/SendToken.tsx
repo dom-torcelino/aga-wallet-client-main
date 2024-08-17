@@ -22,7 +22,7 @@ import {
   FONTSIZE,
   SPACING,
 } from '../constants/theme';
-import {RootStackParamList} from '../constants/types';
+import {RootStackParamList} from '../types/types';
 import ScanIcon from '../../assets/SVG/ScanIcon';
 import {useBottomSheet} from './BottomSheetContext';
 import BackButton from './ui/BackButton';
@@ -50,7 +50,11 @@ const SendToken: React.FC = () => {
   const onPressButton = () => {
     if (validateAddress(recipient_address)) {
       setErrorMessage('');
-      navigation.navigate('SendAmount', {token, recipient_address});
+      navigation.navigate('SendAmount', {
+        token,
+        recipient_address,
+        setRecipient_address,
+      });
     } else {
       setErrorMessage(
         'The wallet address is not valid. Please check and try again.',

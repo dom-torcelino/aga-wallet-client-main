@@ -131,7 +131,7 @@ const Tokens: React.FC<TokensProps> = ({onPressToken}) => {
 
 const styles = StyleSheet.create({
   tokenStyles: {
-    marginBottom: 70,
+    marginBottom: 20,
   },
   loadingContainer: {
     flex: 1,

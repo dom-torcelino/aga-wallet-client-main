@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,21 +10,21 @@ import {
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
-import {useNavigation, NavigationProp} from '@react-navigation/native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 import {
   BORDERRADIUS,
   COLORS,
   FONTFAMILY,
   FONTSIZE,
 } from '../../constants/theme';
-import {RootStackParamList} from '../../constants/types'; // Import the type
+import { RootStackParamList } from '../../types/types'; // Import the type
 import BackButtonIcon from '../../../assets/SVG/BackButtonIcon';
 import TextInput from '../../components/ui/TextInput';
-import {useAuth} from './AuthContext'; // Import the useAuth hook
+import { useAuth } from './AuthContext'; // Import the useAuth hook
 // @ts-ignore
-import {API_URL} from '@env';
+import { API_URL } from '@env';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const Register: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -34,7 +34,7 @@ const Register: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
-  const {login, setAccountAddress} = useAuth(); // Destructure the login and setAccountAddress functions from useAuth
+  const { login, setAccountAddress } = useAuth(); // Destructure the login and setAccountAddress functions from useAuth
 
   const validateEmail = (email: string) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -59,13 +59,13 @@ const Register: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({email, password, name}),
+        body: JSON.stringify({ email, password, name }),
       });
       setLoading(false);
       if (response.ok) {
         const registerData = await response.json();
-        const {token, user, accountAddress} = registerData;
-        const {user_id} = user;
+        const { token, user, accountAddress } = registerData;
+        const { user_id } = user;
         await login(token, user_id); // Use the login function from AuthContext
         setAccountAddress(accountAddress); // Use the setAccountAddress function from AuthContext
         navigation.navigate('Home');

@@ -8,7 +8,7 @@ import ForgotPassword from '../screens/auth/ForgotPassword';
 import Register from '../screens/auth/Register';
 import {COLORS} from '../constants/theme';
 import BottomTabNavigator from './BottomTabNavigator';
-import {RootStackParamList} from '../constants/types'; // Import the type
+import {RootStackParamList} from '../types/types'; // Import the type
 import SendToken from '../components/SendToken';
 import TokenDetails from '../components/TokenDetails';
 import QrScanner from '../QrScanner';
