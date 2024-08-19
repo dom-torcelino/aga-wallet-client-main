@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios'; // Example if you are using axios for API calls
-import {API_URL} from '@env'; // Assuming you're using dotenv for environment variables
+import { API_URL } from '@env'; // Assuming you're using dotenv for environment variables
 
 interface AuthContextProps {
   token: {accessToken: string} | null;

@@ -6,76 +6,77 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {COLORS, SPACING, FONTFAMILY} from '../constants/theme';
-import {useAuth} from '../screens/auth/AuthContext';
-import TransactionSkeleton from './ui/TransactionSkeleton';
-import BackButton from './ui/BackButton';
+import React, { useEffect, useState } from 'react';
+import { COLORS, SPACING, FONTFAMILY } from '../constants/theme';
+import { useAuth } from './auth/AuthContext';
 // @ts-ignore
-import {API_URL} from '@env';
+import { API_URL } from '@env';
 import axios from 'axios';
+import { NotificationSkeleton } from '../components/ui/skeletons';
 
-const NotificationView: React.FC = () => {
-  const {token, loggedIn} = useAuth();
+const NotificationsScreen: React.FC = () => {
+  const LIMIT_PER_PAGE = 10;
+  const [totalNotifications, setTotalNotifications] = useState<number>(0);
+  const [page, setPage] = useState(1);
   const [notifications, setNotifications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const skeletonCount = 8;
+  const skeletonCount = 6;
+  const { token, loggedIn, userId } = useAuth();
 
-  const fetchNotification = async () => {
+  const fetchNotification = async (page: number, limit: number) => {
     try {
-      const response = await axios.get(`${API_URL}/v1/notifications`, {
+      setLoading(true);
+      const offset = (page - 1) * limit;
+      const response = await axios.get(`${API_URL}/v1/users/${userId}/notifications?limit=${limit}&offset=${offset}`, {
         headers: {
           Authorization: `Bearer ${token?.accessToken}`,
         },
       });
 
       if (response.status === 200) {
-        setNotifications(response.data.notifications);
+        if (page === 1) {
+          setNotifications(response.data.notifications);
+        } else {
+          setNotifications(prevNotifications => [...prevNotifications, ...response.data.notifications]);
+        }
+        setTotalNotifications(response.data.metadata.count);
       }
     } catch (error) {
-      console.error('Error fetching notification:', error);
+      console.error('Error fetching notifications:', error);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    let isMounted = true;
-
-    if (loggedIn && isMounted) {
-      fetchNotification();
+    if (loggedIn) {
+      fetchNotification(1, LIMIT_PER_PAGE); // Fetch the first page on component load
     }
+  }, [loggedIn]);
 
-    return () => {
-      isMounted = false;
-    };
-  }, [token, loggedIn]);
-
-  const renderNotificationItem = ({item}: {item: any}) => (
+  const renderNotificationItem = ({ item }: { item: any }) => (
     <View style={styles.notificationWrapper}>
-      <Text style={styles.notificationMessage}>
-        {item.notification_message}
-      </Text>
-      <Text style={styles.notificationDate}>
-        {new Date(item.notification_created_at).toLocaleString()}
-      </Text>
+      <Text style={styles.notificationMessage}>{item.notification_message}</Text>
+      <Text style={styles.notificationDate}>{new Date(item.notification_created_at).toLocaleString()}</Text>
     </View>
   );
 
-  const renderSkeletonItem = () => <TransactionSkeleton />;
+  const renderSkeletonItem = () => <NotificationSkeleton />;
 
-  const handleReloadNotifications = () => {
-    setLoading(true);
-    setNotifications([]);
-    fetchNotification(); // Re-fetch notifications when reload button is pressed
+  const loadMoreNotifications = () => {
+    const maxPages = Math.ceil(totalNotifications / LIMIT_PER_PAGE);
+    if (page < maxPages) {
+      setPage(prevPage => {
+        const nextPage = prevPage + 1;
+        fetchNotification(nextPage, LIMIT_PER_PAGE);
+        return nextPage;
+      });
+    }
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.backButton}>
-        <BackButton />
-      </View>
-      {loading ? (
+      {loading && page === 1 ? (
         <FlatList
           data={Array(skeletonCount).fill('')}
           renderItem={renderSkeletonItem}
@@ -86,6 +87,8 @@ const NotificationView: React.FC = () => {
           data={notifications}
           renderItem={renderNotificationItem}
           keyExtractor={item => item.notification_id.toString()}
+          onEndReached={loadMoreNotifications}
+          onEndReachedThreshold={0.5} // Fetch more when you reach 50% of the list
         />
       ) : (
         <View style={styles.EmptyContainer}>
@@ -94,17 +97,11 @@ const NotificationView: React.FC = () => {
             style={styles.emptyStateImage}
             resizeMode="contain"
           />
-          <Text style={styles.emptyStateHeaderText}>
-            No notifications found
-          </Text>
+          <Text style={styles.emptyStateHeaderText}>No notifications found</Text>
           <Text style={styles.bodyText}>
-            You currently have no notifications. {'\n'}Check back later for
-            updates.
+            You currently have no notifications. {'\n'}Check back later for updates.
           </Text>
-          <TouchableOpacity
-            onPress={handleReloadNotifications}
-            activeOpacity={0.7}
-            style={styles.reloadBtn}>
+          <TouchableOpacity onPress={() => fetchNotification(1, LIMIT_PER_PAGE)} activeOpacity={0.7} style={styles.reloadBtn}>
             <Text style={styles.reloadText}>Reload Notifications</Text>
           </TouchableOpacity>
         </View>
@@ -117,11 +114,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.primaryBGColor,
-  },
-  backButton: {
-    paddingHorizontal: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   notificationWrapper: {
     backgroundColor: COLORS.secondaryBGColor,
@@ -140,12 +132,6 @@ const styles = StyleSheet.create({
   notificationDate: {
     fontSize: 12,
     color: COLORS.secondaryTextColor,
-  },
-  noNotificationText: {
-    fontSize: 16,
-    color: COLORS.primaryWhite,
-    textAlign: 'center',
-    marginTop: 20,
   },
   EmptyContainer: {
     flex: 1,
@@ -188,4 +174,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NotificationView;
+export default NotificationsScreen;

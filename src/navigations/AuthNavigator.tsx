@@ -22,8 +22,8 @@ import TransactionSuccessScreen from '../screens/TransactionSuccessScreen';
 import TransactionFailureScreen from '../screens/TransactionFailureScreen';
 import EnterPasswordScreen from '../screens/EnterPasswordScreen';
 import TransactionDetails from '../components/TransactionDetails';
-import NotificationView from '../components/NotificationView';
 import GameView from '../components/GameView';
+import NotificationsScreen from '../screens/NotificationScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -115,14 +115,17 @@ const AuthNavigator = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="NotificationView"
-        component={NotificationView}
-        options={{headerShown: false}}
+        name="NotificationsScreen"
+        component={NotificationsScreen}
+        options={{
+          headerShown: true, 
+          title: "Notifications", 
+          headerStyle: { backgroundColor: COLORS.primaryBGColor } }}
       />
       <Stack.Screen
         name="QrScanner"
         component={QrScanner}
-        options={{headerShown: false}}
+        options={{ headerShown: false}}
       />
       <Stack.Screen
         name="SendAmount"
