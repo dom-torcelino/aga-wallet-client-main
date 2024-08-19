@@ -24,6 +24,7 @@ import EnterPasswordScreen from '../screens/EnterPasswordScreen';
 import TransactionDetails from '../components/TransactionDetails';
 import NotificationView from '../components/NotificationView';
 import GameView from '../components/GameView';
+import {useTheme} from '../utils/ThemeContext';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -48,6 +49,7 @@ const closeConfig = {
 };
 
 const AuthNavigator = () => {
+  const {theme} = useTheme();
   return (
     <Stack.Navigator
       screenOptions={{
@@ -107,12 +109,30 @@ const AuthNavigator = () => {
       <Stack.Screen
         name="TokenDetails"
         component={TokenDetails}
-        options={{headerShown: false}}
+        options={{
+          headerShown: true,
+          headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: theme.primaryBGColor,
+            elevation: 0,
+            shadowOpacity: 0,
+          },
+          headerTintColor: theme.textColor,
+        }}
       />
       <Stack.Screen
         name="TransactionDetails"
         component={TransactionDetails}
-        options={{headerShown: false}}
+        options={{
+          headerShown: true,
+          headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: theme.primaryBGColor,
+            elevation: 0,
+            shadowOpacity: 0,
+          },
+          headerTintColor: theme.textColor,
+        }}
       />
       <Stack.Screen
         name="NotificationView"

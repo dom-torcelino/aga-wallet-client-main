@@ -11,10 +11,7 @@ import WalletIcon from '../../assets/SVG/WalletIcon';
 import SettingsIcon from '../../assets/SVG/Settings';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  useNavigation,
-  NavigationProp,
-} from '@react-navigation/native';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
 import {RootStackParamList} from '../types/types';
 // @ts-ignore
 import {API_URL} from '@env';

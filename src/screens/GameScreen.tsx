@@ -6,6 +6,7 @@ import CarouselSlider from '../components/Carousel';
 import Tabs from '../components/Tabs';
 import GameList from '../components/GameList';
 import {games} from '../data/mockData';
+import {useTheme} from '../utils/ThemeContext';
 
 const gameTabs = ['All', 'Slot', 'Casino', 'Poker'];
 
@@ -21,6 +22,8 @@ const GameScreen: React.FC = () => {
     'All' | 'Slot' | 'Casino' | 'Poker'
   >('All');
 
+  const {isDarkMode, toggleTheme, theme} = useTheme();
+
   const filterData = () => {
     if (activeTab === 'All') {
       return shuffleArray(games); // Shuffle the games when "All" is selected
@@ -31,7 +34,8 @@ const GameScreen: React.FC = () => {
   };
 
   return (
-    <View style={styles.ScreenContainer}>
+    <View
+      style={[styles.ScreenContainer, {backgroundColor: theme.primaryBGColor}]}>
       <StatusBar backgroundColor={COLORS.primaryBGColor} />
       <HeaderBar title={'Game'} />
       <ScrollView

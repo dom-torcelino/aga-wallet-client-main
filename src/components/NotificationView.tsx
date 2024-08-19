@@ -20,6 +20,7 @@ const NotificationView: React.FC = () => {
   const [notifications, setNotifications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const skeletonCount = 8;
+  
 
   const fetchNotification = async () => {
     try {

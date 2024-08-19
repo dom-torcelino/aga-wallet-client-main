@@ -27,6 +27,7 @@ import {RootStackParamList} from '../types/types';
 import {API_URL} from '@env';
 import {useAuth} from './auth/AuthContext';
 import {useCallback} from 'react';
+import {useTheme} from '../utils/ThemeContext';
 
 const walletTabs = ['Assets', 'Transaction'];
 
@@ -38,6 +39,7 @@ const WalletScreen: React.FC = () => {
   const [activeTab, setActiveTab] = useState(walletTabs[0]);
   const [refreshing, setRefreshing] = useState(false);
   const [hasWallet, setHasWallet] = useState<boolean>(true);
+  const {isDarkMode, toggleTheme, theme} = useTheme();
 
   useEffect(() => {
     const backAction = () => {
@@ -132,7 +134,11 @@ const WalletScreen: React.FC = () => {
   if (!hasWallet) {
     // Show button to create a wallet if no wallet exists
     return (
-      <View style={styles.EmptyContainer}>
+      <View
+        style={[
+          styles.EmptyContainer,
+          {backgroundColor: theme.primaryBGColor},
+        ]}>
         <View style={styles.ImageContainer}>
           <Image
             source={require('../../assets/images/emptyState/NoWalletFound.png')}
@@ -140,7 +146,9 @@ const WalletScreen: React.FC = () => {
             resizeMode="contain"
           />
         </View>
-        <Text style={styles.emptyStateHeaderText}>No wallet found</Text>
+        <Text style={[styles.emptyStateHeaderText, {color: theme}]}>
+          No wallet found
+        </Text>
         <Text style={styles.bodyText}>
           You cant use this feature if you {'\n'}have no wallet{' '}
         </Text>
@@ -156,7 +164,8 @@ const WalletScreen: React.FC = () => {
   }
 
   return (
-    <View style={styles.ScreenContainer}>
+    <View
+      style={[styles.ScreenContainer, {backgroundColor: theme.primaryBGColor}]}>
       <StatusBar backgroundColor={COLORS.primaryBGColor} />
 
       <FlatList

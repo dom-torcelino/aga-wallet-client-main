@@ -19,6 +19,7 @@ import MoneySendIcon from '../../assets/SVG/MoneySendIcon';
 import MoneyReceivedIcon from '../../assets/SVG/MoneyReceivedIcon';
 // @ts-ignore
 import {API_URL} from '@env';
+import {useTheme} from '../utils/ThemeContext';
 
 interface TransactionData {
   tx_id: number;
@@ -66,6 +67,7 @@ const Transaction: React.FC = () => {
   const [loadingMore, setLoadingMore] = useState(false);
   const skeletonCount = 5;
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const {isDarkMode, toggleTheme, theme} = useTheme();
 
   useEffect(() => {
     let isMounted = true;
@@ -156,7 +158,13 @@ const Transaction: React.FC = () => {
   const renderItem = ({item}: {item: TransactionData}) => (
     <TouchableOpacity
       key={item.tx_id.toString()}
-      style={styles.container}
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.secondaryBGColor,
+          borderColor: theme.borderStroke,
+        },
+      ]}
       onPress={() =>
         navigation.navigate('TransactionDetails', {transaction: item})
       }>
@@ -169,7 +177,7 @@ const Transaction: React.FC = () => {
           )}
         </View>
         <View>
-          <Text style={styles.name}>
+          <Text style={[styles.name, {color: theme.textColor}]}>
             {item.tx_type === 't'
               ? truncateAddress(item.tx_wallet_recipient_address)
               : truncateAddress(item.tx_wallet_sender_address)}
@@ -198,7 +206,9 @@ const Transaction: React.FC = () => {
     section: {title},
   }: {
     section: {title: string};
-  }) => <Text style={styles.dateHeader}>{title}</Text>;
+  }) => (
+    <Text style={[styles.dateHeader, {color: theme.textColor}]}>{title}</Text>
+  );
 
   const renderFooter = () => {
     if (!loadingMore) {

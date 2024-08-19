@@ -12,6 +12,7 @@ import {BORDERRADIUS, COLORS} from '../constants/theme';
 import {GameData} from '../data/mockData';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
 import {RootStackParamList} from '../types/types';
+import {useTheme} from '../utils/ThemeContext';
 
 const {width} = Dimensions.get('window');
 const itemWidth = (width - 50) / 2;
@@ -22,14 +23,23 @@ interface GameListProps {
 
 const GameList: React.FC<GameListProps> = ({data = []}) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const {isDarkMode, toggleTheme, theme} = useTheme();
 
   const renderItem = ({item}: {item: GameData}) => (
     <TouchableOpacity
-      style={styles.itemContainer}
+      style={[
+        styles.itemContainer,
+        {
+          backgroundColor: theme.secondaryBGColor,
+          borderColor: theme.borderStroke,
+        },
+      ]}
       key={item.id.toString()}
       onPress={() => navigation.navigate('GameView', {game: item})}>
       <Image source={{uri: item.image}} style={styles.ImageStyles} />
-      <Text style={styles.TextStyles}>{item.name}</Text>
+      <Text style={[styles.TextStyles, {color: theme.textColor}]}>
+        {item.name}
+      </Text>
     </TouchableOpacity>
   );
 

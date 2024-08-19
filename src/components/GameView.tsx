@@ -5,23 +5,29 @@ import {BORDERRADIUS, COLORS} from '../constants/theme';
 import {useRoute, RouteProp} from '@react-navigation/native';
 import {RootStackParamList} from '../types/types';
 import BackButton from './ui/BackButton';
+import {useTheme} from '../utils/ThemeContext';
 
 type GameViewRouteProp = RouteProp<RootStackParamList, 'GameView'>;
 
 const GameView: React.FC = () => {
   const route = useRoute<GameViewRouteProp>();
   const {game} = route.params;
+  const {isDarkMode, toggleTheme, theme} = useTheme();
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: theme.primaryBGColor}]}>
       <BackButton />
       <View style={styles.itemsCenter}>
-        <Text style={styles.gameTitle}>{game.name}</Text>
+        <Text style={[styles.gameTitle, {color: theme.textColor}]}>
+          {game.name}
+        </Text>
         <Image source={{uri: game.image}} style={styles.gameImage} />
       </View>
 
       <TouchableOpacity style={styles.playButton}>
-        <Text style={styles.playButtonText}>Play Now</Text>
+        <Text style={[styles.playButtonText, {color: theme.textColor}]}>
+          Play Now
+        </Text>
       </TouchableOpacity>
     </View>
   );

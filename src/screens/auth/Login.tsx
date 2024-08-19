@@ -10,6 +10,7 @@ import {
   Image,
   ScrollView,
   ActivityIndicator,
+  StatusBar,
 } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import {
@@ -24,6 +25,7 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import { LoginManager, AccessToken, Settings } from 'react-native-fbsdk-next';
 import { useAuth } from './AuthContext';
+import { useTheme } from '../../utils/ThemeContext';
 
 // @ts-ignore
 import { API_URL } from '@env';
@@ -37,6 +39,7 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const { login } = useAuth();
+  const {isDarkMode, toggleTheme, theme} = useTheme();
 
   useEffect(() => {
     Settings.initializeSDK();
@@ -194,7 +197,12 @@ const Login: React.FC = () => {
   }
 
   return (
-    <SafeAreaView style={styles.main}>
+    <SafeAreaView style={[styles.main, {backgroundColor: theme.primaryBGColor}]}>
+      <StatusBar
+        backgroundColor={theme.primaryBGColor}
+        barStyle={theme.isDarkMode ? 'light-content' : 'dark-content'}
+        translucent={false}
+      />
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         keyboardShouldPersistTaps="handled">
@@ -204,9 +212,9 @@ const Login: React.FC = () => {
             style={styles.imageStyle}
           />
         </View>
-        <View style={styles.container}>
+        <View style={[styles.container, {backgroundColor: theme.primaryBGColor}]}>
           <View style={styles.wFull}>
-            <Text style={styles.loginContinueTxt}>Log In</Text>
+            <Text style={[styles.loginContinueTxt, {color: theme.textColor}]}>Log In</Text>
             <TextInput
               placeholder="Email"
               value={email}
@@ -239,7 +247,7 @@ const Login: React.FC = () => {
             </View>
 
             <View style={styles.signUp}>
-              <Text style={styles.signUpText}>Don't have an account? </Text>
+              <Text style={[styles.signUpText, {color: theme.textColor}]}>Don't have an account? </Text>
               <TouchableOpacity onPress={() => navigation.navigate('Register')}>
                 <Text style={styles.signupBtn}>Sign Up</Text>
               </TouchableOpacity>
@@ -248,29 +256,35 @@ const Login: React.FC = () => {
 
           <View style={styles.signInOptions}>
             <View style={styles.lineStyles} />
-            <Text style={styles.signUpText}>or sign in with</Text>
+            <Text style={[styles.signUpText, {color: theme.textColor}]}>or sign in with</Text>
             <View style={styles.lineStyles} />
           </View>
 
           <View style={styles.socialSignIn}>
             <TouchableOpacity
-              style={styles.socialSignInBtn}
+              style={[styles.socialSignInBtn, {
+                backgroundColor: theme.secondaryBGColor,
+                borderColor: theme.borderStroke,
+              }]}
               onPress={onFacebookButtonPress}>
               <Image
                 source={require('../../../assets/images/facebook_icon.png')}
                 style={styles.socialImage}
               />
-              <Text style={styles.socialSignInText}>Facebook</Text>
+              <Text style={[styles.socialSignInText, {color: theme.textColor}]}>Facebook</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.socialSignInBtn}
+              style={[styles.socialSignInBtn, {
+                backgroundColor: theme.secondaryBGColor,
+                borderColor: theme.borderStroke,
+              }]}
               onPress={onGoogleButtonPress}>
               <Image
                 source={require('../../../assets/images/google_icon.png')}
                 style={styles.socialImage}
               />
-              <Text style={styles.socialSignInText}>Google</Text>
+              <Text style={[styles.socialSignInText, {color: theme.textColor}]}>Google</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -299,6 +313,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  
   imageContainer: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -310,6 +325,9 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     maxWidth: '80%',
     maxHeight: 120,
+  },
+  wFull: {
+    width: '100%',
   },
   loginContinueTxt: {
     fontSize: width < 350 ? FONTSIZE.size_24 : FONTSIZE.size_28,
@@ -410,9 +428,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTFAMILY.poppins_medium,
     textAlign: 'center',
   },
-  wFull: {
-    width: '100%',
-  },
+  
   errorText: {
     color: 'red',
     marginTop: 10,

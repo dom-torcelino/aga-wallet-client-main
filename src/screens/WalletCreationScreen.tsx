@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,7 +9,7 @@ import {
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
 import {
   BORDERRADIUS,
   COLORS,
@@ -17,18 +17,18 @@ import {
   FONTSIZE,
   SPACING,
 } from '../constants/theme';
-import { RootStackParamList } from '../types/types';
+import {RootStackParamList} from '../types/types';
 import TextInput from '../components/ui/TextInput';
-import { useAuth } from './auth/AuthContext';
+import {useAuth} from './auth/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // @ts-ignore
-import { API_URL } from '@env';
+import {API_URL} from '@env';
 
-const { height } = Dimensions.get('window');
+const {height} = Dimensions.get('window');
 
 const WalletCreationScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const { token, setAccountAddress } = useAuth();
+  const {token, setAccountAddress} = useAuth();
   const [name, setName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
@@ -58,14 +58,14 @@ const WalletCreationScreen: React.FC = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token.accessToken}`, // Use the Bearer token
         },
-        body: JSON.stringify({ account_id: name, password }), // Include account ID and password
+        body: JSON.stringify({account_id: name, password}), // Include account ID and password
       });
 
       setLoading(false);
 
       if (walletResponse.ok) {
         const walletData = await walletResponse.json();
-        const { wallet_address } = walletData;
+        const {wallet_address} = walletData;
         setAccountAddress(wallet_address);
         await AsyncStorage.setItem('walletPassword', password); // Save the wallet password
         navigation.navigate('Home'); // Navigate to home or other screen
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: SPACING.space_12,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.4,
     shadowRadius: 3,
     elevation: 5,
