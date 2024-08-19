@@ -110,6 +110,7 @@ const Tokens: React.FC<TokensProps> = ({onPressToken}) => {
           <Text style={styles.crypto}>{item.crypto}</Text>
           {/* <Text style={styles.fiat}>(${item.fiat})</Text> */}
           <Text style={styles.fiat}>${balance.toFixed(2)}</Text>
+          
         </View>
       </TouchableOpacity>
     );
