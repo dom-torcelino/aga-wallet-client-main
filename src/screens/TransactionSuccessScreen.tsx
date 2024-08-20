@@ -23,6 +23,8 @@ import {
 import {API_URL} from '@env';
 import moment from 'moment';
 import {useTheme} from '../utils/ThemeContext';
+import TransferSuccessImageDark from '../../assets/images/emptyState/TransferSuccessDark.png';
+import TransferSuccessImageLight from '../../assets/images/emptyState/TransferSuccessLight.png';
 
 const {height, width} = Dimensions.get('window');
 
@@ -34,7 +36,7 @@ const TransactionSuccessScreen: React.FC = () => {
   const formatDate = (date: string) => {
     return moment(date).format('MMMM DD, YYYY, h:mm:ss A');
   };
-  const {theme} = useTheme();
+  const {isDarkMode, theme} = useTheme();
 
   useEffect(() => {
     const fetchLastTransaction = async () => {
@@ -95,7 +97,7 @@ const TransactionSuccessScreen: React.FC = () => {
     <View style={[styles.container, {backgroundColor: theme.primaryBGColor}]}>
       <View style={styles.transferHeader}>
         <Image
-          source={require('../../assets/images/emptyState/TransferSuccess.png')}
+          source={isDarkMode ? TransferSuccessImageDark : TransferSuccessImageLight}
           style={styles.TransferDoneImage}
           resizeMode="contain"
         />

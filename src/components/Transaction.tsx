@@ -169,7 +169,7 @@ const Transaction: React.FC = () => {
         navigation.navigate('TransactionDetails', {transaction: item})
       }>
       <View style={styles.dataContainer}>
-        <View style={styles.iconWrapper}>
+        <View style={[styles.iconWrapper, {backgroundColor: theme.layeBGColor}]}>
           {item.tx_type === 't' ? (
             <MoneySendIcon size={30} fillColor={'#C12727'} />
           ) : (
