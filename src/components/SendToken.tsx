@@ -68,7 +68,7 @@ const SendToken: React.FC = () => {
     <SafeAreaView
       style={[styles.main, {backgroundColor: theme.primaryBGColor}]}>
       <View>
-        <BackButton />
+        {/* <BackButton /> */}
         <View style={styles.container}>
           <View
             style={[

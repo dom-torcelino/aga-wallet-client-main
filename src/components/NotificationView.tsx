@@ -14,13 +14,14 @@ import BackButton from './ui/BackButton';
 // @ts-ignore
 import {API_URL} from '@env';
 import axios from 'axios';
+import {useTheme} from '../utils/ThemeContext';
 
 const NotificationView: React.FC = () => {
   const {token, loggedIn} = useAuth();
   const [notifications, setNotifications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const skeletonCount = 8;
-  
+  const {theme} = useTheme();
 
   const fetchNotification = async () => {
     try {
@@ -72,10 +73,8 @@ const NotificationView: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.backButton}>
-        <BackButton />
-      </View>
+    <View style={[styles.container, {backgroundColor: theme.primaryBGColor}]}>
+      <View style={styles.backButton}>{/* <BackButton /> */}</View>
       {loading ? (
         <FlatList
           data={Array(skeletonCount).fill('')}
@@ -118,6 +117,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.primaryBGColor,
+    paddingVertical: 10,
   },
   backButton: {
     paddingHorizontal: 10,

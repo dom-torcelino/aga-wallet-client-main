@@ -131,7 +131,9 @@ const TransactionSuccessScreen: React.FC = () => {
                 style={[styles.detailText, {color: theme.secondaryTextColor}]}>
                 Amount
               </Text>
-              <Text style={styles.apiText}>{lastTransaction.tx_amount}</Text>
+              <Text style={[styles.apiText, {color: theme.textColor}]}>
+                {lastTransaction.tx_amount}
+              </Text>
             </View>
             <View
               style={[
@@ -142,7 +144,7 @@ const TransactionSuccessScreen: React.FC = () => {
                 },
               ]}>
               <Text style={styles.detailText}>Receiver</Text>
-              <Text style={styles.apiText}>
+              <Text style={[styles.apiText, {color: theme.textColor}]}>
                 {lastTransaction.tx_wallet_recipient_address}
               </Text>
             </View>
@@ -155,7 +157,9 @@ const TransactionSuccessScreen: React.FC = () => {
                 },
               ]}>
               <Text style={styles.detailText}>Transaction Hash</Text>
-              <Text style={styles.apiText}>{lastTransaction.tx_hash}</Text>
+              <Text style={[styles.apiText, {color: theme.textColor}]}>
+                {lastTransaction.tx_hash}
+              </Text>
             </View>
             {/* <Text style={styles.detailText}>
               Transaction Hash: {lastTransaction.tx_hash}

@@ -104,7 +104,16 @@ const AuthNavigator = () => {
       <Stack.Screen
         name="SendToken"
         component={SendToken}
-        options={{headerShown: false}}
+        options={{
+          headerShown: true,
+          headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: theme.primaryBGColor,
+            elevation: 0,
+            shadowOpacity: 0,
+          },
+          headerTintColor: theme.textColor,
+        }}
       />
       <Stack.Screen
         name="TokenDetails"
@@ -137,7 +146,16 @@ const AuthNavigator = () => {
       <Stack.Screen
         name="NotificationView"
         component={NotificationView}
-        options={{headerShown: false}}
+        options={{
+          headerShown: true,
+          headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: theme.primaryBGColor,
+            elevation: 0,
+            shadowOpacity: 0,
+          },
+          headerTintColor: theme.textColor,
+        }}
       />
       <Stack.Screen
         name="QrScanner"
@@ -147,7 +165,16 @@ const AuthNavigator = () => {
       <Stack.Screen
         name="SendAmount"
         component={SendAmount}
-        options={{headerShown: false}}
+        options={{
+          headerShown: true,
+          headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: theme.primaryBGColor,
+            elevation: 0,
+            shadowOpacity: 0,
+          },
+          headerTintColor: theme.textColor,
+        }}
       />
       <Stack.Screen
         name="TransactionSuccessScreen"
