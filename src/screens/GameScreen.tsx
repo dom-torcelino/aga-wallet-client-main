@@ -25,7 +25,7 @@ const GameScreen: React.FC = () => {
 
   useMemo(() => {
     const fetchGames = async () => {
-      const response = await fetch(`${API_URL}/v1/games?limit=2&order_by=desc&sort_by=game_players&${genre !== '' ? `genre=${genre}`: ''}`, {
+      const response = await fetch(`${API_URL}/v1/games?&order_by=desc&${genre !== '' ? `genre=${genre}`: ''}`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token?.accessToken}`,
@@ -35,7 +35,6 @@ const GameScreen: React.FC = () => {
       setGames(data?.games ?? []);
     }
     fetchGames()
-    console.log("MEMOIZED")
   }, [genre, token])
 
   return (
@@ -54,7 +53,7 @@ const GameScreen: React.FC = () => {
           activeTab={activeTab}
           setActiveTab={(tab) => {
             setActiveTab(tab)
-            setGenre(tab)
+            setGenre(tab == "All" ? "" : tab)
           }}
         />
            {/* <GameList data={filterData()} /> */}
