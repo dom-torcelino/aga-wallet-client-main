@@ -16,8 +16,8 @@ const GameView: React.FC = () => {
     <View style={styles.container}>
       <BackButton />
       <View style={styles.itemsCenter}>
-        <Text style={styles.gameTitle}>{game.name}</Text>
-        <Image source={{uri: game.image}} style={styles.gameImage} />
+        <Text style={styles.gameTitle}>{game.game_name}</Text>
+        <Image source={{uri: game.game_image}} style={styles.gameImage} />
       </View>
 
       <TouchableOpacity style={styles.playButton}>

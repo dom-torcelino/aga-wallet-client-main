@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -10,26 +10,43 @@ import {
 } from 'react-native';
 import {BORDERRADIUS, COLORS} from '../constants/theme';
 import {GameData} from '../data/mockData';
+import {useAuth} from '../screens/auth/AuthContext';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
 import {RootStackParamList} from '../constants/types';
+// @ts-ignore
+import {API_URL} from '@env';
 
 const {width} = Dimensions.get('window');
-const itemWidth = (width - 50) / 2;
+const itemWidth = ( width -50 ) ;
 
 interface GameListProps {
-  data: GameData[];
+  data: GameListData[];
+}
+export interface GameListData {
+  id: number;
+  game_name: string;
+  game_image: string;
+  game_url:string;
+  game_genre: string;
+  game_status: string;
+  game_players: string;
+  game_created_at: string;
+  game_updated_at: string;
 }
 
-const GameList: React.FC<GameListProps> = ({data = []}) => {
+export const GameList: React.FC<GameListProps> = ({data = []}) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-
-  const renderItem = ({item}: {item: GameData}) => (
+  const renderItem = ({item}: {item: GameListData}) => (
     <TouchableOpacity
       style={styles.itemContainer}
       key={item.id.toString()}
       onPress={() => navigation.navigate('GameView', {game: item})}>
-      <Image source={{uri: item.image}} style={styles.ImageStyles} />
-      <Text style={styles.TextStyles}>{item.name}</Text>
+      <Image source={{uri: item.game_image}} style={styles.ImageStyles} />
+      <Text style={styles.TextStyles}>{item.game_name}</Text>
+      <View style={styles.infoRow}>
+        <Text style={styles.TextStyles2}>Total Players: {item.game_players}</Text>
+        <Text style={styles.TextStyles2}>Genre: {item.game_genre}</Text>
+      </View>
     </TouchableOpacity>
   );
 
@@ -39,12 +56,14 @@ const GameList: React.FC<GameListProps> = ({data = []}) => {
         data={data}
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
-        numColumns={2}
         scrollEnabled={false}
       />
+       
     </View>
+    
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -65,10 +84,24 @@ const styles = StyleSheet.create({
     color: COLORS.primaryWhite,
     textAlign: 'center',
     margin: 10,
+    fontSize:20,
+  },
+  TextStyles2: {
+    color: COLORS.secondaryWhite,
+    textAlign: 'center',
+    margin: 10,
+    fontSize:13,
   },
   ImageStyles: {
     width: itemWidth, // Make image width responsive
-    height: itemWidth * 0.6, // Adjust height based on aspect ratio (0.6 here as an example)
+    height: itemWidth * 0.4, // Adjust height based on aspect ratio (0.6 here as an example)
+  },
+  infoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between', 
+    width: '100%', 
+
+    marginBottom: 10,
   },
 });
 

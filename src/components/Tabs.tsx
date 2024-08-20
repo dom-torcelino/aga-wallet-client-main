@@ -29,7 +29,7 @@ const TabButton: React.FC<TabButtonProps> = ({
 interface TabsProps {
   tabs: string[];
   activeTab: string;
-  setActiveTab: (tab: 'All' | 'Slot' | 'Casino' | 'Poker') => void;
+  setActiveTab: (tab: 'All' | 'Slot' | 'Casino' | 'RPG') => void;
 }
 
 const Tabs: React.FC<TabsProps> = ({tabs, activeTab, setActiveTab}) => {
@@ -42,7 +42,7 @@ const Tabs: React.FC<TabsProps> = ({tabs, activeTab, setActiveTab}) => {
             name={item}
             activeTab={activeTab}
             onHandleSearchType={() =>
-              setActiveTab(item as 'All' | 'Slot' | 'Casino' | 'Poker')
+              setActiveTab(item as 'All' | 'Slot' | 'Casino' | 'RPG')
             }
             key={index.toString()} // Ensure unique key
           />

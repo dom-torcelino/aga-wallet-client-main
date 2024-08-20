@@ -72,7 +72,7 @@ const SettingsScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.primaryBGColor,
+    backgroundColor: COLORS.primaryBGColor, 
     // justifyContent: 'center',
     // alignItems: 'center',\
     paddingHorizontal: 20,
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
 
   textColor: {
     fontSize: FONTSIZE.size_18,
-    // color: COLORS.secondaryTextColor,
+    // color: COLORS.secondaryTextColor,f
     color: COLORS.textColor,
     fontFamily: FONTFAMILY.poppins_regular,
   },
