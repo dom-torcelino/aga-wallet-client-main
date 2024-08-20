@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -13,8 +13,14 @@ import {
   RouteProp,
   NavigationProp,
 } from '@react-navigation/native';
-import {RootStackParamList} from '../constants/types'
-import {COLORS} from '../constants/theme';
+import {RootStackParamList} from '../constants/types';
+import {
+  BORDERRADIUS,
+  COLORS,
+  FONTFAMILY,
+  FONTSIZE,
+  SPACING,
+} from '../constants/theme';
 // @ts-ignore
 import {API_URL} from '@env';
 import {useAuth} from './auth/AuthContext';
@@ -67,11 +73,14 @@ const EnterPasswordScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Enter your Wallet Password</Text>
+      <Text style={styles.title}>Enter your wallet password</Text>
       <TextInput
+        autoFocus={true}
         value={password}
         onChangeText={setPassword}
+        placeholder="0.00"
         secureTextEntry={true}
+        inputMode="numeric"
         style={styles.input}
       />
 
@@ -90,30 +99,35 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: COLORS.primaryBGColor,
+    paddingHorizontal: 20,
   },
   title: {
     fontSize: 24,
     marginBottom: 20,
-    color: COLORS.secondaryTextColor,
+    color: COLORS.textColor,
+    fontFamily: FONTFAMILY.poppins_medium,
   },
   input: {
     borderColor: 'gray',
     borderWidth: 1,
     padding: 10,
-    width: '80%',
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 24,
     color: COLORS.primaryWhite,
+    fontSize: FONTSIZE.size_20,
+    borderRadius: BORDERRADIUS.radius_10,
   },
   button: {
     backgroundColor: COLORS.primaryGoldHex,
-    padding: 15,
-    borderRadius: 5,
+    padding: SPACING.space_10,
+    alignItems: 'center',
+    borderRadius: BORDERRADIUS.radius_10,
   },
   buttonText: {
-    color: 'white',
+    color: COLORS.primaryBGColor,
+    fontSize: FONTSIZE.size_16,
+    fontFamily: FONTFAMILY.poppins_semibold,
   },
 });
 
