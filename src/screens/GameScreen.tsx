@@ -73,8 +73,6 @@ const GameScreen: React.FC = () => {
     fetchTokenData();
   },[]);
 
-  console.log(gameData)
-
   return (
     <View
       style={[styles.ScreenContainer, {backgroundColor: theme.primaryBGColor}]}>
