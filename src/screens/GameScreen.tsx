@@ -1,12 +1,11 @@
-import {StatusBar, StyleSheet, View, ScrollView} from 'react-native';
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import { StyleSheet, View, ScrollView } from 'react-native';
+import React, { useMemo, useState} from 'react';
 import {COLORS, SPACING} from '../constants/theme';
 import HeaderBar from '../components/HeaderBar';
 import CarouselSlider from '../components/Carousel';
 import Tabs from '../components/Tabs';
-import {games} from '../data/mockData';
 import {useTheme} from '../utils/ThemeContext';
-import GameList, { GameListData } from '../components/GameList';
+import GameList from '../components/GameList';
 import { useAuth } from './auth/AuthContext';
 // @ts-ignore
 import {API_URL} from '@env';
@@ -15,7 +14,7 @@ const gameTabs = ['All', 'Slot', 'Casino', 'RPG'];
 
 const GameScreen: React.FC = () => {
   const { theme } = useTheme()
-  const {userId, token, loggedIn, balance} = useAuth();
+  const { token } = useAuth();
   const [activeTab, setActiveTab] = useState<
     'All' | 'Slot' | 'Casino' | 'RPG'
   >('All');
@@ -35,7 +34,6 @@ const GameScreen: React.FC = () => {
       setGames(data?.games ?? []);
     }
     fetchGames()
-    console.log("MEMOIZED")
   }, [genre, token])
 
   return (

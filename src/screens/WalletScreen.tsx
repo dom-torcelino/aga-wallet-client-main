@@ -39,7 +39,7 @@ const WalletScreen: React.FC = () => {
   const [activeTab, setActiveTab] = useState(walletTabs[0]);
   const [refreshing, setRefreshing] = useState(false);
   const [hasWallet, setHasWallet] = useState<boolean>(true);
-  const {isDarkMode, toggleTheme, theme} = useTheme();
+  const { theme } = useTheme();
 
   useEffect(() => {
     const backAction = () => {
