@@ -14,6 +14,19 @@ import { useAuth } from './auth/AuthContext';
 import { API_URL } from '@env';
 import axios from 'axios';
 import { NotificationSkeleton } from '../components/ui/skeletons';
+import RedCircleIcon from '../../assets/SVG/RedDot';
+
+const NotificationStatus = ['unread', 'read' , 'dismissed' , 'archived' , 'action_taken'] as const
+
+interface Notification {
+  notification_created_at: string;
+  notification_id: number;
+  notification_message: string;
+  notification_status: typeof NotificationStatus[number];
+  notification_type: string; // You can expand types based on your use case
+  notification_updated_at: string;
+  notification_user_id: number;
+}
 
 const LIMIT_PER_PAGE = 10;
 const SKELETON_COUNT = 6;
@@ -33,7 +46,7 @@ const NotificationsScreen: React.FC = () => {
       }
       setLoading(true);
       const offset = (page - 1) * limit;
-      const response = await axios.get(`${API_URL}/v1/users/${userId}/notifications?limit=${limit}&offset=${offset}`, {
+      const response = await axios.get(`${API_URL}/v1/users/${userId}/notifications?limit=${limit}&offset=${offset}&order_by=desc`, {
         headers: {
           Authorization: `Bearer ${token?.accessToken}`,
         },
@@ -63,12 +76,15 @@ const NotificationsScreen: React.FC = () => {
     }
   }, [loggedIn]);
 
-  const renderNotificationItem = ({ item }: { item: any }) => (
-    <View style={styles.notificationWrapper}>
-      <Text style={styles.notificationMessage}>{item.notification_message}</Text>
-      <Text style={styles.notificationDate}>{new Date(item.notification_created_at).toLocaleString()}</Text>
-    </View>
-  );
+  const renderNotificationItem = ({ item }: { item: Notification }) => {
+    return (
+      <View style={styles.notificationWrapper}>
+        {item.notification_status === 'unread' && <RedCircleIcon size={8} style={styles.redDotIcon} />}
+        <Text style={styles.notificationMessage}>{item.notification_message}</Text>
+        <Text style={styles.notificationDate}>{new Date(item.notification_created_at).toLocaleString()}</Text>
+      </View>
+    );
+  };
 
   const renderSkeletonItem = () => <NotificationSkeleton />;
 
@@ -136,13 +152,19 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primaryBGColor,
   },
   notificationWrapper: {
+    position: 'relative',
     backgroundColor: COLORS.secondaryBGColor,
     padding: SPACING.space_15,
     borderRadius: 12,
-    borderWidth: 1,
     borderColor: COLORS.borderStroke,
     marginHorizontal: 10,
     marginBottom: 10,
+  },
+  redDotIcon: {
+    position: 'absolute',
+    left: 'auto',
+    right: 10,
+    top: 10
   },
   notificationMessage: {
     fontSize: 16,

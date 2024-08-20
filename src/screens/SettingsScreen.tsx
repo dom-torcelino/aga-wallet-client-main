@@ -60,6 +60,14 @@ const SettingsScreen: React.FC = () => {
             USD (Default)
           </Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonContainer}>
+          <Text style={[styles.textColor, {color: theme.textColor}]}>
+            Language
+          </Text>
+          <Text style={[styles.textColor, {color: theme.textColor}]}>
+            English (Default)
+          </Text>
+        </TouchableOpacity>
       </View>
       <View
         style={[
