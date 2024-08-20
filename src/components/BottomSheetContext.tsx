@@ -1,6 +1,5 @@
-
 // BottomSheetContext.tsx
-import React, { createContext, useContext, ReactNode } from 'react';
+import React, {createContext, useContext, ReactNode} from 'react';
 
 interface BottomSheetContextType {
   pressHandler: () => void;
@@ -22,7 +21,7 @@ export const BottomSheetProvider: React.FC<BottomSheetProviderProps> = ({
   pressHandler,
   pressHandler2,
 }) => (
-  <BottomSheetContext.Provider value={{ pressHandler, pressHandler2 }}>
+  <BottomSheetContext.Provider value={{pressHandler, pressHandler2}}>
     {children}
   </BottomSheetContext.Provider>
 );

@@ -1,4 +1,4 @@
-import {Text, StyleSheet, TouchableWithoutFeedback} from 'react-native';
+import {StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import React from 'react';
 import Animated, {
   interpolate,
@@ -43,9 +43,8 @@ const BackDrop = ({
           styles.container,
           backDropAnimation,
           {backgroundColor: backDropColor},
-        ]}>
-        {/* <Text>BackDrop</Text> */}
-      </Animated.View>
+        ]}
+      />
     </TouchableWithoutFeedback>
   );
 };

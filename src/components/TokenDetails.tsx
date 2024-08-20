@@ -4,9 +4,9 @@ import {RouteProp, useRoute} from '@react-navigation/native';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
 // import { TokenData } from '../data/mockData';
 import {useAuth} from '../screens/auth/AuthContext';
-import {RootStackParamList} from '../constants/types'; // Import the type
+import {RootStackParamList} from '../types/types'; // Import the type
 import BackButton from './ui/BackButton';
-
+import {useTheme} from '../utils/ThemeContext';
 
 type TokenDetailsRouteProp = RouteProp<RootStackParamList, 'TokenDetails'>;
 
@@ -14,12 +14,28 @@ const TokenDetails: React.FC = () => {
   const route = useRoute<TokenDetailsRouteProp>();
   const {token} = route.params;
   const {balance} = useAuth();
+  const {isDarkMode, toggleTheme, theme} = useTheme();
 
   return (
-    <View style={styles.container}>
-      <BackButton />
-      <View style={styles.assetContainer}>
-        <Text style={styles.coinName}>{token.coinName}</Text>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.primaryBGColor,
+        },
+      ]}>
+      {/* <BackButton /> */}
+      <View
+        style={[
+          styles.assetContainer,
+          {
+            backgroundColor: theme.secondaryBGColor,
+            borderColor: theme.borderStroke,
+          },
+        ]}>
+        <Text style={[styles.coinName, {color: theme.textColor}]}>
+          {token.coinName}
+        </Text>
         <Image
           source={
             typeof token.image === 'string' ? {uri: token.image} : token.image
@@ -27,8 +43,12 @@ const TokenDetails: React.FC = () => {
           style={styles.image}
         />
         <View style={styles.row}>
-          <Text style={styles.crypto}>{token.crypto}</Text>
-          <Text style={styles.coin}>{token.coin}</Text>
+          <Text style={[styles.crypto, {color: theme.textColor}]}>
+            {token.crypto}
+          </Text>
+          <Text style={[styles.coin, {color: theme.textColor}]}>
+            {token.coin}
+          </Text>
         </View>
         {/* <Text style={styles.fiat}>${token.fiat}</Text> */}
         <Text style={styles.fiat}>${balance.toFixed(2)}</Text>

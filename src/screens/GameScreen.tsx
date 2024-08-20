@@ -4,10 +4,16 @@ import {COLORS, SPACING} from '../constants/theme';
 import HeaderBar from '../components/HeaderBar';
 import CarouselSlider from '../components/Carousel';
 import Tabs from '../components/Tabs';
+<<<<<<< HEAD
 import GameList, { GameListData } from '../components/GameList';
 import { useAuth } from './auth/AuthContext';
 // @ts-ignore
 import {API_URL} from '@env';
+=======
+import GameList from '../components/GameList';
+import {games} from '../data/mockData';
+import {useTheme} from '../utils/ThemeContext';
+>>>>>>> origin/dom
 
 const gameTabs = ['All', 'Slot', 'Casino', 'RPG'];
 
@@ -26,6 +32,7 @@ const GameScreen: React.FC = () => {
   const [gameData, setGameData] = useState<GameListData[]>([])
   const [resultGames, setResultGames] = useState<GameListData[]>([]);
 
+<<<<<<< HEAD
   const filterData = ({ filter = "All"}) => {
       console.log(filter)
       if(filter !== "All"){
@@ -34,6 +41,17 @@ const GameScreen: React.FC = () => {
       } else {
         setGameData(resultGames)
       }
+=======
+  const {isDarkMode, toggleTheme, theme} = useTheme();
+
+  const filterData = () => {
+    if (activeTab === 'All') {
+      return shuffleArray(games); // Shuffle the games when "All" is selected
+    }
+    return games.filter(
+      game => game.type.toLowerCase() === activeTab.toLowerCase(),
+    );
+>>>>>>> origin/dom
   };
 
   useEffect(() => {
@@ -82,7 +100,8 @@ const GameScreen: React.FC = () => {
   },[]);
 
   return (
-    <View style={styles.ScreenContainer}>
+    <View
+      style={[styles.ScreenContainer, {backgroundColor: theme.primaryBGColor}]}>
       <StatusBar backgroundColor={COLORS.primaryBGColor} />
       <HeaderBar title={'Game'} />
       <ScrollView

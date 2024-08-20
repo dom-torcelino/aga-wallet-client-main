@@ -1,10 +1,9 @@
-
 import React from 'react';
-import ContentLoader, { Rect } from 'react-content-loader/native';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import { COLORS, SPACING } from '../../constants/theme';
+import ContentLoader, {Rect} from 'react-content-loader/native';
+import {View, StyleSheet, Dimensions} from 'react-native';
+import {COLORS, SPACING} from '../../constants/theme';
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 const WalletAddressLoading = () => {
   return (

@@ -8,7 +8,7 @@ import {
   Image,
 } from 'react-native';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {RootStackParamList} from '../constants/types';
+import {RootStackParamList} from '../types/types';
 import {
   BORDERRADIUS,
   COLORS,
@@ -16,22 +16,26 @@ import {
   FONTSIZE,
   SPACING,
 } from '../constants/theme';
+import {useTheme} from '../utils/ThemeContext';
 
 const {height, width} = Dimensions.get('window');
 
 const TransactionFailureScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const {theme} = useTheme();
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: theme.primaryBGColor}]}>
       <View style={styles.transferHeader}>
         <Image
           source={require('../../assets/images/emptyState/TransferFailed.png')}
           style={styles.TransferFailedImage}
           resizeMode="contain"
         />
-        <Text style={styles.title}>Transaction Failed!</Text>
-        <Text style={styles.bodyText}>
+        <Text style={[styles.title, {color: theme.textColor}]}>
+          Transaction Failed!
+        </Text>
+        <Text style={[styles.bodyText, {color: theme.secondaryTextColor}]}>
           Your transfer has been declined due {'\n'}to a technical issue
         </Text>
       </View>
@@ -40,7 +44,9 @@ const TransactionFailureScreen: React.FC = () => {
         <TouchableOpacity
           onPress={() => navigation.navigate('Home')}
           style={styles.button}>
-          <Text style={styles.buttonText}>Back to Wallet</Text>
+          <Text style={[styles.buttonText, {color: theme.textColor}]}>
+            Back to Wallet
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

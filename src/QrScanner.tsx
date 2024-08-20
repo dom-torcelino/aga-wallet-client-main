@@ -1,6 +1,6 @@
 'use strict';
 
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import {
   AppRegistry,
   StyleSheet,
@@ -20,9 +20,9 @@ import {
   RouteProp,
 } from '@react-navigation/native';
 import BackButtonIcon from '../assets/SVG/BackButtonIcon';
-import {BORDERRADIUS} from './constants/theme';
-import {RootStackParamList} from './constants/types';
-import {Vibration} from 'react-native';
+import { BORDERRADIUS } from './constants/theme';
+import { RootStackParamList } from './types/types';
+import { Vibration } from 'react-native';
 
 // interface QrScannerProps {
 //   setRecipient_address: (address: string) => void;
@@ -44,7 +44,7 @@ type setRecipientAddressProp = RouteProp<RootStackParamList, 'QrScanner'>;
 const QrScanner: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const route = useRoute<setRecipientAddressProp>();
-  const {setRecipient_address} = route.params;
+  const { setRecipient_address } = route.params;
   const [error, setError] = React.useState<string | null>(null);
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const QrScanner: React.FC = () => {
     });
   }, [navigation, setRecipient_address]);
 
-  const onSuccess = ({data}: {data: string}) => {
+  const onSuccess = ({ data }: { data: string }) => {
     try {
       Vibration.vibrate();
       setRecipient_address(data);

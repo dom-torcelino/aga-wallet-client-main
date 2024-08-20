@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,26 +10,28 @@ import {
   Image,
   ScrollView,
   ActivityIndicator,
+  StatusBar,
 } from 'react-native';
-import {useNavigation, NavigationProp} from '@react-navigation/native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 import {
   BORDERRADIUS,
   COLORS,
   FONTFAMILY,
   FONTSIZE,
 } from '../../constants/theme';
-import {RootStackParamList, AuthResponse} from '../../constants/types';
+import { RootStackParamList, AuthResponse } from '../../types/types';
 import TextInput from '../../components/ui/TextInput';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
-import {LoginManager, AccessToken, Settings} from 'react-native-fbsdk-next';
-import {useAuth} from './AuthContext';
+import { LoginManager, AccessToken, Settings } from 'react-native-fbsdk-next';
+import { useAuth } from './AuthContext';
+import { useTheme } from '../../utils/ThemeContext';
 
 // @ts-ignore
 import {API_URL} from '@env';
 import { useTranslation } from 'react-i18next';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const Login: React.FC = () => {
 
@@ -39,7 +41,8 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
-  const {login} = useAuth();
+  const { login } = useAuth();
+  const {isDarkMode, toggleTheme, theme} = useTheme();
 
   useEffect(() => {
     Settings.initializeSDK();
@@ -73,14 +76,14 @@ const Login: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({email, password}),
+        body: JSON.stringify({ email, password }),
       });
 
       setLoading(false);
       if (response.ok) {
         const loginData: AuthResponse = await response.json();
-        const {token, user} = loginData;
-        const {user_id} = user;
+        const { token, user } = loginData;
+        const { user_id } = user;
         await login(token, user_id);
         console.log('Navigating to Home');
         navigation.navigate('Home');
@@ -96,13 +99,13 @@ const Login: React.FC = () => {
     }
 
   };
-  
+
 
   async function onGoogleButtonPress() {
     try {
       await GoogleSignin.signOut();
-      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
-      const {user} = await GoogleSignin.signIn();
+      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+      const { user } = await GoogleSignin.signIn();
       console.log(user);
       const accessToken = (await GoogleSignin.getTokens()).accessToken;
       const response = await fetch(`${API_URL}/v1/auth/google`, {
@@ -110,13 +113,13 @@ const Login: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({access_token: accessToken}),
+        body: JSON.stringify({ access_token: accessToken }),
       });
       setLoading(false);
       if (response.ok) {
         const data: AuthResponse = await response.json();
-        const {token, user} = data;
-        const {user_id} = user;
+        const { token, user } = data;
+        const { user_id } = user;
         await login(token, user_id);
         navigation.navigate('Home');
       } else {
@@ -131,32 +134,37 @@ const Login: React.FC = () => {
   async function onFacebookButtonPress() {
 
     try {
-    // Attempt login with permissions
-    const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+      // Attempt login with permissions
+      const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
 
-    if (result.isCancelled) {
-      throw 'User cancelled the login process';
-    }
+      if (result.isCancelled) {
+        throw 'User cancelled the login process';
+      }
 
     const data = await AccessToken.getCurrentAccessToken();
 
-    if (!data) {
-      throw 'Something went wrong obtaining access token';
-    }
+      if (!data) {
+        throw 'Something went wrong obtaining access token';
+      }
 
-    // Create a Firebase credential with the AccessToken
-    const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
+      // Create a Firebase credential with the AccessToken
+      const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
 
-    // Sign-in the user with the credential
-    auth().signInWithCredential(facebookCredential);
-    console.log('User sign in successfully');
+      // Sign-in the user with the credential
+      auth().signInWithCredential(facebookCredential);
+      console.log('User sign in successfully');
     } catch (error) {
       console.log('login error', error);
     }
   }
 
   return (
-    <SafeAreaView style={styles.main}>
+    <SafeAreaView style={[styles.main, {backgroundColor: theme.primaryBGColor}]}>
+      <StatusBar
+        backgroundColor={theme.primaryBGColor}
+        barStyle={theme.isDarkMode ? 'light-content' : 'dark-content'}
+        translucent={false}
+      />
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         keyboardShouldPersistTaps="handled">
@@ -166,7 +174,7 @@ const Login: React.FC = () => {
             style={styles.imageStyle}
           />
         </View>
-        <View style={styles.container}>
+        <View style={[styles.container, {backgroundColor: theme.primaryBGColor}]}>
           <View style={styles.wFull}>
             <Text style={styles.loginContinueTxt}>{t('login:login')}</Text>
             <TextInput
@@ -201,7 +209,7 @@ const Login: React.FC = () => {
             </View>
 
             <View style={styles.signUp}>
-              <Text style={styles.signUpText}>Don't have an account? </Text>
+              <Text style={[styles.signUpText, {color: theme.textColor}]}>Don't have an account? </Text>
               <TouchableOpacity onPress={() => navigation.navigate('Register')}>
                 <Text style={styles.signupBtn}>Sign Up</Text>
               </TouchableOpacity>
@@ -210,29 +218,35 @@ const Login: React.FC = () => {
 
           <View style={styles.signInOptions}>
             <View style={styles.lineStyles} />
-            <Text style={styles.signUpText}>or sign in with</Text>
+            <Text style={[styles.signUpText, {color: theme.textColor}]}>or sign in with</Text>
             <View style={styles.lineStyles} />
           </View>
 
           <View style={styles.socialSignIn}>
             <TouchableOpacity
-              style={styles.socialSignInBtn}
+              style={[styles.socialSignInBtn, {
+                backgroundColor: theme.secondaryBGColor,
+                borderColor: theme.borderStroke,
+              }]}
               onPress={onFacebookButtonPress}>
               <Image
                 source={require('../../../assets/images/facebook_icon.png')}
                 style={styles.socialImage}
               />
-              <Text style={styles.socialSignInText}>Facebook</Text>
+              <Text style={[styles.socialSignInText, {color: theme.textColor}]}>Facebook</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.socialSignInBtn}
+              style={[styles.socialSignInBtn, {
+                backgroundColor: theme.secondaryBGColor,
+                borderColor: theme.borderStroke,
+              }]}
               onPress={onGoogleButtonPress}>
               <Image
                 source={require('../../../assets/images/google_icon.png')}
                 style={styles.socialImage}
               />
-              <Text style={styles.socialSignInText}>Google</Text>
+              <Text style={[styles.socialSignInText, {color: theme.textColor}]}>Google</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -261,6 +275,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  
   imageContainer: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -272,6 +287,9 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     maxWidth: '80%',
     maxHeight: 120,
+  },
+  wFull: {
+    width: '100%',
   },
   loginContinueTxt: {
     fontSize: width < 350 ? FONTSIZE.size_24 : FONTSIZE.size_28,
@@ -372,9 +390,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTFAMILY.poppins_medium,
     textAlign: 'center',
   },
-  wFull: {
-    width: '100%',
-  },
+  
   errorText: {
     color: 'red',
     marginTop: 10,

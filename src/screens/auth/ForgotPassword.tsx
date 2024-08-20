@@ -18,7 +18,7 @@ import {
   FONTSIZE,
 } from '../../constants/theme';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { RootStackParamList } from '../../constants/types'; // Import the type
+import { RootStackParamList } from '../../types/types'; // Import the type
 import BackButtonIcon from '../../../assets/SVG/BackButtonIcon';
 import TextInput from '../../components/ui/TextInput';
 

@@ -12,7 +12,8 @@ import {BORDERRADIUS, COLORS} from '../constants/theme';
 import {GameData} from '../data/mockData';
 import {useAuth} from '../screens/auth/AuthContext';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {RootStackParamList} from '../constants/types';
+import {RootStackParamList} from '../types/types';
+import {useTheme} from '../utils/ThemeContext';
 // @ts-ignore
 import {API_URL} from '@env';
 
@@ -36,9 +37,17 @@ export interface GameListData {
 
 export const GameList: React.FC<GameListProps> = ({data = []}) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const renderItem = ({item}: {item: GameListData}) => (
+  const {isDarkMode, toggleTheme, theme} = useTheme();
+
+  const renderItem = ({item}: {item: GameData}) => (
     <TouchableOpacity
-      style={styles.itemContainer}
+      style={[
+        styles.itemContainer,
+        {
+          backgroundColor: theme.secondaryBGColor,
+          borderColor: theme.borderStroke,
+        },
+      ]}
       key={item.id.toString()}
       onPress={() => navigation.navigate('GameView', {game: item})}>
       <Image source={{uri: item.game_image}} style={styles.ImageStyles} />
@@ -67,7 +76,7 @@ export const GameList: React.FC<GameListProps> = ({data = []}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 60,
+    marginBottom: 20,
   },
   itemContainer: {
     width: itemWidth, // Set item width dynamically

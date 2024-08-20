@@ -17,12 +17,13 @@ import {
   FONTSIZE,
   SPACING,
 } from '../constants/theme';
-import {RootStackParamList} from '../constants/types';
+import {RootStackParamList} from '../types/types';
 import TextInput from '../components/ui/TextInput';
 import {useAuth} from './auth/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // @ts-ignore
 import {API_URL} from '@env';
+import {useTheme} from '../utils/ThemeContext';
 
 const {height} = Dimensions.get('window');
 
@@ -34,6 +35,7 @@ const WalletCreationScreen: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+  const {theme} = useTheme();
 
   const handleCreateWallet = async () => {
     if (password !== confirmPassword) {
@@ -81,14 +83,17 @@ const WalletCreationScreen: React.FC = () => {
   };
 
   return (
-    <SafeAreaView style={styles.main}>
+    <SafeAreaView
+      style={[styles.main, {backgroundColor: theme.primaryBGColor}]}>
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         keyboardShouldPersistTaps="handled">
         <View style={styles.container}>
           <View style={styles.wFull}>
-            <Text style={styles.headerText}>Set up your wallet</Text>
-            <Text style={styles.subText}>
+            <Text style={[styles.headerText, {color: theme.textColor}]}>
+              Set up your wallet
+            </Text>
+            <Text style={[styles.subText, {color: theme.secondaryTextColor}]}>
               Aga supports multiple blockchains and is always adding support for
               more.
             </Text>
@@ -120,7 +125,9 @@ const WalletCreationScreen: React.FC = () => {
                 {loading ? (
                   <ActivityIndicator color={COLORS.primaryBGColor} />
                 ) : (
-                  <Text style={styles.loginText}>Create Wallet</Text>
+                  <Text style={[styles.loginText, {color: theme.textColor}]}>
+                    Create Wallet
+                  </Text>
                 )}
               </TouchableOpacity>
             </View>
