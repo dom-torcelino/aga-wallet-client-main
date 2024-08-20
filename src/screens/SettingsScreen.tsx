@@ -38,11 +38,11 @@ const SettingsScreen: React.FC = () => {
 
   return (
     <View style={[styles.container, {backgroundColor: theme.primaryBGColor}]}>
-      <StatusBar
+      {/* <StatusBar
         backgroundColor={theme.primaryBGColor}
         barStyle={theme.isDarkMode ? 'light-content' : 'dark-content'}
         translucent={false} // Make sure it's not translucent
-      />
+      /> */}
       <HeaderBar title={'Settings'} />
       <View
         style={[

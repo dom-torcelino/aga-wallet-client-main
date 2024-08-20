@@ -48,9 +48,10 @@ export const GameList: React.FC<GameListProps> = ({data = []}) => {
       key={item.game_id.toString()}
       onPress={() => navigation.navigate('GameView', {game: item})}>
       <Image source={{uri: item.game_image}} style={styles.ImageStyles} />
-      <Text style={styles.TextStyles}>{item.game_name}</Text>
+      <Text style={[styles.TextStyles, {color: theme.textColor}]}>{item.game_name}</Text>
       <View style={styles.infoRow}>
-        <Text style={styles.TextStyles2}>Total Players: {item.game_players}</Text>
+        <Text style={[styles.TextStyles2, {color: theme.secondaryTextColor}]}>Total Players: {item.game_players}</Text>
+        <Text style={[styles.TextStyles2, {color: theme.secondaryTextColor}]}>Genre: {item.game_genre}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -63,26 +64,21 @@ export const GameList: React.FC<GameListProps> = ({data = []}) => {
         keyExtractor={item => item.game_id.toString()}
         scrollEnabled={false}
       />
-       
     </View>
-    
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
     marginBottom: 20,
   },
   itemContainer: {
-    width: itemWidth, // Set item width dynamically
+    width: itemWidth, 
     alignItems: 'flex-start',
     // marginBottom: 10,
     margin: 6,
     borderRadius: BORDERRADIUS.radius_15,
-    backgroundColor: COLORS.secondaryBGColor,
     borderWidth: 1,
-    borderColor: COLORS.borderStroke,
     overflow: 'hidden',
   },
   TextStyles: {
@@ -98,8 +94,8 @@ const styles = StyleSheet.create({
     fontSize:13,
   },
   ImageStyles: {
-    width: itemWidth, // Make image width responsive
-    height: itemWidth * 0.4, // Adjust height based on aspect ratio (0.6 here as an example)
+    width: itemWidth, 
+    height: itemWidth * 0.4, 
   },
   infoRow: {
     flexDirection: 'row',

@@ -42,7 +42,7 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const { login } = useAuth();
-  const {isDarkMode, toggleTheme, theme} = useTheme();
+  const {isDarkMode, theme} = useTheme();
 
   useEffect(() => {
     Settings.initializeSDK();
@@ -163,7 +163,7 @@ const Login: React.FC = () => {
     <SafeAreaView style={[styles.main, {backgroundColor: theme.primaryBGColor}]}>
       <StatusBar
         backgroundColor={theme.primaryBGColor}
-        barStyle={theme.isDarkMode ? 'light-content' : 'dark-content'}
+        barStyle={isDarkMode ? "light-content" : "dark-content"} 
         translucent={false}
       />
       <ScrollView
@@ -177,7 +177,7 @@ const Login: React.FC = () => {
         </View>
         <View style={[styles.container, {backgroundColor: theme.primaryBGColor}]}>
           <View style={styles.wFull}>
-            <Text style={styles.loginContinueTxt}>{t('login:login')}</Text>
+            <Text style={[styles.loginContinueTxt, {color: theme.textColor}]}>{t('login:login')}</Text>
             <TextInput
               placeholder="Email"
               value={email}
@@ -204,7 +204,7 @@ const Login: React.FC = () => {
                 {loading ? (
                   <ActivityIndicator color={COLORS.primaryBGColor} />
                 ) : (
-                  <Text style={styles.loginText}>Log In</Text>
+                  <Text style={[styles.loginText, {color: theme.textColor}]}>Log In</Text>
                 )}
               </TouchableOpacity>
             </View>
