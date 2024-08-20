@@ -1,0 +1,10 @@
+{
+  "login": "ログイン",
+  "email": "メール",
+  "password": "パスワード",
+  "dontHaveAnAccount": "アカウントをお持ちではありませんか？",
+  "signUp": "サインアップ",
+  "orSignInWith": "または以下でサインイン",
+  "facebook": "フェイスブック",
+  "google": "グーグル"
+}

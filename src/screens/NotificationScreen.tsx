@@ -5,6 +5,7 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { COLORS, SPACING, FONTFAMILY } from '../constants/theme';
@@ -14,17 +15,22 @@ import { API_URL } from '@env';
 import axios from 'axios';
 import { NotificationSkeleton } from '../components/ui/skeletons';
 
+const LIMIT_PER_PAGE = 10;
+const SKELETON_COUNT = 6;
+
 const NotificationsScreen: React.FC = () => {
-  const LIMIT_PER_PAGE = 10;
+  const { token, loggedIn, userId } = useAuth();
   const [totalNotifications, setTotalNotifications] = useState<number>(0);
   const [page, setPage] = useState(1);
   const [notifications, setNotifications] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const skeletonCount = 6;
-  const { token, loggedIn, userId } = useAuth();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false)
 
-  const fetchNotification = async (page: number, limit: number) => {
+  const fetchNotification = async (page: number, limit: number, isLoadingMore = false) => {
     try {
+      if(isLoadingMore){
+        setIsLoadingMore(true)
+      }
       setLoading(true);
       const offset = (page - 1) * limit;
       const response = await axios.get(`${API_URL}/v1/users/${userId}/notifications?limit=${limit}&offset=${offset}`, {
@@ -45,6 +51,9 @@ const NotificationsScreen: React.FC = () => {
       console.error('Error fetching notifications:', error);
     } finally {
       setLoading(false);
+      if(isLoadingMore){
+        setIsLoadingMore(false)
+      }
     }
   };
 
@@ -68,28 +77,39 @@ const NotificationsScreen: React.FC = () => {
     if (page < maxPages) {
       setPage(prevPage => {
         const nextPage = prevPage + 1;
-        fetchNotification(nextPage, LIMIT_PER_PAGE);
+        fetchNotification(nextPage, LIMIT_PER_PAGE, true);
         return nextPage;
       });
     }
   };
 
+  const renderFooter = () => {
+    return isLoadingMore ? (
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" color={COLORS.primaryWhite}/>
+      </View>
+    ) : null;
+  }
+
   return (
     <View style={styles.container}>
       {loading && page === 1 ? (
         <FlatList
-          data={Array(skeletonCount).fill('')}
+          data={Array(SKELETON_COUNT).fill('')}
           renderItem={renderSkeletonItem}
           keyExtractor={(_, index) => `skeleton-${index}`}
         />
       ) : notifications.length > 0 ? (
-        <FlatList
-          data={notifications}
-          renderItem={renderNotificationItem}
-          keyExtractor={item => item.notification_id.toString()}
-          onEndReached={loadMoreNotifications}
-          onEndReachedThreshold={0.5} // Fetch more when you reach 50% of the list
-        />
+        <>
+          <FlatList
+            data={notifications}
+            renderItem={renderNotificationItem}
+            keyExtractor={item => item.notification_id.toString()}
+            onEndReached={loadMoreNotifications}
+            onEndReachedThreshold={0.5}
+            ListFooterComponent={renderFooter}
+          />
+        </>
       ) : (
         <View style={styles.EmptyContainer}>
           <Image
@@ -171,6 +191,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: COLORS.primaryBGColor,
     fontFamily: FONTFAMILY.poppins_semibold,
+  },
+  loading: {
+    padding: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
