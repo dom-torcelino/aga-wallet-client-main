@@ -22,7 +22,7 @@ interface GameListProps {
   data: GameListData[];
 }
 export interface GameListData {
-  id: number;
+  game_id: number;
   game_name: string;
   game_image: string;
   game_url:string;
@@ -35,7 +35,7 @@ export interface GameListData {
 
 export const GameList: React.FC<GameListProps> = ({data = []}) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const {theme} = useTheme();
+  const { theme } = useTheme();
   const renderItem = ({item}: {item: GameListData}) => (
     <TouchableOpacity
       style={[
@@ -45,13 +45,12 @@ export const GameList: React.FC<GameListProps> = ({data = []}) => {
           borderColor: theme.borderStroke,
         },
       ]}
-      key={item.id.toString()}
+      key={item.game_id.toString()}
       onPress={() => navigation.navigate('GameView', {game: item})}>
       <Image source={{uri: item.game_image}} style={styles.ImageStyles} />
       <Text style={styles.TextStyles}>{item.game_name}</Text>
       <View style={styles.infoRow}>
         <Text style={styles.TextStyles2}>Total Players: {item.game_players}</Text>
-        <Text style={styles.TextStyles2}>Genre: {item.game_genre}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -61,7 +60,7 @@ export const GameList: React.FC<GameListProps> = ({data = []}) => {
       <FlatList
         data={data}
         renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={item => item.game_id.toString()}
         scrollEnabled={false}
       />
        

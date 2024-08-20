@@ -1,5 +1,5 @@
 import {StatusBar, StyleSheet, View, ScrollView} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {COLORS, SPACING} from '../constants/theme';
 import HeaderBar from '../components/HeaderBar';
 import CarouselSlider from '../components/Carousel';
@@ -26,54 +26,24 @@ const GameScreen: React.FC = () => {
   const [activeTab, setActiveTab] = useState<
     'All' | 'Slot' | 'Casino' | 'RPG'
   >('All');
-  const [gameData, setGameData] = useState<GameListData[]>([])
-  const [resultGames, setResultGames] = useState<GameListData[]>([]);
 
-  useEffect(() => {
-    const fetchTokenData = async () => {
-      if (loggedIn) {
-        try {
-          const response = await fetch(`${API_URL}/v1/games`, {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${token?.accessToken}`,
-            },
-          });
-        
-          const result = await response.json();
+  const [genre, setGenre] = useState("");
+  const [games, setGames] = useState([])
 
-            if (result && result.games) {
-              const transformedData = result.games
-                .flatMap((games: any) => ({
-                  id: games.game_id,
-                  game_name: games.game_name,
-                  game_image: games.game_image,
-                  game_url: games.game_url,
-                  game_genre: games.game_genre,
-                  game_status: games.game_status,
-                  game_players: games.game_players,
-                  game_created_at: games.game_created_at,
-                  game_updated_at: games.game_updated_at,
-                }))
-
-                setResultGames(transformedData);
-                setGameData(transformedData)
-            } else {
-              console.error(
-                'Error: assets property is missing in the response',
-                result,
-              );
-            }
-        } catch (error) {
-            console.error('Error fetching token data:', error);
-        }
-      }
-    };
-    
-    fetchTokenData();
-  },[]);
-
-  console.log(gameData)
+  useMemo(() => {
+    const fetchGames = async () => {
+      const response = await fetch(`${API_URL}/v1/games?limit=2&order_by=desc&sort_by=game_players&${genre !== '' ? `genre=${genre}`: ''}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token?.accessToken}`,
+        },
+      });
+      const data = await response.json();
+      setGames(data?.games ?? []);
+    }
+    fetchGames()
+    console.log("MEMOIZED")
+  }, [genre, token])
 
   return (
     <View
@@ -91,9 +61,11 @@ const GameScreen: React.FC = () => {
           activeTab={activeTab}
           setActiveTab={(tab) => {
             setActiveTab(tab)
+            setGenre(tab)
           }}
         />
-        <GameList data={gameData} />
+           {/* <GameList data={filterData()} /> */}
+        <GameList data={games} />
       </ScrollView>
     </View>
   );
