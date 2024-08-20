@@ -21,6 +21,7 @@ const shuffleArray = (array: any[]) => {
 };
 
 const GameScreen: React.FC = () => {
+  const { theme } = useTheme()
   const {userId, token, loggedIn, balance} = useAuth();
   const [activeTab, setActiveTab] = useState<
     'All' | 'Slot' | 'Casino' | 'RPG'
