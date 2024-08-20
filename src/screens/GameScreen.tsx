@@ -13,13 +13,6 @@ import {API_URL} from '@env';
 
 const gameTabs = ['All', 'Slot', 'Casino', 'RPG'];
 
-const shuffleArray = (array: any[]) => {
-  return array
-    .map(value => ({value, sort: Math.random()}))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({value}) => value);
-};
-
 const GameScreen: React.FC = () => {
   const { theme } = useTheme()
   const {userId, token, loggedIn, balance} = useAuth();
