@@ -8,7 +8,7 @@ import ForgotPassword from '../screens/auth/ForgotPassword';
 import Register from '../screens/auth/Register';
 import {COLORS} from '../constants/theme';
 import BottomTabNavigator from './BottomTabNavigator';
-import {RootStackParamList} from '../types/types'; // Import the type
+import {RootStackParamList} from '../constants/types'; // Import the type
 import SendToken from '../components/SendToken';
 import TokenDetails from '../components/TokenDetails';
 import QrScanner from '../QrScanner';
@@ -26,7 +26,6 @@ import GameView from '../components/GameView';
 import NotificationsScreen from '../screens/NotificationScreen';
 import i18next from 'i18next';
 import { Text } from 'react-native';
-import {useTheme} from '../utils/ThemeContext';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -56,7 +55,6 @@ const AuthNavigator = () => {
 		void i18next.changeLanguage(lang);
 	};
 
-  const {theme} = useTheme();
   return (
     <Stack.Navigator
       screenOptions={{
@@ -116,30 +114,12 @@ const AuthNavigator = () => {
       <Stack.Screen
         name="TokenDetails"
         component={TokenDetails}
-        options={{
-          headerShown: true,
-          headerTitleAlign: 'center',
-          headerStyle: {
-            backgroundColor: theme.primaryBGColor,
-            elevation: 0,
-            shadowOpacity: 0,
-          },
-          headerTintColor: theme.textColor,
-        }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="TransactionDetails"
         component={TransactionDetails}
-        options={{
-          headerShown: true,
-          headerTitleAlign: 'center',
-          headerStyle: {
-            backgroundColor: theme.primaryBGColor,
-            elevation: 0,
-            shadowOpacity: 0,
-          },
-          headerTintColor: theme.textColor,
-        }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="NotificationsScreen"

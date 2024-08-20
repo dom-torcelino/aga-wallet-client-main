@@ -3,10 +3,9 @@ import React from 'react';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
 
-import {RootStackParamList} from '../types/types'; // Import the type
+import {RootStackParamList} from '../constants/types'; // Import the type
 import moment from 'moment';
 import BackButton from './ui/BackButton';
-import {useTheme} from '../utils/ThemeContext';
 
 type TransactionDetailsRouteProp = RouteProp<
   RootStackParamList,
@@ -16,7 +15,6 @@ type TransactionDetailsRouteProp = RouteProp<
 const TransactionDetails: React.FC = () => {
   const route = useRoute<TransactionDetailsRouteProp>();
   const {transaction} = route.params;
-  const {theme} = useTheme();
 
   const formatTransactionType = (type: string) => {
     return type === 't' ? 'Transferred' : 'Received';
@@ -31,45 +29,32 @@ const TransactionDetails: React.FC = () => {
   };
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.primaryBGColor}]}>
-      {/* <BackButton /> */}
-      <View
-        style={[
-          styles.settingsWrapper,
-          {
-            backgroundColor: theme.secondaryBGColor,
-            borderColor: theme.borderStroke,
-          },
-        ]}>
+    <View style={styles.container}>
+      <BackButton />
+      <View style={styles.settingsWrapper}>
         <Text style={styles.label}>
           {formatTransactionType(transaction.tx_type)}
         </Text>
-        <Text style={[styles.amountText, {color: theme.textColor}]}>
-          {transaction.tx_amount}
-        </Text>
+        <Text style={styles.amountText}>{transaction.tx_amount}</Text>
 
         <Text style={styles.label}>From</Text>
-        <Text style={[styles.detail, {color: theme.textColor}]}>
+        <Text style={styles.detail}>
           {transaction.tx_wallet_sender_address}
         </Text>
 
         <Text style={styles.label}>To</Text>
-        <Text style={[styles.detail, {color: theme.textColor}]}>
+        <Text style={styles.detail}>
           {transaction.tx_wallet_recipient_address}
         </Text>
 
         <Text style={styles.label}>Transaction ID</Text>
-        <Text style={[styles.detail, {color: theme.textColor}]}>
-          {transaction.tx_id}
-        </Text>
+        <Text style={styles.detail}>{transaction.tx_id}</Text>
 
         <Text style={styles.label}>Status</Text>
-        <Text style={[styles.detail, {color: theme.textColor}]}>
-          {statusType(transaction.tx_status)}
-        </Text>
+        <Text style={styles.detail}>{statusType(transaction.tx_status)}</Text>
 
         <Text style={styles.label}>Date</Text>
-        <Text style={[styles.detail, {color: theme.textColor}]}>
+        <Text style={styles.detail}>
           {formatDate(transaction.tx_created_at)}
         </Text>
       </View>

@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -12,10 +13,9 @@ import {
   RouteProp,
   NavigationProp,
 } from '@react-navigation/native';
-import {RootStackParamList} from '../types/types';
+import { RootStackParamList } from '../constants/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {COLORS} from '../constants/theme';
-import {useTheme} from '../utils/ThemeContext';
+import { COLORS } from '../constants/theme';
 
 type ConfirmPasswordRouteProp = RouteProp<
   RootStackParamList,
@@ -25,9 +25,8 @@ type ConfirmPasswordRouteProp = RouteProp<
 const ConfirmPasswordScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const route = useRoute<ConfirmPasswordRouteProp>();
-  const {password: originalPassword} = route.params;
+  const { password: originalPassword } = route.params;
   const [password, setPassword] = useState('');
-  const {theme} = useTheme();
 
   const handleConfirm = async () => {
     if (password === originalPassword) {
@@ -40,10 +39,8 @@ const ConfirmPasswordScreen = () => {
   };
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.primaryBGColor}]}>
-      <Text style={[styles.title, {color: theme.secondaryTextColor}]}>
-        Confirm your Password
-      </Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Confirm your Password</Text>
       <TextInput
         value={password}
         onChangeText={setPassword}

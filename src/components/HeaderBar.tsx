@@ -3,8 +3,7 @@ import React from 'react';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
 import NotificationIcon from '../../assets/SVG/NotificationIcon';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {RootStackParamList} from '../types/types';
-import {useTheme} from '../utils/ThemeContext';
+import {RootStackParamList} from '../constants/types';
 // import ScanIcon from '../assets/SVG/ScanIcon';
 
 interface HeaderBarProps {
@@ -13,11 +12,10 @@ interface HeaderBarProps {
 
 const HeaderBar: React.FC<HeaderBarProps> = ({title}) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const {isDarkMode, toggleTheme, theme} = useTheme();
 
   return (
     <View style={styles.HeaderContainer}>
-      <Text style={[styles.HeaderText, {color: theme.textColor}]}>{title}</Text>
+      <Text style={styles.HeaderText}>{title}</Text>
       {/* <ScanIcon
       fillColor={COLORS.primaryWhite}
       size={30} /> */}

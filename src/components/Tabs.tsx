@@ -1,67 +1,43 @@
-import React, {useMemo} from 'react';
-import {Text, View, TouchableOpacity, FlatList} from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+  GestureResponderEvent,
+} from 'react-native';
+import React from 'react';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
-import {useTheme} from '../utils/ThemeContext';
 
 interface TabButtonProps {
-  name: 'All' | 'Slot' | 'Casino' | 'Poker';
+  name: string;
   activeTab: string;
-  onHandleSearchType: () => void;
+  onHandleSearchType: (event: GestureResponderEvent) => void;
 }
 
 const TabButton: React.FC<TabButtonProps> = ({
   name,
   activeTab,
   onHandleSearchType,
-}) => {
-  const {isDarkMode, toggleTheme, theme} = useTheme();
-  const tabButtonStyle = useMemo(
-    () => ({
-      width: 120,
-      marginVertical: SPACING.space_10,
-      marginHorizontal: SPACING.space_4,
-      backgroundColor:
-        name === activeTab ? theme.primaryColor : theme.secondaryBGColor,
-      borderRadius: SPACING.space_32,
-      padding: SPACING.space_10,
-      borderWidth: 1,
-      borderColor: 
-      name === activeTab ? theme.primaryColor : theme.borderStroke,
-    }),
-    [name, activeTab, theme],
-  );
-
-  const tabTextStyle = useMemo(
-    () => ({
-      fontFamily: FONTFAMILY.poppins_medium,
-      fontSize: FONTSIZE.size_14,
-      color: name === activeTab ? theme.primaryBGColor : theme.textColor,
-      textAlign: 'center' as 'center',
-    }),
-    [name, activeTab, theme],
-  );
-
-  return (
-    <TouchableOpacity style={tabButtonStyle} onPress={onHandleSearchType}>
-      <Text style={tabTextStyle}>{name}</Text>
-    </TouchableOpacity>
-  );
-};
+}) => (
+  <TouchableOpacity
+    style={tabButtonStyle(name, activeTab)}
+    onPress={onHandleSearchType}>
+    <Text style={tabTextStyle(name, activeTab)}>{name}</Text>
+  </TouchableOpacity>
+);
 
 interface TabsProps {
-  tabs: ('All' | 'Slot' | 'Casino' | 'Poker')[];
+  tabs: string[];
   activeTab: string;
   setActiveTab: (tab: 'All' | 'Slot' | 'Casino' | 'RPG') => void;
 }
 
 const Tabs: React.FC<TabsProps> = ({tabs, activeTab, setActiveTab}) => {
-  const {theme} = useTheme();
-
   return (
     <View>
       <FlatList
         data={tabs}
-        renderItem={({item}) => (
+        renderItem={({item, index}) => (
           <TabButton
             name={item}
             activeTab={activeTab}
@@ -73,10 +49,27 @@ const Tabs: React.FC<TabsProps> = ({tabs, activeTab, setActiveTab}) => {
         )}
         horizontal
         showsHorizontalScrollIndicator={false}
-        keyExtractor={item => item}
+        keyExtractor={(item, index) => `${item}-${index}`} // Ensure unique key
       />
     </View>
   );
 };
+
+const tabTextStyle = (name: string, activeTab: string) => ({
+  fontFamily: FONTFAMILY.poppins_medium,
+  fontSize: FONTSIZE.size_14,
+  color: name === activeTab ? COLORS.primaryBlackHex : COLORS.primaryWhiteHex,
+  textAlign: 'center' as 'center',
+});
+
+const tabButtonStyle = (name: string, activeTab: string) => ({
+  width: 120,
+  marginVertical: SPACING.space_10,
+  marginHorizontal: SPACING.space_4,
+  backgroundColor:
+    name === activeTab ? COLORS.primaryColor : COLORS.secondaryBGColor,
+  borderRadius: SPACING.space_32,
+  padding: SPACING.space_10,
+});
 
 export default Tabs;

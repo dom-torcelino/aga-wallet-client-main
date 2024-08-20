@@ -1,4 +1,5 @@
-import React, {useState, useRef, useEffect} from 'react';
+
+import React, { useState, useRef, useEffect } from 'react';
 import {
   FlatList,
   Image,
@@ -10,7 +11,7 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
 } from 'react-native';
-import {BORDERRADIUS, COLORS} from '../constants/theme';
+import { BORDERRADIUS, COLORS } from '../constants/theme';
 
 interface CarouselItem {
   id: string;
@@ -53,14 +54,14 @@ const Carousel: React.FC = () => {
       const nextIndex = (currentIndexRef.current + 1) % carouselData.length;
       setCurrentIndex(nextIndex);
       if (flatListRef.current) {
-        flatListRef.current.scrollToIndex({animated: true, index: nextIndex});
+        flatListRef.current.scrollToIndex({ animated: true, index: nextIndex });
       }
     }, 3000);
 
     return () => clearInterval(interval);
   }, [carouselData.length]);
 
-  const renderItem: FlatListProps<CarouselItem>['renderItem'] = ({item}) => (
+  const renderItem: FlatListProps<CarouselItem>['renderItem'] = ({ item }) => (
     <View style={styles.container}>
       <Image source={item.image} style={styles.imageStyle} />
     </View>
@@ -89,9 +90,8 @@ const Carousel: React.FC = () => {
         scrollEventThrottle={16}
       />
       <View style={styles.pagination}>
-        <Text style={styles.paginationText}>{`${currentIndex + 1} / ${
-          carouselData.length
-        }`}</Text>
+        <Text style={styles.paginationText}>{`${currentIndex + 1} / ${carouselData.length
+          }`}</Text>
       </View>
     </View>
   );

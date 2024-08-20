@@ -4,16 +4,10 @@ import {COLORS, SPACING} from '../constants/theme';
 import HeaderBar from '../components/HeaderBar';
 import CarouselSlider from '../components/Carousel';
 import Tabs from '../components/Tabs';
-<<<<<<< HEAD
 import GameList, { GameListData } from '../components/GameList';
 import { useAuth } from './auth/AuthContext';
 // @ts-ignore
 import {API_URL} from '@env';
-=======
-import GameList from '../components/GameList';
-import {games} from '../data/mockData';
-import {useTheme} from '../utils/ThemeContext';
->>>>>>> origin/dom
 
 const gameTabs = ['All', 'Slot', 'Casino', 'RPG'];
 
@@ -88,8 +82,7 @@ const GameScreen: React.FC = () => {
   },[]);
 
   return (
-    <View
-      style={[styles.ScreenContainer, {backgroundColor: theme.primaryBGColor}]}>
+    <View style={styles.ScreenContainer}>
       <StatusBar backgroundColor={COLORS.primaryBGColor} />
       <HeaderBar title={'Game'} />
       <ScrollView

@@ -13,7 +13,6 @@ import {useAuth} from '../screens/auth/AuthContext';
 import TransactionSkeleton from './ui/TransactionSkeleton'; // Import the skeleton loader component
 // @ts-ignore
 import {API_URL} from '@env';
-import {useTheme} from '../utils/ThemeContext';
 
 interface TokenData {
   id: number;
@@ -36,9 +35,8 @@ const Tokens: React.FC<TokensProps> = ({onPressToken}) => {
   const {userId, token, loggedIn, balance} = useAuth();
   const [tokenData, setTokenData] = useState<TokenData[]>([]);
   const [loading, setLoading] = useState(true);
-  const {theme} = useTheme();
 
-  useEffect(() => { 
+  useEffect(() => {
     let isMounted = true;
 
     const fetchTokenData = async () => {
@@ -97,29 +95,19 @@ const Tokens: React.FC<TokensProps> = ({onPressToken}) => {
 
     return (
       <TouchableOpacity
-        style={[
-          styles.tokenContainer,
-          {
-            backgroundColor: theme.secondaryBGColor,
-            borderColor: theme.borderStroke,
-          },
-        ]}
+        style={styles.tokenContainer}
         onPress={() => onPressToken(item)}>
         <View style={styles.leftSideContainer}>
           <View style={styles.coinContainer}>
             <Image source={{uri: item.image}} style={styles.TokenImage} />
           </View>
           <View>
-            <Text style={[styles.coin, {color: theme.textColor}]}>
-              {item.coin}
-            </Text>
+            <Text style={styles.coin}>{item.coin}</Text>
             <Text style={styles.coinName}>{item.coinName}</Text>
           </View>
         </View>
         <View style={styles.rightSideContainer}>
-          <Text style={[styles.crypto, {color: theme.textColor}]}>
-            {item.crypto}
-          </Text>
+          <Text style={styles.crypto}>{item.crypto}</Text>
           {/* <Text style={styles.fiat}>(${item.fiat})</Text> */}
           <Text style={styles.fiat}>${balance.toFixed(2)}</Text>
           
@@ -144,7 +132,7 @@ const Tokens: React.FC<TokensProps> = ({onPressToken}) => {
 
 const styles = StyleSheet.create({
   tokenStyles: {
-    marginBottom: 20,
+    marginBottom: 70,
   },
   loadingContainer: {
     flex: 1,

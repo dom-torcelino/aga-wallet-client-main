@@ -19,7 +19,6 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import WalletAddressLoading from './ui/WalletAddressLoading';
 import {useAuth} from '../screens/auth/AuthContext';
-import {useTheme} from '../utils/ThemeContext';
 
 interface TransferProps {
   closeBottomSheet2: () => void;
@@ -31,7 +30,7 @@ const {width} = Dimensions.get('window');
 const Receive: React.FC<TransferProps> = ({closeBottomSheet2, showToast}) => {
   const {accountAddress} = useAuth();
   const SIZE = width * 0.5;
-  const {theme} = useTheme();
+
   const copyToClipboard = () => {
     Clipboard.setString(accountAddress || '');
     showToast('Wallet address copied to clipboard!');
@@ -41,10 +40,8 @@ const Receive: React.FC<TransferProps> = ({closeBottomSheet2, showToast}) => {
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <SafeAreaView style={styles.receiveContainer}>
-        <Text style={[styles.headerText, {color: theme.textColor}]}>
-          My Wallet Details
-        </Text>
-        <Text style={[styles.bodyTitle, {color: theme.textColor}]}>
+        <Text style={styles.headerText}>My Wallet Details</Text>
+        <Text style={styles.bodyTitle}>
           You can only receive tokens supported by AGA Wallet. Receiving tokens
           from other networks may result in the loss of your assets.
         </Text>

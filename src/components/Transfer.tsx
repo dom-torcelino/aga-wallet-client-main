@@ -4,7 +4,7 @@ import Tokens from './Tokens';
 import {mockTokens, TokenData} from '../data/mockData';
 import {COLORS, SPACING} from '../constants/theme';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {RootStackParamList} from '../types/types';
+import {RootStackParamList} from '../constants/types';
 
 interface TransferProps {
   closeBottomSheet: () => void;

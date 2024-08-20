@@ -1,3 +1,4 @@
+
 import {
   Text,
   TouchableOpacityProps,
@@ -16,10 +17,10 @@ import {
 interface CustomButtonProps {
   title: string;
   onPress: TouchableOpacityProps['onPress'];
-  Icon?: React.ComponentType<{size: number}> | null;
+  Icon?: React.ComponentType<{ size: number }> | null;
 }
 
-const CustomButton: React.FC<CustomButtonProps> = ({title, onPress, Icon}) => {
+const CustomButton: React.FC<CustomButtonProps> = ({ title, onPress, Icon }) => {
   return (
     <TouchableOpacity style={styles.buttonWrapper} onPress={onPress}>
       {Icon && <Icon size={25} />}

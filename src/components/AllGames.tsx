@@ -37,7 +37,7 @@ const AllGames: React.FC<AllGamesProps> = ({data = []}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 20,
+    marginBottom: 90,
   },
   itemContainer: {
     flex: 1,

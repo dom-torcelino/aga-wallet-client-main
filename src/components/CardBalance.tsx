@@ -1,10 +1,4 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import React, {useState} from 'react';
 import {
   BORDERRADIUS,

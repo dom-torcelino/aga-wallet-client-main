@@ -11,7 +11,6 @@ import {
   FONTFAMILY,
   FONTSIZE,
 } from '../../constants/theme';
-import { useTheme } from '../../utils/ThemeContext';
 const {height} = Dimensions.get('window');
 
 interface TextInputProps {
@@ -27,19 +26,10 @@ const TextInput: React.FC<TextInputProps> = ({
   onChangeText,
   secureTextEntry,
 }) => {
-  const {isDarkMode, toggleTheme, theme} = useTheme();
-
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: theme.secondaryBGColor,
-          borderColor: theme.borderStroke,
-        },
-      ]}>
+    <View style={styles.container}>
       <RNTextInput
-        style={[styles.input, {color: theme.textColor}]}
+        style={styles.input}
         placeholder={placeholder}
         value={value}
         onChangeText={onChangeText}

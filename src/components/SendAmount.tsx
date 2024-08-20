@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   TextInput,
   Dimensions,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import {RouteProp, useRoute} from '@react-navigation/native';
@@ -17,10 +18,9 @@ import {
   SPACING,
 } from '../constants/theme';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {RootStackParamList} from '../types/types';
+import {RootStackParamList} from '../constants/types';
 import {useAuth} from '../screens/auth/AuthContext';
 import BackButton from './ui/BackButton';
-import {useTheme} from '../utils/ThemeContext';
 
 const {height} = Dimensions.get('window');
 
@@ -31,7 +31,6 @@ const SendAmount: React.FC = () => {
   const route = useRoute<SendAmountRouteProp>();
   const {token, recipient_address} = route.params;
   const {balance} = useAuth();
-  const {theme} = useTheme();
 
   // State to manage the input value, initialized with '0'
   const [amount, setAmount] = useState('0');
@@ -70,36 +69,28 @@ const SendAmount: React.FC = () => {
   };
 
   return (
-    <SafeAreaView
-      style={[styles.main, {backgroundColor: theme.primaryBGColor}]}>
+    <SafeAreaView style={styles.main}>
       <View>
-        {/* <BackButton /> */}
-        <Text
-          style={[styles.addressHeading, {color: theme.secondaryTextColor}]}>
+        <BackButton />
+        <Text style={styles.addressHeading}>
           Available Balance: {balance.toFixed(2)}
         </Text>
         <TextInput
           autoFocus={true}
-          style={[styles.input, {color: theme.textColor}]}
+          style={styles.input}
           keyboardType="numeric"
           inputMode="numeric"
           value={amount}
           onChangeText={handleInputChange}
         />
         {/* Display error message if there is one */}
+        
 
         <View>
-          <View
-            style={[
-              styles.receiverAddressContainer,
-              {backgroundColor: theme.secondaryBGColor},
-            ]}>
+          <View style={styles.receiverAddressContainer}>
+            <Text style={styles.reminderText}>Sending to:</Text>
             <Text
-              style={[styles.reminderText, {color: theme.secondaryTextColor}]}>
-              Sending to:
-            </Text>
-            <Text
-              style={[styles.addressValidation, {color: theme.textColor}]}
+              style={styles.addressValidation}
               numberOfLines={1}
               ellipsizeMode="tail">
               {recipient_address}
