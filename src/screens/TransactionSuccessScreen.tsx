@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,10 +8,10 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
 import axios from 'axios';
-import { useAuth } from '../screens/auth/AuthContext';
-import { RootStackParamList } from '../types/types';
+import {useAuth} from '../screens/auth/AuthContext';
+import {RootStackParamList} from '../types/types';
 import {
   BORDERRADIUS,
   COLORS,
@@ -20,19 +20,21 @@ import {
   SPACING,
 } from '../constants/theme';
 // @ts-ignore
-import { API_URL } from '@env';
+import {API_URL} from '@env';
 import moment from 'moment';
+import {useTheme} from '../utils/ThemeContext';
 
-const { height, width } = Dimensions.get('window');
+const {height, width} = Dimensions.get('window');
 
 const TransactionSuccessScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [lastTransaction, setLastTransaction] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const { token, accountAddress, loggedIn } = useAuth();
+  const {token, accountAddress, loggedIn} = useAuth();
   const formatDate = (date: string) => {
     return moment(date).format('MMMM DD, YYYY, h:mm:ss A');
   };
+  const {theme} = useTheme();
 
   useEffect(() => {
     const fetchLastTransaction = async () => {
@@ -53,7 +55,8 @@ const TransactionSuccessScreen: React.FC = () => {
           // Fetch the most recent transaction using the count - 1 as the offset
           if (totalTransactions > 0) {
             const lastTransactionResponse = await axios.get(
-              `${API_URL}/v1/wallets/${accountAddress}/transactions?limit=1&offset=${totalTransactions - 1
+              `${API_URL}/v1/wallets/${accountAddress}/transactions?limit=1&offset=${
+                totalTransactions - 1
               }`,
               {
                 headers: {
@@ -89,40 +92,68 @@ const TransactionSuccessScreen: React.FC = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: theme.primaryBGColor}]}>
       <View style={styles.transferHeader}>
         <Image
           source={require('../../assets/images/emptyState/TransferSuccess.png')}
           style={styles.TransferDoneImage}
           resizeMode="contain"
         />
-        <Text style={styles.title}>Transaction Done!</Text>
-        <Text style={styles.bodyText}>
+        <Text style={[styles.title, {color: theme.textColor}]}>
+          Transaction Done!
+        </Text>
+        <Text style={[styles.bodyText, {color: theme.secondaryTextColor}]}>
           Transaction has been done {'\n'}successfully
         </Text>
-        <Text style={styles.timeText}>
+        <Text style={[styles.timeText, {color: theme.textColor}]}>
           {formatDate(lastTransaction.tx_created_at)}
         </Text>
       </View>
 
       <View style={styles.transferDetails}>
-        <Text style={styles.h2}>Transaction Details</Text>
+        <Text style={[styles.h2, {color: theme.textColor}]}>
+          Transaction Details
+        </Text>
         {lastTransaction ? (
           <>
             {/* <Text style={styles.detailText}>
               Transaction ID: {lastTransaction.tx_id}
             </Text> */}
-            <View style={styles.TransactionContainer}>
-              <Text style={styles.detailText}>Amount</Text>
+            <View
+              style={[
+                styles.TransactionContainer,
+                {
+                  backgroundColor: theme.secondaryBGColor,
+                  borderColor: theme.borderStroke,
+                },
+              ]}>
+              <Text
+                style={[styles.detailText, {color: theme.secondaryTextColor}]}>
+                Amount
+              </Text>
               <Text style={styles.apiText}>{lastTransaction.tx_amount}</Text>
             </View>
-            <View style={styles.TransactionContainer}>
+            <View
+              style={[
+                styles.TransactionContainer,
+                {
+                  backgroundColor: theme.secondaryBGColor,
+                  borderColor: theme.borderStroke,
+                },
+              ]}>
               <Text style={styles.detailText}>Receiver</Text>
               <Text style={styles.apiText}>
                 {lastTransaction.tx_wallet_recipient_address}
               </Text>
             </View>
-            <View style={styles.TransactionContainer}>
+            <View
+              style={[
+                styles.TransactionContainer,
+                {
+                  backgroundColor: theme.secondaryBGColor,
+                  borderColor: theme.borderStroke,
+                },
+              ]}>
               <Text style={styles.detailText}>Transaction Hash</Text>
               <Text style={styles.apiText}>{lastTransaction.tx_hash}</Text>
             </View>
@@ -147,7 +178,9 @@ const TransactionSuccessScreen: React.FC = () => {
         <TouchableOpacity
           onPress={() => navigation.navigate('Home')}
           style={styles.button}>
-          <Text style={styles.buttonText}>Back to Wallet</Text>
+          <Text style={[styles.buttonText, {color: theme.textColor}]}>
+            Back to Wallet
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -176,6 +209,12 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     width: '100%',
   },
+  title: {
+    fontSize: FONTSIZE.size_20,
+    marginBottom: 4,
+    fontFamily: FONTFAMILY.poppins_semibold,
+    color: COLORS.primaryWhite,
+  },
   TransactionContainer: {
     borderRadius: 12,
     paddingVertical: width * 0.018,
@@ -186,12 +225,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.secondaryBGColor,
     justifyContent: 'center',
   },
-  title: {
-    fontSize: FONTSIZE.size_20,
-    marginBottom: 4,
-    fontFamily: FONTFAMILY.poppins_semibold,
-    color: COLORS.primaryWhite,
-  },
+
   h2: {
     fontSize: FONTSIZE.size_18,
     marginBottom: 10,

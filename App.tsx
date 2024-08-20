@@ -80,14 +80,14 @@ const App: React.FC = () => {
                 <BottomSheetScrollView
                   ref={bottomSheetRef}
                   snapTo="80%"
-                  backgroundColor={COLORS.secondaryBGColor}
+                  // backgroundColor={COLORS.secondaryBGColor}
                   backDropColor="black">
                   <Transfer closeBottomSheet={closeBottomSheet} />
                 </BottomSheetScrollView>
                 <BottomSheet
                   ref={bottomSheetRef2}
                   snapTo="80%"
-                  backgroundColor={COLORS.secondaryBGColor}
+                  // backgroundColor={COLORS.secondaryBGColor}
                   backDropColor="black">
                   <Receive
                     closeBottomSheet2={closeBottomSheet2}

@@ -1,8 +1,45 @@
 /* eslint-disable prettier/prettier */
-import React, {createContext, useContext, useState, useEffect} from 'react';
+import React, {createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ThemeContext = createContext();
+interface Theme {
+  primaryColor: string;
+  primaryBGColor: string;
+  secondaryBGColor: string;
+  layeBGColor: string,
+  strokeColor: string,
+  iconColor: string,
+  primaryWhite: string,
+  secondaryWhite: string,
+  borderStroke: string, 
+  secondaryTextColor: string,
+  greenTextColor: string,
+  redTextColor: string,
+  primaryGoldHex: string,
+  primaryWhiteHex: string,
+  placeHolderTextColor: string,
+  textColor: string,
+  unreadNotificationBG: string,
+  unreadNotificationBorder: string,
+  primaryRedHex: string,
+  primaryOrangeHex: string,
+  primaryBlackHex: string,
+  primaryDarkGreyHex: string,
+  secondaryDarkGreyHex: string,
+  primaryGreyHex: string,
+  secondaryGreyHex: string,
+  primaryLightGreyHex: string,
+  secondaryLightGreyHex: string,
+  primaryBlackRGBA: string,
+  secondaryBlackRGBA: string,
+}
+interface ThemeContextType {
+  theme: Theme;
+  toggleTheme: () => void;
+  isDarkMode: boolean;
+}
+
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 const LIGHT_THEME = {
     primaryColor: '#D5A952',
@@ -67,7 +104,7 @@ const DARK_THEME = {
     secondaryBlackRGBA: 'rgba(0,0,0,0.7)',
 };
 
-export const ThemeProvider = ({children}) => {
+export const ThemeProvider: React.FC<{ children: ReactNode }> = ({children}) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {

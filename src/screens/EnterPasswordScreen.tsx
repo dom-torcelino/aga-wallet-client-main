@@ -24,6 +24,7 @@ import {
 // @ts-ignore
 import {API_URL} from '@env';
 import {useAuth} from './auth/AuthContext';
+import {useTheme} from '../utils/ThemeContext';
 
 type EnterPasswordRouteProp = RouteProp<RootStackParamList, 'EnterPassword'>;
 
@@ -35,6 +36,7 @@ const EnterPasswordScreen: React.FC = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null); // Error state
+  const {theme} = useTheme();
 
   const handleConfirm = async () => {
     if (password) {
@@ -73,8 +75,10 @@ const EnterPasswordScreen: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Enter your wallet password</Text>
+    <View style={[styles.container, {backgroundColor: theme.primaryBGColor}]}>
+      <Text style={[styles.title, {color: theme.textColor}]}>
+        Enter your wallet password
+      </Text>
       <TextInput
         autoFocus={true}
         value={password}
@@ -84,7 +88,7 @@ const EnterPasswordScreen: React.FC = () => {
           setError(null); // Clear error when user starts typing
         }}
         secureTextEntry={true}
-        style={styles.input}
+        style={[styles.input, {color: theme.textColor}]}
       />
       {/* Display error message if there is one */}
       {error ? <Text style={styles.errorText}>{error}</Text> : null}

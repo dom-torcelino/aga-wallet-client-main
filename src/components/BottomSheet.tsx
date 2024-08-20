@@ -15,10 +15,11 @@ import Animated, {
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import BackDrop from './BackDrop';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { useTheme } from '../utils/ThemeContext';
 
 type Props = {
   snapTo?: string;
-  backgroundColor: string;
+  // backgroundColor: string;
   backDropColor: string;
   children?: ReactNode;
 };
@@ -29,7 +30,7 @@ export interface BottomSheetMethods {
 }
 
 const BottomSheet = forwardRef<BottomSheetMethods, Props>(
-  ({snapTo = '10%', backgroundColor, backDropColor, children}: Props, ref) => {
+  ({snapTo = '10%', backDropColor, children}: Props, ref) => {
     const inset = useSafeAreaInsets();
     const {height} = Dimensions.get('screen');
     const closeHeight = height;
@@ -37,6 +38,7 @@ const BottomSheet = forwardRef<BottomSheetMethods, Props>(
     const openHeight = height - height * percentage;
     const topAnimation = useSharedValue(closeHeight);
     const context = useSharedValue(0);
+    const {theme} = useTheme();
 
     const expand = useCallback(() => {
       'worklet';
@@ -108,7 +110,7 @@ const BottomSheet = forwardRef<BottomSheetMethods, Props>(
               styles.container,
               animationStyle,
               {
-                backgroundColor: backgroundColor,
+                backgroundColor: theme.primaryBGColor,
                 paddingBottom: inset.bottom,
               },
             ]}>

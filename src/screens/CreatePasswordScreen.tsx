@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -8,33 +7,39 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { RootStackParamList } from '../types/types';
-import { COLORS } from '../constants/theme';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
+import {RootStackParamList} from '../types/types';
+import {COLORS} from '../constants/theme';
+import {useTheme} from '../utils/ThemeContext';
 
 const CreatePasswordScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [password, setPassword] = useState('');
+  const {theme} = useTheme();
 
   const handleNext = () => {
     if (password.length >= 6) {
-      navigation.navigate('ConfirmPassword', { password });
+      navigation.navigate('ConfirmPassword', {password});
     } else {
       Alert.alert('Error', 'Password must be at least 6 characters');
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Create a Password</Text>
+    <View style={[styles.container, {backgroundColor: theme.primaryBGColor}]}>
+      <Text style={[styles.title, {color: theme.secondaryTextColor}]}>
+        Create a Password
+      </Text>
       <TextInput
         value={password}
         onChangeText={setPassword}
         secureTextEntry={true}
-        style={styles.input}
+        style={[styles.input, {color: theme.textColor}]}
       />
-      <TouchableOpacity onPress={handleNext} style={styles.button}>
-        <Text style={styles.buttonText}>Next</Text>
+      <TouchableOpacity
+        onPress={handleNext}
+        style={[styles.button, {backgroundColor: theme.primaryGoldHex}]}>
+        <Text style={[styles.buttonText, {color: theme.textColor}]}>Next</Text>
       </TouchableOpacity>
     </View>
   );

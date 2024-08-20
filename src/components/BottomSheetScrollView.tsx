@@ -18,10 +18,11 @@ import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import BackDrop from './BackDrop';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {COLORS, FONTFAMILY, FONTSIZE} from '../constants/theme';
+import {useTheme} from '../utils/ThemeContext';
 
 interface Props extends AnimatedScrollViewProps {
   snapTo: string;
-  backgroundColor: string;
+  // backgroundColor: string;
   backDropColor: string;
 }
 
@@ -31,7 +32,7 @@ export interface BottomSheetMethods {
 }
 
 const BottomSheetScrollView = forwardRef<BottomSheetMethods, Props>(
-  ({snapTo, children, backgroundColor, backDropColor, ...rest}: Props, ref) => {
+  ({snapTo, children, backDropColor, ...rest}: Props, ref) => {
     const inset = useSafeAreaInsets();
     const {height} = Dimensions.get('screen');
     const percentage = parseFloat(snapTo.replace('%', '')) / 100;
@@ -43,6 +44,7 @@ const BottomSheetScrollView = forwardRef<BottomSheetMethods, Props>(
     const scrollY = useSharedValue(0);
     const [enableScroll, setEnableScroll] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
+    const {theme} = useTheme();
 
     const handleSearch = (query: React.SetStateAction<string>) => {
       setSearchQuery(query);
@@ -170,17 +172,26 @@ const BottomSheetScrollView = forwardRef<BottomSheetMethods, Props>(
               styles.container,
               animationStyle,
               {
-                backgroundColor: backgroundColor,
+                backgroundColor: theme.primaryBGColor,
                 paddingBottom: inset.bottom,
               },
             ]}>
             <View style={styles.lineContainer}>
               <View style={styles.line} />
               <View style={styles.searchBoxContainer}>
-                <Text style={styles.textStyles}>Select Assets</Text>
+                <Text style={[styles.textStyles, {color: theme.textColor}]}>
+                  Select Assets
+                </Text>
                 <TextInput
                   placeholder="Search Token Name"
-                  style={styles.searchBox}
+                  style={[
+                    styles.searchBox,
+                    {
+                      backgroundColor: theme.primaryBGColor,
+                      color: theme.textColor,
+                      borderColor: theme.strokeColor,
+                    },
+                  ]}
                   clearButtonMode="always"
                   autoCapitalize="none"
                   autoCorrect={false}
@@ -233,7 +244,7 @@ const styles = StyleSheet.create({
   },
   searchBox: {
     paddingHorizontal: 20,
-    backgroundColor: COLORS.primaryBGColor,
+    // backgroundColor: COLORS.primaryBGColor,
     borderWidth: 1,
     borderColor: COLORS.strokeColor,
     borderRadius: 12,

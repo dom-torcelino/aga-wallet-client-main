@@ -38,7 +38,7 @@ const Tokens: React.FC<TokensProps> = ({onPressToken}) => {
   const [loading, setLoading] = useState(true);
   const {theme} = useTheme();
 
-  useEffect(() => {
+  useEffect(() => { 
     let isMounted = true;
 
     const fetchTokenData = async () => {

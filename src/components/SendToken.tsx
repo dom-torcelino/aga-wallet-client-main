@@ -27,6 +27,7 @@ import ScanIcon from '../../assets/SVG/ScanIcon';
 import {useBottomSheet} from './BottomSheetContext';
 import BackButton from './ui/BackButton';
 import {useAuth} from '../screens/auth/AuthContext';
+import {useTheme} from '../utils/ThemeContext';
 
 const {height} = Dimensions.get('window');
 
@@ -41,6 +42,7 @@ const SendToken: React.FC = () => {
 
   const [recipient_address, setRecipient_address] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const {theme} = useTheme();
 
   const validateAddress = (address: string) => {
     const addressRegex = /^5[a-zA-Z0-9]{47}$/; // Update the regex to match your wallet address format
@@ -63,11 +65,19 @@ const SendToken: React.FC = () => {
   };
 
   return (
-    <SafeAreaView style={styles.main}>
+    <SafeAreaView
+      style={[styles.main, {backgroundColor: theme.primaryBGColor}]}>
       <View>
         <BackButton />
         <View style={styles.container}>
-          <View style={styles.coinType}>
+          <View
+            style={[
+              styles.coinType,
+              {
+                backgroundColor: theme.secondaryBGColor,
+                borderColor: theme.borderStroke,
+              },
+            ]}>
             <View style={styles.coinTypeLeft}>
               <Image
                 source={
@@ -78,9 +88,14 @@ const SendToken: React.FC = () => {
                 style={styles.image}
               />
               <View>
-                <Text style={styles.coin}>{token.coin}</Text>
+                <Text style={[styles.coin, {color: theme.textColor}]}>
+                  {token.coin}
+                </Text>
                 {/* <Text style={styles.crypto}>{token.crypto}</Text> */}
-                <Text style={styles.crypto}>{balance.toFixed(2)}</Text>
+                <Text
+                  style={[styles.crypto, {color: theme.secondaryTextColor}]}>
+                  {balance.toFixed(2)}
+                </Text>
               </View>
             </View>
             <TouchableOpacity onPress={pressHandler}>
@@ -90,12 +105,21 @@ const SendToken: React.FC = () => {
         </View>
 
         <View>
-          <Text style={styles.addressHeading}>Who are you sending to?</Text>
-          <View style={styles.inputContainer}>
+          <Text style={[styles.addressHeading, {color: theme.textColor}]}>
+            Who are you sending to?
+          </Text>
+          <View
+            style={[
+              styles.inputContainer,
+              {
+                backgroundColor: theme.secondaryBGColor,
+                borderColor: theme.borderStroke,
+              },
+            ]}>
             <TextInput
-              style={styles.input}
+              style={[styles.input, {color: theme.textColor}]}
               placeholder="e.g : 16HFHicyvB9RXFTxrBazas..."
-              placeholderTextColor={COLORS.placeHolderTextColor}
+              placeholderTextColor={theme.placeHolderTextColor}
               value={recipient_address}
               onChangeText={text => {
                 setRecipient_address(text);
@@ -106,14 +130,18 @@ const SendToken: React.FC = () => {
               onPress={() =>
                 navigation.navigate('QrScanner', {setRecipient_address})
               }>
-              <ScanIcon size={30} style={styles.backButton} />
+              <ScanIcon
+                fill={theme.textColor}
+                size={30}
+                style={styles.backButton}
+              />
             </TouchableOpacity>
           </View>
           {errorMessage ? (
             <Text style={styles.errorText}>{errorMessage}</Text>
           ) : null}
           <Text
-            style={styles.addressValidation}
+            style={[styles.addressValidation, {color: theme.textColor}]}
             numberOfLines={1}
             ellipsizeMode="tail">
             {recipient_address || "Enter the recipient's wallet address."}
@@ -121,22 +149,52 @@ const SendToken: React.FC = () => {
         </View>
         <View>
           <View style={styles.reminderContainer}>
-            <Text style={styles.reminderText}>•</Text>
-            <Text style={styles.reminderText}>
+            <Text
+              style={[
+                styles.reminderText,
+                {color: theme.placeHolderTextColor},
+              ]}>
+              •
+            </Text>
+            <Text
+              style={[
+                styles.reminderText,
+                {color: theme.placeHolderTextColor},
+              ]}>
               Mistransferred assets cannot be recovered due to the nature of the
               blockchain.
             </Text>
           </View>
           <View style={styles.reminderContainer}>
-            <Text style={styles.reminderText}>•</Text>
-            <Text style={styles.reminderText}>
+            <Text
+              style={[
+                styles.reminderText,
+                {color: theme.placeHolderTextColor},
+              ]}>
+              •
+            </Text>
+            <Text
+              style={[
+                styles.reminderText,
+                {color: theme.placeHolderTextColor},
+              ]}>
               When transferring to an exchange or external wallet, please make
               sure it’s transferred to the same blockchain network.
             </Text>
           </View>
           <View style={styles.reminderContainer}>
-            <Text style={styles.reminderText}>•</Text>
-            <Text style={styles.reminderText}>
+            <Text
+              style={[
+                styles.reminderText,
+                {color: theme.placeHolderTextColor},
+              ]}>
+              •
+            </Text>
+            <Text
+              style={[
+                styles.reminderText,
+                {color: theme.placeHolderTextColor},
+              ]}>
               Transferring by username is a function that can be used when
               transferring between AGA wallet users.
             </Text>
@@ -205,11 +263,11 @@ const styles = StyleSheet.create({
     color: COLORS.primaryWhite,
     lineHeight: 34,
   },
-  coinName: {
-    fontSize: FONTSIZE.size_20,
-    fontFamily: FONTFAMILY.poppins_regular,
-    color: COLORS.secondaryTextColor,
-  },
+  // coinName: {
+  //   fontSize: FONTSIZE.size_20,
+  //   fontFamily: FONTFAMILY.poppins_regular,
+  //   color: COLORS.secondaryTextColor,
+  // },
   crypto: {
     fontSize: FONTSIZE.size_16,
     fontFamily: FONTFAMILY.poppins_regular,
