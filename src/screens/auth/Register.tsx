@@ -90,11 +90,11 @@ const Register: React.FC = () => {
         contentContainerStyle={styles.scrollContainer}
         keyboardShouldPersistTaps="handled">
         <View style={styles.container}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.backButtonContainer}
             onPress={() => navigation.navigate('Login')}>
             <BackButtonIcon size={30} style={styles.backButton} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <View style={styles.wFull}>
             <View style={styles.imageContainer}>
               <Image
@@ -102,7 +102,7 @@ const Register: React.FC = () => {
                 style={styles.imageStyle}
               />
             </View>
-            <Text style={styles.signupTxt}>Sign up</Text>
+            <Text style={[styles.signupTxt, {color: theme.textColor}]}>Sign up</Text>
             <TextInput
               placeholder="Name"
               value={name}

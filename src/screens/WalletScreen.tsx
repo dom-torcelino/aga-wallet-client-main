@@ -166,7 +166,7 @@ const WalletScreen: React.FC = () => {
   return (
     <View
       style={[styles.ScreenContainer, {backgroundColor: theme.primaryBGColor}]}>
-      <StatusBar backgroundColor={COLORS.primaryBGColor} />
+      {/* <StatusBar backgroundColor={COLORS.primaryBGColor} /> */}
 
       <FlatList
         style={styles.ScreenWrapper}

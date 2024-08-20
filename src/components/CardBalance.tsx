@@ -20,18 +20,20 @@ import EyeOpenIcon from '../../assets/SVG/EyeOpenIcon';
 import EyeCloseIcon from '../../assets/SVG/EyeCloseIcon';
 import type {TouchableOpacityProps} from 'react-native';
 import {useBottomSheet} from './BottomSheetContext';
+import { useTheme } from '../utils/ThemeContext';
 
 type CustomButtonProps = {
   title: string;
   onPress: TouchableOpacityProps['onPress'];
-  Icon: React.ComponentType<{size: number}>;
+  Icon: React.ComponentType<{size: number, fillColor?: string}>;
 };
 
-const CustomButton: React.FC<CustomButtonProps> = ({title, onPress, Icon}) => {
+const CustomButton: React.FC<CustomButtonProps> = ({title, onPress, Icon, }) => {
+  const {theme} = useTheme();
   return (
-    <TouchableOpacity style={styles.buttonWrapper} onPress={onPress}>
-      <Icon size={25} />
-      <Text style={styles.buttonText}>{title}</Text>
+    <TouchableOpacity style={[styles.buttonWrapper, {backgroundColor: theme.layeBGColor}]} onPress={onPress}>
+      <Icon size={25} fillColor={theme.textColor} />
+      <Text style={[styles.buttonText, {color: theme.textColor}]}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -44,25 +46,26 @@ const CardBalance: React.FC<CardBalanceProps> = ({balance}) => {
   const {pressHandler, pressHandler2} = useBottomSheet();
   const [balanceVisible, setBalanceVisible] = useState(true);
   // const [balance, setBalance] = useState(13827.80);
+  const {theme} = useTheme();
 
   const toggleBalanceVisibility = () => {
     setBalanceVisible(!balanceVisible);
   };
 
   return (
-    <View style={styles.CardContainer}>
+    <View style={[styles.CardContainer, {backgroundColor: theme.secondaryBGColor}]}>
       <View>
         <TouchableWithoutFeedback onPress={toggleBalanceVisibility}>
           <View>
             <View style={styles.balanceTitleContainer}>
-              <Text style={styles.balanceTitle}>Total balance</Text>
+              <Text style={[styles.balanceTitle, {color: theme.textColor}]}>Total balance</Text>
               {balanceVisible ? (
-                <EyeOpenIcon size={25} fillColor={COLORS.primaryWhite} />
+                <EyeOpenIcon size={25} fillColor={theme.textColor} />
               ) : (
-                <EyeCloseIcon size={25} fillColor={COLORS.primaryWhite} />
+                <EyeCloseIcon size={25} fillColor={theme.textColor} />
               )}
             </View>
-            <Text style={styles.balanceStyle}>
+            <Text style={[styles.balanceStyle, {color: theme.textColor}]}>
               $ {balanceVisible ? balance.toLocaleString() : '*****'}
             </Text>
           </View>

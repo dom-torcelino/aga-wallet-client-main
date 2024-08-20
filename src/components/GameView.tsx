@@ -18,7 +18,7 @@ const GameView: React.FC = () => {
     <View style={[styles.container, {backgroundColor: theme.primaryBGColor}]}>
       <BackButton />
       <View style={styles.itemsCenter}>
-        <Text style={styles.gameTitle}>{game.game_name}</Text>
+        <Text style={[styles.gameTitle, {color: theme.textColor}]}>{game.game_name}</Text>
         <Image source={{uri: game.game_image}} style={styles.gameImage} />
       </View>
 
@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   gameTitle: {
-    color: COLORS.primaryWhite,
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
