@@ -32,7 +32,6 @@ const GameScreen: React.FC = () => {
   const [gameData, setGameData] = useState<GameListData[]>([])
   const [resultGames, setResultGames] = useState<GameListData[]>([]);
 
-<<<<<<< HEAD
   const filterData = ({ filter = "All"}) => {
       console.log(filter)
       if(filter !== "All"){
@@ -41,17 +40,6 @@ const GameScreen: React.FC = () => {
       } else {
         setGameData(resultGames)
       }
-=======
-  const {isDarkMode, toggleTheme, theme} = useTheme();
-
-  const filterData = () => {
-    if (activeTab === 'All') {
-      return shuffleArray(games); // Shuffle the games when "All" is selected
-    }
-    return games.filter(
-      game => game.type.toLowerCase() === activeTab.toLowerCase(),
-    );
->>>>>>> origin/dom
   };
 
   useEffect(() => {
