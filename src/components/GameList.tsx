@@ -51,7 +51,6 @@ export const GameList: React.FC<GameListProps> = ({data = []}) => {
       <Text style={[styles.TextStyles, {color: theme.textColor}]}>{item.game_name}</Text>
       <View style={styles.infoRow}>
         <Text style={[styles.TextStyles2, {color: theme.secondaryTextColor}]}>Total Players: {item.game_players}</Text>
-        <Text style={[styles.TextStyles2, {color: theme.secondaryTextColor}]}>Genre: {item.game_genre}</Text>
       </View>
     </TouchableOpacity>
   );
