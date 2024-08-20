@@ -109,16 +109,7 @@ const AuthNavigator = () => {
       <Stack.Screen
         name="ResetPassword"
         component={ResetPassword}
-        options={{
-          headerShown: true,
-          headerTitleAlign: 'center',
-          headerStyle: {
-            backgroundColor: theme.primaryBGColor,
-            elevation: 0,
-            shadowOpacity: 0,
-          },
-          headerTintColor: theme.textColor,
-        }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="WalletCreation"
@@ -177,13 +168,21 @@ const AuthNavigator = () => {
           headerTintColor: theme.textColor,
         }}
       />
+       
       <Stack.Screen
         name="NotificationsScreen"
         component={NotificationsScreen}
         options={{
-          headerShown: true, 
-          title: "Notifications", 
-          headerStyle: { backgroundColor: COLORS.primaryBGColor } }}
+          headerShown: true,
+          headerTitleAlign: 'center',
+          title: "Notifications",
+          headerStyle: {
+            backgroundColor: theme.primaryBGColor,
+            elevation: 0,
+            shadowOpacity: 0,
+          },
+          headerTintColor: theme.textColor,
+        }}
       />
       <Stack.Screen
         name="QrScanner"

@@ -48,9 +48,9 @@ export const GameList: React.FC<GameListProps> = ({data = []}) => {
       key={item.game_id.toString()}
       onPress={() => navigation.navigate('GameView', {game: item})}>
       <Image source={{uri: item.game_image}} style={styles.ImageStyles} />
-      <Text style={styles.TextStyles}>{item.game_name}</Text>
+      <Text style={[styles.TextStyles, {color: theme.textColor}]}>{item.game_name}</Text>
       <View style={styles.infoRow}>
-        <Text style={styles.TextStyles2}>Total Players: {item.game_players}</Text>
+        <Text style={[styles.TextStyles2, {color: theme.secondaryTextColor}]}>Total Players: {item.game_players}</Text>
       </View>
     </TouchableOpacity>
   );

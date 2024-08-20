@@ -15,6 +15,7 @@ import { API_URL } from '@env';
 import axios from 'axios';
 import { NotificationSkeleton } from '../components/ui/skeletons';
 import RedCircleIcon from '../../assets/SVG/RedDot';
+import { useTheme } from '../utils/ThemeContext';
 
 const NotificationStatus = ['unread', 'read' , 'dismissed' , 'archived' , 'action_taken'] as const
 
@@ -38,6 +39,7 @@ const NotificationsScreen: React.FC = () => {
   const [notifications, setNotifications] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false)
+  const {isDarkMode, theme} = useTheme();
 
   const fetchNotification = async (page: number, limit: number, isLoadingMore = false) => {
     try {
@@ -78,9 +80,9 @@ const NotificationsScreen: React.FC = () => {
 
   const renderNotificationItem = ({ item }: { item: Notification }) => {
     return (
-      <View style={styles.notificationWrapper}>
+      <View style={[styles.notificationWrapper, {backgroundColor: theme.secondaryBGColor}]}>
         {item.notification_status === 'unread' && <RedCircleIcon size={8} style={styles.redDotIcon} />}
-        <Text style={styles.notificationMessage}>{item.notification_message}</Text>
+        <Text style={[styles.notificationMessage, {color: theme.textColor}]}>{item.notification_message}</Text>
         <Text style={styles.notificationDate}>{new Date(item.notification_created_at).toLocaleString()}</Text>
       </View>
     );
@@ -108,7 +110,7 @@ const NotificationsScreen: React.FC = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: theme.primaryBGColor}]}>
       {loading && page === 1 ? (
         <FlatList
           data={Array(SKELETON_COUNT).fill('')}
