@@ -13,7 +13,7 @@ import SendToken from '../components/SendToken';
 import TokenDetails from '../components/TokenDetails';
 import QrScanner from '../QrScanner';
 import SendAmount from '../components/SendAmount';
-import {Easing, TouchableOpacity} from 'react-native';
+import {Easing} from 'react-native';
 import ResetPassword from '../components/ResetPassword';
 import WalletCreationScreen from '../screens/WalletCreationScreen';
 // import CreatePasswordScreen from '../screens/CreatePasswordScreen';
@@ -22,10 +22,8 @@ import TransactionSuccessScreen from '../screens/TransactionSuccessScreen';
 import TransactionFailureScreen from '../screens/TransactionFailureScreen';
 import EnterPasswordScreen from '../screens/EnterPasswordScreen';
 import TransactionDetails from '../components/TransactionDetails';
+import NotificationView from '../components/NotificationView';
 import GameView from '../components/GameView';
-import NotificationsScreen from '../screens/NotificationScreen';
-import i18next from 'i18next';
-import { Text } from 'react-native';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -50,10 +48,7 @@ const closeConfig = {
 };
 
 const AuthNavigator = () => {
-
-  const onChangeLanguage = (lang: 'cn' | 'en' | 'jp' | 'ko') => {
-		void i18next.changeLanguage(lang);
-	};
+  // const {loggedIn} = useAuth();
 
   return (
     <Stack.Navigator
@@ -70,7 +65,9 @@ const AuthNavigator = () => {
           close: closeConfig,
         },
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-      }}>
+      }}
+      // initialRouteName={loggedIn ? 'Home' : 'Login'}
+    >
       <Stack.Screen
         name="Login"
         component={Login}
@@ -122,17 +119,14 @@ const AuthNavigator = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="NotificationsScreen"
-        component={NotificationsScreen}
-        options={{
-          headerShown: true, 
-          title: "Notifications", 
-          headerStyle: { backgroundColor: COLORS.primaryBGColor } }}
+        name="NotificationView"
+        component={NotificationView}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="QrScanner"
         component={QrScanner}
-        options={{ headerShown: false}}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="SendAmount"

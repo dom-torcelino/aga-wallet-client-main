@@ -4,12 +4,11 @@ import {
   View,
   FlatList,
   RefreshControl,
-  Text,
+  Text, 
   TouchableOpacity,
   Image,
-  BackHandler,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
 import HeaderBar from '../components/HeaderBar';
 import CardBalance from '../components/CardBalance';
@@ -20,7 +19,6 @@ import {
   useNavigation,
   NavigationProp,
   useFocusEffect,
-  useIsFocused,
 } from '@react-navigation/native';
 import {mockTokens, TokenData} from '../data/mockData';
 import {RootStackParamList} from '../constants/types';
@@ -31,31 +29,12 @@ import {useCallback} from 'react';
 const walletTabs = ['Assets', 'Transaction'];
 
 const WalletScreen: React.FC = () => {
-  const isFocused = useIsFocused();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const {token, userId, setAccountAddress, setBalance, balance, loggedIn} =
     useAuth();
   const [activeTab, setActiveTab] = useState(walletTabs[0]);
   const [refreshing, setRefreshing] = useState(false);
   const [hasWallet, setHasWallet] = useState<boolean>(true);
-
-  useEffect(() => {
-    const backAction = () => {
-      if (isFocused) {
-        // Exit the app when back button is pressed on Wallet screen
-        BackHandler.exitApp();
-        return true;
-      }
-      return false; // Let other screens handle the back press normally
-    };
-
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
-
-    return () => backHandler.remove();
-  }, [isFocused]);
 
   const getWalletData = async () => {
     try {

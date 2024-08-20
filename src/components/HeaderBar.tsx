@@ -19,7 +19,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({title}) => {
       {/* <ScanIcon
       fillColor={COLORS.primaryWhite}
       size={30} /> */}
-      <TouchableOpacity onPress={() => navigation.navigate("NotificationsScreen")}>
+      <TouchableOpacity onPress={() => navigation.navigate('NotificationView')}>
         <NotificationIcon fillColor={COLORS.primaryWhite} size={28} />
       </TouchableOpacity>
     </View>

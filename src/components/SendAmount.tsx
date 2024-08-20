@@ -8,7 +8,7 @@ import {
   Dimensions,
   Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {
   BORDERRADIUS,
@@ -18,7 +18,7 @@ import {
   SPACING,
 } from '../constants/theme';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {RootStackParamList} from '../constants/types';
+import {RootStackParamList} from '../constants/types'; // Import the type
 import {useAuth} from '../screens/auth/AuthContext';
 import BackButton from './ui/BackButton';
 
@@ -32,32 +32,24 @@ const SendAmount: React.FC = () => {
   const {token, recipient_address} = route.params;
   const {balance} = useAuth();
 
-  // State to manage the input value, initialized with '0'
-  const [amount, setAmount] = useState('0');
+  // State to manage the input value
+  const [amount, setAmount] = useState('');
 
-  // State to manage error message
-  const [error, setError] = useState<string | null>(null);
-
-  // Handle input change to ensure numeric input and prevent starting with 0
+  // Handle input change to ensure numeric input and limit to 10 characters
   const handleInputChange = (text: string) => {
-    let numericValue = text.replace(/[^0-9.]/g, '').slice(0, 10);
-
-    if (numericValue.length > 1 && numericValue.startsWith('0')) {
-      numericValue = numericValue.slice(1);
-    }
-
+    // Allow only numeric values and limit length to 10 characters
+    const numericValue = text.replace(/[^0-9.]/g, '').slice(0, 10);
     setAmount(numericValue);
-    setError(null); // Clear error when the user starts typing
   };
 
   const handleSend = () => {
     const numericAmount = parseFloat(amount);
     if (isNaN(numericAmount) || numericAmount <= 0) {
-      setError('Please enter a valid amount to send.');
+      Alert.alert('Invalid amount', 'Please enter a valid amount to send.');
       return;
     }
     if (numericAmount > balance) {
-      setError('You do not have enough balance to send this amount.');
+      console.log('Insufficient Balance');
       return;
     }
 
@@ -68,23 +60,29 @@ const SendAmount: React.FC = () => {
     });
   };
 
+  
+
   return (
     <SafeAreaView style={styles.main}>
       <View>
         <BackButton />
-        <Text style={styles.addressHeading}>
-          Available Balance: {balance.toFixed(2)}
-        </Text>
-        <TextInput
-          autoFocus={true}
-          style={styles.input}
-          keyboardType="numeric"
-          inputMode="numeric"
-          value={amount}
-          onChangeText={handleInputChange}
-        />
-        {/* Display error message if there is one */}
-        
+        <View>
+          <Text style={styles.addressHeading}>
+            Available Balance {balance.toFixed(2)}
+          </Text>
+          <View>
+            <TextInput
+              autoFocus={true}
+              style={styles.input}
+              placeholder="10,000"
+              placeholderTextColor="#888"
+              keyboardType="numeric"
+              inputMode="numeric"
+              value={amount}
+              onChangeText={handleInputChange}
+            />
+          </View>
+        </View>
 
         <View>
           <View style={styles.receiverAddressContainer}>
@@ -96,7 +94,6 @@ const SendAmount: React.FC = () => {
               {recipient_address}
             </Text>
           </View>
-          {error ? <Text style={styles.errorText}>{error}</Text> : null}
         </View>
       </View>
       <View style={styles.nextButtonContainer}>
@@ -115,31 +112,70 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: COLORS.primaryBGColor,
   },
-  input: {
-    borderColor: 'gray',
-    padding: 10,
-    textAlign: 'center',
-    marginBottom: 24,
-    color: COLORS.primaryWhite,
-    fontSize: 50,
+  coinType: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.secondaryBGColor,
+    marginTop: SPACING.space_15,
+    borderWidth: 1,
+    borderColor: COLORS.borderStroke,
     borderRadius: BORDERRADIUS.radius_10,
+    padding: SPACING.space_12,
+    justifyContent: 'space-between',
+  },
+  coinTypeLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  amountBtnContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'center',
   },
-  errorText: {
-    color: 'red',
-    fontSize: FONTSIZE.size_14,
+
+  input: {
+    color: COLORS.primaryWhite,
+    fontFamily: FONTFAMILY.poppins_medium,
+    fontSize: 60,
     textAlign: 'center',
-    marginTop: -20,
-    marginBottom: 24,
   },
+  coin: {
+    fontSize: FONTSIZE.size_20,
+    fontFamily: FONTFAMILY.poppins_regular,
+    color: COLORS.primaryWhite,
+    lineHeight: 34,
+  },
+  coinName: {
+    fontSize: FONTSIZE.size_20,
+    fontFamily: FONTFAMILY.poppins_regular,
+    color: COLORS.secondaryTextColor,
+  },
+  crypto: {
+    fontSize: FONTSIZE.size_16,
+    fontFamily: FONTFAMILY.poppins_regular,
+    color: COLORS.secondaryTextColor,
+  },
+  changeCoin: {
+    fontSize: FONTSIZE.size_16,
+    fontFamily: FONTFAMILY.poppins_regular,
+    color: COLORS.primaryGoldHex,
+    paddingRight: SPACING.space_10,
+  },
+  fiat: {
+    fontSize: FONTSIZE.size_20,
+    fontFamily: FONTFAMILY.poppins_regular,
+    color: COLORS.secondaryTextColor,
+  },
+
   receiverAddressContainer: {
     backgroundColor: COLORS.secondaryBGColor,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: SPACING.space_32,
+    marginBottom: 4,
     paddingHorizontal: 6,
     overflow: 'hidden',
-    margin: SPACING.space_8,
+    padding: SPACING.space_8,
     borderRadius: BORDERRADIUS.radius_8,
   },
   reminderText: {
@@ -157,6 +193,7 @@ const styles = StyleSheet.create({
     lineHeight: 34,
     textAlign: 'center',
   },
+
   addressValidation: {
     fontFamily: FONTFAMILY.poppins_regular,
     fontSize: FONTSIZE.size_16,

@@ -1,3 +1,4 @@
+
 import {
   StatusBar,
   StyleSheet,
@@ -7,17 +8,17 @@ import {
   Dimensions,
 } from 'react-native';
 import React from 'react';
-import {BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
-import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {RootStackParamList} from '../constants/types';
-import {useAuth} from './auth/AuthContext'; // Import the useAuth hook
+import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../constants/theme';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { RootStackParamList } from '../constants/types';
+import { useAuth } from './auth/AuthContext'; // Import the useAuth hook
 import HeaderBar from '../components/HeaderBar';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const SettingsScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const {logout} = useAuth(); // Destructure the logout function from useAuth
+  const { logout } = useAuth(); // Destructure the logout function from useAuth
 
   const handleLogout = async () => {
     try {
@@ -108,8 +109,8 @@ const styles = StyleSheet.create({
   },
   logoutButton: {
     backgroundColor: COLORS.layeBGColor,
-    padding: SPACING.space_10,
-    borderRadius: BORDERRADIUS.radius_10,
+    padding: 10,
+    borderRadius: 10,
   },
   logoutText: {
     fontSize: FONTSIZE.size_16,
