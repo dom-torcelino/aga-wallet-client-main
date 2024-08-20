@@ -35,7 +35,6 @@ const GameScreen: React.FC = () => {
       setGames(data?.games ?? []);
     }
     fetchGames()
-    console.log("MEMOIZED")
   }, [genre, token])
 
   return (
@@ -54,7 +53,7 @@ const GameScreen: React.FC = () => {
           activeTab={activeTab}
           setActiveTab={(tab) => {
             setActiveTab(tab)
-            setGenre(tab)
+            setGenre(tab == "All" ? "" : tab)
           }}
         />
            {/* <GameList data={filterData()} /> */}
