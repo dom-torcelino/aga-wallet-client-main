@@ -27,10 +27,13 @@ import {useAuth} from './AuthContext';
 
 // @ts-ignore
 import {API_URL} from '@env';
+import { useTranslation } from 'react-i18next';
 
 const {width, height} = Dimensions.get('window');
 
 const Login: React.FC = () => {
+
+  const { t } = useTranslation(['login']);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -125,46 +128,6 @@ const Login: React.FC = () => {
     }
   }
 
-  // async function onFacebookButtonPress() {
-  //   try {
-  //     const result = await LoginManager.logInWithPermissions([
-  //       'public_profile',
-  //       'email',
-  //     ]);
-
-  //     if (result.isCancelled) {
-  //       throw 'User cancelled the login process';
-  //     }
-  //     const accessTokenData = await AccessToken.getCurrentAccessToken();
-
-  //     if (!accessTokenData) {
-  //       throw 'Something went wrong obtaining access token';
-  //     }
-  //     const accessToken = accessTokenData.accessToken;
-
-  //     const response = await fetch(`${API_URL}/v1/auth/facebook`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({access_token: accessToken}),
-  //     });
-  //     setLoading(false);
-  //     if (response.ok) {
-  //       const data: AuthResponse = await response.json();
-  //       const {token, user} = data;
-  //       const {user_id} = user;
-  //       await login(token, user_id);
-  //       navigation.navigate('Home');
-  //     } else {
-  //       const errorData = await response.json();
-  //       setError(errorData.message || 'Login failed');
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
   async function onFacebookButtonPress() {
 
     try {
@@ -175,7 +138,6 @@ const Login: React.FC = () => {
       throw 'User cancelled the login process';
     }
 
-    // Once signed in, get the users AccessToken
     const data = await AccessToken.getCurrentAccessToken();
 
     if (!data) {
@@ -206,7 +168,7 @@ const Login: React.FC = () => {
         </View>
         <View style={styles.container}>
           <View style={styles.wFull}>
-            <Text style={styles.loginContinueTxt}>Log In</Text>
+            <Text style={styles.loginContinueTxt}>{t('login:login')}</Text>
             <TextInput
               placeholder="Email"
               value={email}

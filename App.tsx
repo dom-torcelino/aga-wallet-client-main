@@ -18,6 +18,8 @@ import Toast from './src/components/Toast';
 import {AuthProvider} from './src/screens/auth/AuthContext';
 import {BackHandler} from 'react-native';
 
+import './src/translations';
+
 const App: React.FC = () => {
   const bottomSheetRef = useRef<BottomSheetMethods>(null);
   const bottomSheetRef2 = useRef<BottomSheetMethods>(null);

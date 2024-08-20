@@ -1,6 +1,5 @@
-import {NotificationData, TokenData} from '../data/mockData';
-import {TransactionData} from '../types/TransactionTypes';
-// import { NavigationProp } from '@react-navigation/native'; // Ensure you have the correct import for navigation
+import { NotificationData, TokenData } from '../data/mockData';
+import { TransactionData } from '../types/TransactionTypes';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -9,7 +8,7 @@ export type RootStackParamList = {
   ResetPassword: undefined;
   WalletCreation: undefined;
   CreatePassword: undefined;
-  ConfirmPassword: {password: string};
+  ConfirmPassword: { password: string};
   EnterPassword: {
     token: TokenData;
     walletAddress: string;
@@ -29,7 +28,6 @@ export type RootStackParamList = {
   'Settings Detail': undefined;
   'My Profile': undefined;
   GameView: {game: any};
-
   SendToken: {token: TokenData};
   SendAmount: {
     token: TokenData;
@@ -41,7 +39,7 @@ export type RootStackParamList = {
   TransactionDetails: {transaction: TransactionData};
   TransactionSuccessScreen: {transactionId: number};
   TransactionFailure: undefined;
-  NotificationView: {notification: NotificationData};
+  NotificationsScreen: undefined;
 };
 
 export interface User {

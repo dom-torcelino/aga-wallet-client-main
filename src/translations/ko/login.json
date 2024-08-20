@@ -1,0 +1,10 @@
+{
+  "login": "로그인",
+  "email": "이메일",
+  "password": "비밀번호",
+  "dontHaveAnAccount": "계정이 없으신가요?",
+  "signUp": "가입하기",
+  "orSignInWith": "또는 다음으로 로그인",
+  "facebook": "페이스북",
+  "google": "구글"
+}
