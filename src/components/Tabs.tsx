@@ -51,7 +51,7 @@ const TabButton: React.FC<TabButtonProps> = ({
 interface TabsProps {
   tabs: ('All' | 'Slot' | 'Casino' | 'Poker')[];
   activeTab: string;
-  setActiveTab: (tab: 'All' | 'Slot' | 'Casino' | 'Poker') => void;
+  setActiveTab: (tab: 'All' | 'Slot' | 'Casino' | 'RPG') => void;
 }
 
 const Tabs: React.FC<TabsProps> = ({tabs, activeTab, setActiveTab}) => {
@@ -61,11 +61,14 @@ const Tabs: React.FC<TabsProps> = ({tabs, activeTab, setActiveTab}) => {
     <View>
       <FlatList
         data={tabs}
-        renderItem={({item}) => (
+        renderItem={({item, index }) => (
           <TabButton
             name={item}
             activeTab={activeTab}
-            onHandleSearchType={() => setActiveTab(item)}
+            onHandleSearchType={() =>
+              setActiveTab(item as 'All' | 'Slot' | 'Casino' | 'RPG')
+            }
+            key={index}
           />
         )}
         horizontal

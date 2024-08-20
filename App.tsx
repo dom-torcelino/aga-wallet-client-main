@@ -15,6 +15,8 @@ import {AuthProvider} from './src/screens/auth/AuthContext';
 import {BackHandler} from 'react-native';
 import {ThemeProvider} from './src/utils/ThemeContext';
 
+import './src/translations';
+
 const App: React.FC = () => {
   const bottomSheetRef = useRef<BottomSheetMethods>(null);
   const bottomSheetRef2 = useRef<BottomSheetMethods>(null);

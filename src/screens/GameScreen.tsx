@@ -1,14 +1,17 @@
 import {StatusBar, StyleSheet, View, ScrollView} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {COLORS, SPACING} from '../constants/theme';
 import HeaderBar from '../components/HeaderBar';
 import CarouselSlider from '../components/Carousel';
 import Tabs from '../components/Tabs';
-import GameList from '../components/GameList';
 import {games} from '../data/mockData';
 import {useTheme} from '../utils/ThemeContext';
+import GameList, { GameListData } from '../components/GameList';
+import { useAuth } from './auth/AuthContext';
+// @ts-ignore
+import {API_URL} from '@env';
 
-const gameTabs = ['All', 'Slot', 'Casino', 'Poker'];
+const gameTabs = ['All', 'Slot', 'Casino', 'RPG'];
 
 const shuffleArray = (array: any[]) => {
   return array
@@ -18,20 +21,58 @@ const shuffleArray = (array: any[]) => {
 };
 
 const GameScreen: React.FC = () => {
+  const {userId, token, loggedIn, balance} = useAuth();
   const [activeTab, setActiveTab] = useState<
-    'All' | 'Slot' | 'Casino' | 'Poker'
+    'All' | 'Slot' | 'Casino' | 'RPG'
   >('All');
+  const [gameData, setGameData] = useState<GameListData[]>([])
+  const [resultGames, setResultGames] = useState<GameListData[]>([]);
 
-  const {isDarkMode, toggleTheme, theme} = useTheme();
+  useEffect(() => {
+    const fetchTokenData = async () => {
+      if (loggedIn) {
+        try {
+          const response = await fetch(`${API_URL}/v1/games`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token?.accessToken}`,
+            },
+          });
+        
+          const result = await response.json();
 
-  const filterData = () => {
-    if (activeTab === 'All') {
-      return shuffleArray(games); // Shuffle the games when "All" is selected
-    }
-    return games.filter(
-      game => game.type.toLowerCase() === activeTab.toLowerCase(),
-    );
-  };
+            if (result && result.games) {
+              const transformedData = result.games
+                .flatMap((games: any) => ({
+                  id: games.game_id,
+                  game_name: games.game_name,
+                  game_image: games.game_image,
+                  game_url: games.game_url,
+                  game_genre: games.game_genre,
+                  game_status: games.game_status,
+                  game_players: games.game_players,
+                  game_created_at: games.game_created_at,
+                  game_updated_at: games.game_updated_at,
+                }))
+
+                setResultGames(transformedData);
+                setGameData(transformedData)
+            } else {
+              console.error(
+                'Error: assets property is missing in the response',
+                result,
+              );
+            }
+        } catch (error) {
+            console.error('Error fetching token data:', error);
+        }
+      }
+    };
+    
+    fetchTokenData();
+  },[]);
+
+  console.log(gameData)
 
   return (
     <View
@@ -47,9 +88,11 @@ const GameScreen: React.FC = () => {
         <Tabs
           tabs={gameTabs}
           activeTab={activeTab}
-          setActiveTab={setActiveTab}
+          setActiveTab={(tab) => {
+            setActiveTab(tab)
+          }}
         />
-        <GameList data={filterData()} />
+        <GameList data={gameData} />
       </ScrollView>
     </View>
   );

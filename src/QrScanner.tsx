@@ -6,13 +6,11 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  // Linking,
   View,
   ViewStyle,
   TextStyle,
 } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-// import {RNCamera} from 'react-native-camera';
 import {
   useNavigation,
   NavigationProp,
@@ -23,10 +21,6 @@ import BackButtonIcon from '../assets/SVG/BackButtonIcon';
 import { BORDERRADIUS } from './constants/theme';
 import { RootStackParamList } from './types/types';
 import { Vibration } from 'react-native';
-
-// interface QrScannerProps {
-//   setRecipient_address: (address: string) => void;
-// }
 
 const CustomMarker: React.FC = React.memo(() => {
   return (
