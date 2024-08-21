@@ -33,15 +33,16 @@ const TokenDetails: React.FC = () => {
             borderColor: theme.borderStroke,
           },
         ]}>
-        <Text style={[styles.coinName, {color: theme.textColor}]}>
-          {token.coinName}
-        </Text>
         <Image
           source={
             typeof token.image === 'string' ? {uri: token.image} : token.image
           }
           style={styles.image}
         />
+        <Text style={[styles.coinName, {color: theme.textColor}]}>
+          {token.coinName}
+        </Text>
+
         <View style={styles.row}>
           <Text style={[styles.crypto, {color: theme.textColor}]}>
             {token.crypto}
@@ -62,14 +63,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.primaryBGColor,
     padding: 20,
+    marginTop:50
   },
 
   assetContainer: {
     backgroundColor: COLORS.secondaryBGColor,
     padding: SPACING.space_15,
     borderRadius: 12,
-    borderWidth: 1,
-    borderColor: COLORS.borderStroke,
     alignItems: 'center',
   },
   image: {
