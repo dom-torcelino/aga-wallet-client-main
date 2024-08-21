@@ -63,7 +63,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.primaryBGColor,
     padding: 20,
-    marginTop:50
   },
 
   assetContainer: {

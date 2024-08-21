@@ -45,7 +45,7 @@ const SettingsTabIcon = ({ focused }: { focused: boolean }) => {
   const { theme } = useTheme(); // Get the theme
   return (
     <SettingsIcon
-      size={24}
+      size={26}
       fillColor={focused ? theme.primaryColor : theme.textColor} // Use dynamic colors
     />
   );
@@ -94,13 +94,15 @@ const BottomTabNavigator = () => {
     <Tab.Navigator
       tabBarPosition="bottom"
       initialRouteName="Wallet"
+      
       screenOptions={{
         tabBarShowLabel: false,
         tabBarIndicatorStyle: {
           height: 0,
         },
         tabBarStyle: {
-          padding: SPACING.space_8,
+          paddingTop: 2,
+          paddingBottom: 6,
           backgroundColor: theme.secondaryBGColor,
         },
         tabBarPressOpacity: 1,

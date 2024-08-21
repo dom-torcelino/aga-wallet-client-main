@@ -140,7 +140,7 @@ const Register: React.FC = () => {
                 {loading ? (
                   <ActivityIndicator color={COLORS.primaryBGColor} />
                 ) : (
-                  <Text style={styles.loginText}>Register</Text>
+                  <Text style={[styles.loginText, {color: theme.primaryBGColor}]}>Register</Text>
                 )}
               </TouchableOpacity>
             </View>
