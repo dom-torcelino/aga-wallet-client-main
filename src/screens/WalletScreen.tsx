@@ -1,5 +1,4 @@
 import {
-  StatusBar,
   StyleSheet,
   View,
   FlatList,
@@ -22,33 +21,32 @@ import {
   useFocusEffect,
   useIsFocused,
 } from '@react-navigation/native';
-import {mockTokens, TokenData} from '../data/mockData';
 import {RootStackParamList} from '../types/types';
+//@ts-ignore
 import {API_URL} from '@env';
 import {useAuth} from './auth/AuthContext';
 import {useCallback} from 'react';
 import {useTheme} from '../utils/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
-const walletTabs = ['Assets', 'Transaction'];
 
 const WalletScreen: React.FC = () => {
+  const { t } = useTranslation(["wallet"]);
   const isFocused = useIsFocused();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const {token, userId, setAccountAddress, setBalance, balance, loggedIn} =
-    useAuth();
-  const [activeTab, setActiveTab] = useState(walletTabs[0]);
+  const {token, userId, setAccountAddress, setBalance, balance, loggedIn} = useAuth();
+  const [activeTab, setActiveTab] = useState<string>(t("wallet:assets"));
   const [refreshing, setRefreshing] = useState(false);
   const [hasWallet, setHasWallet] = useState<boolean>(true);
-  const {isDarkMode, toggleTheme, theme} = useTheme();
+  const { theme } = useTheme();
 
   useEffect(() => {
     const backAction = () => {
       if (isFocused) {
-        // Exit the app when back button is pressed on Wallet screen
         BackHandler.exitApp();
         return true;
       }
-      return false; // Let other screens handle the back press normally
+      return false;
     };
 
     const backHandler = BackHandler.addEventListener(
@@ -96,25 +94,16 @@ const WalletScreen: React.FC = () => {
 
   useFocusEffect(
     useCallback(() => {
-      // This will be called when the screen is focused (i.e., after navigating back)
       getWalletData();
     }, []),
   );
 
-  const onPressToken = (item: TokenData) => {
-    navigation.navigate('TokenDetails', {token: item});
-  };
-
-  const onPressTransaction = (item: TokenData) => {
-    navigation.navigate('TransactionDetails', {token: item});
-  };
-
   const renderTabContent = () => {
     switch (activeTab) {
-      case 'Transaction':
-        return <Transaction onPressTransaction={onPressTransaction} />;
-      case 'Assets':
-        return <Tokens data={mockTokens} onPressToken={onPressToken} />;
+      case t("wallet:transactions"):
+        return <Transaction />;
+      case t("wallet:assets"):
+        return <Tokens />;
       default:
         return null;
     }
@@ -146,28 +135,25 @@ const WalletScreen: React.FC = () => {
             resizeMode="contain"
           />
         </View>
-        <Text style={[styles.emptyStateHeaderText, {color: theme}]}>
-          No wallet found
+        <Text style={[styles.emptyStateHeaderText, {color: theme.secondaryTextColor }]}>
+          {t("wallet:noWalletFound")}
         </Text>
         <Text style={styles.bodyText}>
-          You cant use this feature if you {'\n'}have no wallet{' '}
+          {t("wallet:noWalletDescription")}
         </Text>
         {/* <Button title="Create Wallet" onPress={handleCreateWallet} /> */}
         <TouchableOpacity
           onPress={handleCreateWallet}
           activeOpacity={0.7}
           style={styles.createWalletBtn}>
-          <Text style={styles.createWalletText}>Create Wallet</Text>
+          <Text style={styles.createWalletText}>{t("wallet:createWallet")}</Text>
         </TouchableOpacity>
       </View>
     );
   }
 
   return (
-    <View
-      style={[styles.ScreenContainer, {backgroundColor: theme.primaryBGColor}]}>
-      {/* <StatusBar backgroundColor={COLORS.primaryBGColor} /> */}
-
+    <View style={[styles.ScreenContainer, {backgroundColor: theme.primaryBGColor}]}>
       <FlatList
         style={styles.ScreenWrapper}
         data={data}
@@ -177,10 +163,10 @@ const WalletScreen: React.FC = () => {
         }
         ListHeaderComponent={
           <>
-            <HeaderBar title="Wallet" />
+            <HeaderBar title={t("wallet:wallet")} />
             <CardBalance balance={balance} />
             <Tabs
-              tabs={walletTabs}
+              tabs={[t("wallet:assets"), t("wallet:transactions")]}
               activeTab={activeTab}
               setActiveTab={setActiveTab}
             />

@@ -59,12 +59,12 @@ const Login: React.FC = () => {
 
   const handleLogin = async () => {
     if (!validateEmail(email)) {
-      setError('Please enter a valid email address.');
+      setError(t("login:errorInvalidEmail"));
       return;
     }
 
     if (!password) {
-      setError('Please enter your password.');
+      setError(t("login:errorEnterPassword"));
       return;
     }
 
@@ -85,7 +85,6 @@ const Login: React.FC = () => {
         const { token, user } = loginData;
         const { user_id } = user;
         await login(token, user_id);
-        console.log('Navigating to Home');
         navigation.navigate('Home');
         console.log('Log In Sucess');
       } else {
@@ -179,24 +178,19 @@ const Login: React.FC = () => {
           <View style={styles.wFull}>
             <Text style={[styles.loginContinueTxt, {color: theme.textColor}]}>{t('login:login')}</Text>
             <TextInput
-              placeholder="Email"
+              placeholder={t("login:login")}
               value={email}
               onChangeText={setEmail}
               secureTextEntry={false}
             />
             <TextInput
-              placeholder="Password"
+              placeholder={t("login:password")}
               value={password}
               onChangeText={setPassword}
               secureTextEntry={true}
               
             />
             {error ? <Text style={styles.errorText}>{error}</Text> : null}
-            {/* <TouchableOpacity
-              onPress={() => navigation.navigate('ForgotPassword')}>
-              <Text style={styles.forgotPassText}>Forgot Password?</Text>
-            </TouchableOpacity> */}
-
             <View style={styles.loginBtnWrapper}>
               <TouchableOpacity
                 onPress={handleLogin}
@@ -205,22 +199,22 @@ const Login: React.FC = () => {
                 {loading ? (
                   <ActivityIndicator color={COLORS.primaryBGColor} />
                 ) : (
-                  <Text style={[styles.loginText, {color: theme.textColor}]}>Log In</Text>
+                  <Text style={[styles.loginText, {color: theme.textColor}]}>{t("login:login")}</Text>
                 )}
               </TouchableOpacity>
             </View>
 
             <View style={styles.signUp}>
-              <Text style={[styles.signUpText, {color: theme.textColor}]}>Don't have an account? </Text>
+              <Text style={[styles.signUpText, {color: theme.textColor}]}>{t("login:dontHaveAnAccount")}</Text>
               <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-                <Text style={styles.signupBtn}>Sign Up</Text>
+                <Text style={styles.signupBtn}>{t("login:signUp")}</Text>
               </TouchableOpacity>
             </View>
           </View>
 
           <View style={styles.signInOptions}>
             <View style={styles.lineStyles} />
-            <Text style={[styles.signUpText, {color: theme.textColor}]}>or sign in with</Text>
+            <Text style={[styles.signUpText, {color: theme.textColor}]}>{t("login:orSignInWith")}</Text>
             <View style={styles.lineStyles} />
           </View>
 

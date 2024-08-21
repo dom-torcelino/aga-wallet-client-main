@@ -1,4 +1,4 @@
-import { NotificationData, TokenData } from '../data/mockData';
+import { TokenData } from '../components/Tokens';
 import { TransactionData } from '../types/TransactionTypes';
 
 export type RootStackParamList = {
@@ -28,12 +28,12 @@ export type RootStackParamList = {
   'Settings Detail': undefined;
   'My Profile': undefined;
   GameView: {game: any};
-  SendToken: {token: TokenData};
+  SendToken: { token: TokenData};
   SendAmount: {
     token: TokenData;
     setRecipient_address: (address: string) => void;
   };
-  TokenDetails: {token: TokenData};
+  TokenDetails: { token: TokenData};
   QrScanner: {setRecipient_address: (address: string) => void};
   Transaction: undefined;
   TransactionDetails: {transaction: TransactionData};

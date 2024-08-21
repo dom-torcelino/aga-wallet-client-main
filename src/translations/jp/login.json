@@ -2,9 +2,11 @@
   "login": "ログイン",
   "email": "メール",
   "password": "パスワード",
-  "dontHaveAnAccount": "アカウントをお持ちではありませんか？",
+  "dontHaveAnAccount": "アカウントがありませんか？",
   "signUp": "サインアップ",
-  "orSignInWith": "または以下でサインイン",
+  "orSignInWith": "または次でサインイン",
   "facebook": "フェイスブック",
-  "google": "グーグル"
+  "google": "グーグル",
+  "errorInvalidEmail": "有効なメールアドレスを入力してください",
+  "errorEnterPassword": "パスワードを入力してください"
 }

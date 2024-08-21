@@ -16,8 +16,6 @@ import SendAmount from '../components/SendAmount';
 import {Easing, TouchableOpacity} from 'react-native';
 import ResetPassword from '../components/ResetPassword';
 import WalletCreationScreen from '../screens/WalletCreationScreen';
-// import CreatePasswordScreen from '../screens/CreatePasswordScreen';
-// import ConfirmPasswordScreen from '../screens/ConfirmPasswordScreen';
 import TransactionSuccessScreen from '../screens/TransactionSuccessScreen';
 import TransactionFailureScreen from '../screens/TransactionFailureScreen';
 import EnterPasswordScreen from '../screens/EnterPasswordScreen';
@@ -25,8 +23,6 @@ import TransactionDetails from '../components/TransactionDetails';
 import GameView from '../components/GameView';
 import {useTheme} from '../utils/ThemeContext';
 import NotificationsScreen from '../screens/NotificationScreen';
-import i18next from 'i18next';
-import { Text } from 'react-native';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -52,10 +48,6 @@ const closeConfig = {
 
 const AuthNavigator = () => {
   const {theme} = useTheme();
-
-  const onChangeLanguage = (lang: 'cn' | 'en' | 'jp' | 'ko') => {
-		void i18next.changeLanguage(lang);
-	};
 
   return (
     <Stack.Navigator
@@ -109,16 +101,7 @@ const AuthNavigator = () => {
       <Stack.Screen
         name="ResetPassword"
         component={ResetPassword}
-        options={{
-          headerShown: true,
-          headerTitleAlign: 'center',
-          headerStyle: {
-            backgroundColor: theme.primaryBGColor,
-            elevation: 0,
-            shadowOpacity: 0,
-          },
-          headerTintColor: theme.textColor,
-        }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="WalletCreation"
@@ -177,13 +160,21 @@ const AuthNavigator = () => {
           headerTintColor: theme.textColor,
         }}
       />
+       
       <Stack.Screen
         name="NotificationsScreen"
         component={NotificationsScreen}
         options={{
-          headerShown: true, 
-          title: "Notifications", 
-          headerStyle: { backgroundColor: COLORS.primaryBGColor } }}
+          headerShown: true,
+          headerTitleAlign: 'center',
+          title: "Notifications",
+          headerStyle: {
+            backgroundColor: theme.primaryBGColor,
+            elevation: 0,
+            shadowOpacity: 0,
+          },
+          headerTintColor: theme.textColor,
+        }}
       />
       <Stack.Screen
         name="QrScanner"

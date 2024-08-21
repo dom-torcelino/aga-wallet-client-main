@@ -1,10 +1,12 @@
 {
-  "login": "Log in",
-  "email": "email",
-  "password": "password",
+  "login": "Login",
+  "email": "Email",
+  "password": "Password",
   "dontHaveAnAccount": "Don't have an account?",
   "signUp": "Sign up",
-  "orSignInWith": "or sign in with",
+  "orSignInWith": "Or sign in with",
   "facebook": "Facebook",
-  "google": "Google" 
+  "google": "Google",
+  "errorInvalidEmail": "Please enter a valid email address",
+  "errorEnterPassword": "Please enter your password"
 }

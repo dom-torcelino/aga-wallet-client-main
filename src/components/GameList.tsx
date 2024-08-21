@@ -63,21 +63,26 @@ export const GameList: React.FC<GameListProps> = ({data = []}) => {
         keyExtractor={item => item.game_id.toString()}
         scrollEnabled={false}
       />
+       
     </View>
+    
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
     marginBottom: 20,
   },
   itemContainer: {
-    width: itemWidth, 
+    width: itemWidth, // Set item width dynamically
     alignItems: 'flex-start',
     // marginBottom: 10,
     margin: 6,
     borderRadius: BORDERRADIUS.radius_15,
+    backgroundColor: COLORS.secondaryBGColor,
     borderWidth: 1,
+    borderColor: COLORS.borderStroke,
     overflow: 'hidden',
   },
   TextStyles: {
@@ -93,8 +98,8 @@ const styles = StyleSheet.create({
     fontSize:13,
   },
   ImageStyles: {
-    width: itemWidth, 
-    height: itemWidth * 0.4, 
+    width: itemWidth, // Make image width responsive
+    height: itemWidth * 0.4, // Adjust height based on aspect ratio (0.6 here as an example)
   },
   infoRow: {
     flexDirection: 'row',

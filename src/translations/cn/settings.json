@@ -1,0 +1,9 @@
+{
+    "settings": "设置",
+    "currency": "货币",
+    "language": "语言",
+    "theme": "主题",
+    "lockWallet": "锁定钱包",
+    "currentVersion": "当前版本",
+    "logout": "退出"
+}

@@ -1,0 +1,8 @@
+{
+    "setupYourWallet": "Set up your wallet",
+    "setupYourWalletDescription": "AGA Wallet supports multiple blockchains and is always adding support for more.",
+    "walletName": "Wallet name",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "createWallet": "Create Wallet"
+}

@@ -1,0 +1,8 @@
+{
+    "setupYourWallet": "设置您的钱包",
+    "setupYourWalletDescription": "AGA 钱包支持多个区块链，并且始终在添加更多支持。",
+    "walletName": "钱包名称",
+    "password": "密码",
+    "confirmPassword": "确认密码",
+    "createWallet": "创建钱包"
+}

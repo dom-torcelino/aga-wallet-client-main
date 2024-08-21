@@ -6,5 +6,7 @@
   "signUp": "注册",
   "orSignInWith": "或使用以下方式登录",
   "facebook": "脸书",
-  "google": "谷歌"
+  "google": "谷歌",
+  "errorInvalidEmail": "请输入有效的电子邮件地址",
+  "errorEnterPassword": "请输入您的密码"
 }

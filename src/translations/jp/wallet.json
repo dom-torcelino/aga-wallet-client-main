@@ -1,0 +1,11 @@
+{
+    "wallet": "ウォレット",
+    "totalBalance": "総残高",
+    "transfer": "送金",
+    "receive": "受け取る",
+    "assets": "資産",
+    "transactions": "取引",
+    "noWalletFound": "ウォレットが見つかりません",
+    "noWalletDescription": "ウォレットがない場合、この機能は使用できません。",
+    "createWallet": "ウォレットを作成する"
+}

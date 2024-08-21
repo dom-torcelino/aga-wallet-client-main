@@ -15,35 +15,46 @@ import {useNavigation, NavigationProp} from '@react-navigation/native';
 import {RootStackParamList} from '../types/types';
 // @ts-ignore
 import {API_URL} from '@env';
+import { useTheme } from '../utils/ThemeContext';
 
 const {height} = Dimensions.get('window');
 // const Tab = createBottomTabNavigator();
 const Tab = createMaterialTopTabNavigator();
 
-const WalletTabIcon = ({focused}: {focused: boolean}) => (
-  <WalletIcon
-    size={24}
-    fillColor={focused ? COLORS.primaryColor : COLORS.primaryWhite}
-  />
-);
+const WalletTabIcon = ({ focused }: { focused: boolean }) => {
+  const { theme } = useTheme(); // Get the theme
+  return (
+    <WalletIcon
+      size={24}
+      fillColor={focused ? theme.primaryColor : theme.textColor} // Use dynamic colors
+    />
+  );
+};
 
-const GameTabIcon = ({focused}: {focused: boolean}) => (
-  <GameController
-    size={32}
-    fillColor={focused ? COLORS.primaryColor : COLORS.primaryWhite}
-  />
-);
+const GameTabIcon = ({ focused }: { focused: boolean }) => {
+  const { theme } = useTheme(); // Get the theme
+  return (
+    <GameController
+      size={32}
+      fillColor={focused ? theme.primaryColor : theme.textColor} // Use dynamic colors
+    />
+  );
+};
 
-const SettingsTabIcon = ({focused}: {focused: boolean}) => (
-  <SettingsIcon
-    size={24}
-    fillColor={focused ? COLORS.primaryColor : COLORS.primaryWhite}
-  />
-);
+const SettingsTabIcon = ({ focused }: { focused: boolean }) => {
+  const { theme } = useTheme(); // Get the theme
+  return (
+    <SettingsIcon
+      size={24}
+      fillColor={focused ? theme.primaryColor : theme.textColor} // Use dynamic colors
+    />
+  );
+};
 
 const BottomTabNavigator = () => {
   const [data, setData] = useState<any>(null);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const { theme } = useTheme();
 
   useEffect(() => {
     const checkWallet = async () => {
@@ -90,7 +101,7 @@ const BottomTabNavigator = () => {
         },
         tabBarStyle: {
           padding: SPACING.space_8,
-          backgroundColor: COLORS.secondaryBGColor,
+          backgroundColor: theme.secondaryBGColor,
         },
         tabBarPressOpacity: 1,
         tabBarPressColor: 'transparent',
