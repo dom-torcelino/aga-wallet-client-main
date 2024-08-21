@@ -1,11 +1,18 @@
 {
-    "wallet": "ウォレット",
-    "totalBalance": "総残高",
-    "transfer": "送金",
-    "receive": "受け取る",
-    "assets": "資産",
-    "transactions": "取引",
-    "noWalletFound": "ウォレットが見つかりません",
-    "noWalletDescription": "ウォレットがない場合、この機能は使用できません。",
-    "createWallet": "ウォレットを作成する"
+  "wallet": "ウォレット",
+  "totalBalance": "総残高",
+  "transfer": "送金",
+  "receive": "受け取る",
+  "assets": "資産",
+  "transactions": "取引",
+  "noWalletFound": "ウォレットが見つかりません",
+  "noWalletDescription": "ウォレットがない場合、この機能は使用できません。",
+  "createWallet": "ウォレットを作成する",
+  "emptyTransaction": "空の取引",
+  "emptyTransactionDescription": "まだ取引が追加されていないようです。",
+  "selectAsset": "資産を選択",
+  "searchTokenName": "トークン名を検索",
+  "myWalletDetails": "私のウォレットの詳細",
+  "myWalletDetailsDescription": "AGAウォレットがサポートするトークンのみ受け取ることができます。他のネットワークからのトークンを受け取ると、資産を失う可能性があります。",
+  "copyWalletAddress": "ウォレットアドレスをコピー"
 }

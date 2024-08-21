@@ -22,6 +22,7 @@ import EmptyTransactionLight from '../../assets/images/emptyState/EmptyTransacti
 // @ts-ignore
 import {API_URL} from '@env';
 import {useTheme} from '../utils/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface TransactionData {
   tx_id: number;
@@ -61,6 +62,7 @@ const truncateAddress = (address: string) => {
 };
 
 const Transaction: React.FC = () => {
+  const { t } = useTranslation(["wallet"])
   const [transactions, setTransactions] = useState<TransactionData[]>([]);
   const [transactionCount, setTransactionCount] = useState<number>(0);
   const [limit, setLimit] = useState<number>(10); // Initial limit set to 10
@@ -149,11 +151,11 @@ const Transaction: React.FC = () => {
 
   const loadMore = async () => {
     if (transactions.length >= transactionCount) {
-      return; // No more transactions to load
+      return;
     }
 
     setLoadingMore(true);
-    setLimit(prevLimit => prevLimit + 10); // Increase the limit by 10
+    setLimit(prevLimit => prevLimit + 10);
     setLoadingMore(false);
   };
 
@@ -231,9 +233,9 @@ const Transaction: React.FC = () => {
         style={styles.emptyStateImage}
         resizeMode="contain"
       />
-      <Text style={[styles.emptyStateHeaderText, {color: theme.textColor}]}>Empty Transaction</Text>
+      <Text style={[styles.emptyStateHeaderText, {color: theme.textColor}]}>{t("wallet:emptyTransaction")}</Text>
       <Text style={[styles.bodyText, {color: theme.secondaryTextColor}]}>
-       {` It seems there are no transaction \n added yet`}
+       {t("wallet:emptyTransactionDescription")}
       </Text>
     </View>
   );

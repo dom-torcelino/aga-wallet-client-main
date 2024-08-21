@@ -14,7 +14,7 @@ import HeaderBar from '../components/HeaderBar';
 import CardBalance from '../components/CardBalance';
 import Tabs from '../components/Tabs';
 import Transaction from '../components/Transaction';
-import Tokens from '../components/Tokens';
+import Tokens, { TokenData } from '../components/Tokens';
 import {
   useNavigation,
   NavigationProp,
@@ -40,7 +40,11 @@ const WalletScreen: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>(t("wallet:assets"));
   const [refreshing, setRefreshing] = useState(false);
   const [hasWallet, setHasWallet] = useState<boolean>(true);
-  const { theme } = useTheme();
+  const { theme, isDarkMode } = useTheme();
+
+  const onPressToken = (item: TokenData) => {
+    navigation.navigate('TokenDetails', {token: item});
+  };
 
   useEffect(() => {
     const backAction = () => {
@@ -105,7 +109,7 @@ const WalletScreen: React.FC = () => {
       case t("wallet:transactions"):
         return <Transaction />;
       case t("wallet:assets"):
-        return <Tokens />;
+        return <Tokens onPressToken={onPressToken}/>;
       default:
         return null;
     }

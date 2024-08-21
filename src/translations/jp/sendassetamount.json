@@ -1,0 +1,9 @@
+{
+    "sendAssetAmount": "送信金額",
+    "availableBalance": "利用可能な残高：",
+    "sendingTo": "送信先：",
+    "send": "送信",
+    "errorInvalidAmount": "有効な送信金額を入力してください",
+    "errorBalanceNotEnough": "この金額を送信するのに十分な残高がありません。"
+  }
+  

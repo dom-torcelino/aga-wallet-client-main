@@ -1,0 +1,9 @@
+{
+    "sendAssetAmount": "发送金额",
+    "availableBalance": "可用余额：",
+    "sendingTo": "发送到：",
+    "send": "发送",
+    "errorInvalidAmount": "请输入有效的发送金额",
+    "errorBalanceNotEnough": "您的余额不足，无法发送此金额。"
+}
+  

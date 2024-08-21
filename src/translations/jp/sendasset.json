@@ -1,0 +1,12 @@
+{
+  "sendAsset": "資産を送る",
+  "change": "変更",
+  "whoAreYouSending": "誰に送りますか？",
+  "egAddress": "例: 16HFHicyvB9RXFTxrBazas...",
+  "enterTheRecipientAddress": "受取人のウォレットアドレスを入力してください。",
+  "mistransferredAssets": "ブロックチェーンの特性上、誤送信された資産は回収できません。",
+  "whenTransferring": "取引所または外部ウォレットに送金する場合、同じブロックチェーンネットワークに送金されていることを確認してください。",
+  "transferringByUsername": "ユーザー名での送金は、AGAウォレットユーザー間の送金時に使用できる機能です。",
+  "continue": "続ける",
+  "errorInvalidAddress": "ウォレットアドレスが無効です。確認して再試行してください。"
+}

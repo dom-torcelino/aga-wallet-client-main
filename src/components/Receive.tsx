@@ -20,6 +20,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import WalletAddressLoading from './ui/WalletAddressLoading';
 import {useAuth} from '../screens/auth/AuthContext';
 import {useTheme} from '../utils/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface TransferProps {
   closeBottomSheet2: () => void;
@@ -29,6 +30,7 @@ interface TransferProps {
 const {width} = Dimensions.get('window');
 
 const Receive: React.FC<TransferProps> = ({closeBottomSheet2, showToast}) => {
+  const { t } = useTranslation();
   const {accountAddress} = useAuth();
   const SIZE = width * 0.5;
   const {theme} = useTheme();
@@ -42,11 +44,10 @@ const Receive: React.FC<TransferProps> = ({closeBottomSheet2, showToast}) => {
     <GestureHandlerRootView style={{flex: 1}}>
       <SafeAreaView style={styles.receiveContainer}>
         <Text style={[styles.headerText, {color: theme.textColor}]}>
-          My Wallet Details
+          {t("wallet:myWalletDetails")}
         </Text>
         <Text style={[styles.bodyTitle, {color: theme.textColor}]}>
-          You can only receive tokens supported by AGA Wallet. Receiving tokens
-          from other networks may result in the loss of your assets.
+          {t("wallet:myWalletDetailsDescription")}
         </Text>
         <View style={styles.qrContainer}>
           {!accountAddress ? (
@@ -60,7 +61,7 @@ const Receive: React.FC<TransferProps> = ({closeBottomSheet2, showToast}) => {
         <Text style={styles.walletID}>{accountAddress}</Text>
         <TouchableWithoutFeedback onPress={copyToClipboard}>
           <View style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>COPY WALLET ADDRESS</Text>
+            <Text style={styles.buttonText}>{t("wallet:copyWalletAddress")}</Text>
           </View>
         </TouchableWithoutFeedback>
       </SafeAreaView>
@@ -117,6 +118,7 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_16,
     fontFamily: FONTFAMILY.poppins_semibold,
     color: COLORS.primaryBGColor,
+    textTransform: "capitalize"
   },
 });
 

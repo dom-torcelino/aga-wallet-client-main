@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios'; // Example if you are using axios for API calls
+//@ts-ignore
 import { API_URL } from '@env'; // Assuming you're using dotenv for environment variables
 
 interface AuthContextProps {
@@ -135,4 +136,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+
+  return context;
+};

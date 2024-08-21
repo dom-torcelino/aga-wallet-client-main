@@ -9,11 +9,9 @@ import Register from '../screens/auth/Register';
 import {COLORS} from '../constants/theme';
 import BottomTabNavigator from './BottomTabNavigator';
 import {RootStackParamList} from '../types/types'; // Import the type
-import SendToken from '../components/SendToken';
 import TokenDetails from '../components/TokenDetails';
 import QrScanner from '../QrScanner';
-import SendAmount from '../components/SendAmount';
-import {Easing, TouchableOpacity} from 'react-native';
+import {Easing } from 'react-native';
 import ResetPassword from '../components/ResetPassword';
 import WalletCreationScreen from '../screens/WalletCreationScreen';
 import TransactionSuccessScreen from '../screens/TransactionSuccessScreen';
@@ -23,6 +21,9 @@ import TransactionDetails from '../components/TransactionDetails';
 import GameView from '../components/GameView';
 import {useTheme} from '../utils/ThemeContext';
 import NotificationsScreen from '../screens/NotificationScreen';
+import { SendAssetScreen } from '../screens/SendAssetScreen';
+import { useTranslation } from 'react-i18next';
+import { SendAssetAmountScreen } from '../screens/SendAssetAmountScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -48,6 +49,7 @@ const closeConfig = {
 
 const AuthNavigator = () => {
   const {theme} = useTheme();
+  const { t } = useTranslation();
 
   return (
     <Stack.Navigator
@@ -109,19 +111,15 @@ const AuthNavigator = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="EnterPassword"
-        component={EnterPasswordScreen}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
         name="Home"
         component={BottomTabNavigator}
         options={{headerShown: false, gestureEnabled: false}}
       />
       <Stack.Screen
-        name="SendToken"
-        component={SendToken}
+        name="SendAsset"
+        component={SendAssetScreen}
         options={{
+          title: `${t("sendasset:sendAsset")}`,
           headerShown: true,
           headerTitleAlign: 'center',
           headerStyle: {
@@ -131,6 +129,11 @@ const AuthNavigator = () => {
           },
           headerTintColor: theme.textColor,
         }}
+      />
+      <Stack.Screen
+        name="SendAssetPassword"
+        component={EnterPasswordScreen}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="TokenDetails"
@@ -182,9 +185,10 @@ const AuthNavigator = () => {
         options={{ headerShown: false}}
       />
       <Stack.Screen
-        name="SendAmount"
-        component={SendAmount}
+        name="SendAssetAmount"
+        component={SendAssetAmountScreen}
         options={{
+          title: `${t("sendassetamount:sendAssetAmount")}`,
           headerShown: true,
           headerTitleAlign: 'center',
           headerStyle: {

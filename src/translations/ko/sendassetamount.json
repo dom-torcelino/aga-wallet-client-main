@@ -1,0 +1,9 @@
+{
+    "sendAssetAmount": "보낼 금액",
+    "availableBalance": "사용 가능한 잔액: ",
+    "sendingTo": "보내는 곳:",
+    "send": "보내기",
+    "errorInvalidAmount": "유효한 금액을 입력하십시오.",
+    "errorBalanceNotEnough": "이 금액을 보내기에 잔액이 충분하지 않습니다."
+  }
+  

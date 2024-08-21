@@ -9,12 +9,6 @@ export type RootStackParamList = {
   WalletCreation: undefined;
   CreatePassword: undefined;
   ConfirmPassword: { password: string};
-  EnterPassword: {
-    token: TokenData;
-    walletAddress: string;
-    amount: number;
-    recipient_address: string;
-  };
   Home: undefined;
   'Home Tab': undefined;
   'Home Drawer': undefined;
@@ -28,13 +22,19 @@ export type RootStackParamList = {
   'Settings Detail': undefined;
   'My Profile': undefined;
   GameView: {game: any};
-  SendToken: { token: TokenData};
-  SendAmount: {
+  SendAsset: { token: TokenData};
+  SendAssetAmount: {
     token: TokenData;
-    setRecipient_address: (address: string) => void;
+    recipientAddress: string;
+  };
+  SendAssetPassword: {
+    token: TokenData;
+    walletAddress: string | null;
+    amount: number;
+    recipientAddress: string;
   };
   TokenDetails: { token: TokenData};
-  QrScanner: {setRecipient_address: (address: string) => void};
+  QrScanner: { setRecipient_address: (address: string) => void };
   Transaction: undefined;
   TransactionDetails: {transaction: TransactionData};
   TransactionSuccessScreen: {transactionId: number};
