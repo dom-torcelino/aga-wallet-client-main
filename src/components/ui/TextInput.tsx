@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTFAMILY.poppins_regular,
     paddingHorizontal: 15,
     width: '100%',
+    height: '100%',
     color: COLORS.textColor,
   },
 });

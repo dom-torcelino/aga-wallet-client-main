@@ -189,6 +189,7 @@ const Login: React.FC = () => {
               value={password}
               onChangeText={setPassword}
               secureTextEntry={true}
+              
             />
             {error ? <Text style={styles.errorText}>{error}</Text> : null}
             {/* <TouchableOpacity
