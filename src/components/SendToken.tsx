@@ -29,7 +29,8 @@ import BackButton from './ui/BackButton';
 import {useAuth} from '../screens/auth/AuthContext';
 import {useTheme} from '../utils/ThemeContext';
 
-const {height} = Dimensions.get('window');
+const {height, width} = Dimensions.get('window');
+const IMAGE_SIZE = width * 0.11;
 
 type SendTokenRouteProp = RouteProp<RootStackParamList, 'SendToken'>;
 
@@ -223,18 +224,17 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    marginBottom: SPACING.space_18,
+    marginBottom: SPACING.space_16,
   },
   coinType: {
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.secondaryBGColor,
-    marginTop: SPACING.space_15,
     borderWidth: 1,
     borderColor: COLORS.borderStroke,
-    borderRadius: BORDERRADIUS.radius_10,
-    padding: SPACING.space_12,
+    borderRadius: 12,
+    padding: width * 0.026,
     justifyContent: 'space-between',
   },
   coinTypeLeft: {
@@ -242,24 +242,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    width: 60,
-    height: 60,
+    width: IMAGE_SIZE,
+    height: IMAGE_SIZE,
+    borderRadius: IMAGE_SIZE / 2,
     marginRight: 10,
   },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.secondaryBGColor,
-    borderRadius: BORDERRADIUS.radius_10,
-    borderWidth: 1,
-    borderColor: COLORS.strokeColor,
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-    marginVertical: 10,
-  },
+  
   coin: {
-    fontSize: FONTSIZE.size_20,
-    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_18,
+    fontFamily: FONTFAMILY.poppins_medium,
     color: COLORS.primaryWhite,
     lineHeight: 34,
   },
@@ -269,9 +260,9 @@ const styles = StyleSheet.create({
   //   color: COLORS.secondaryTextColor,
   // },
   crypto: {
-    fontSize: FONTSIZE.size_16,
+    fontSize: FONTSIZE.size_18,
     fontFamily: FONTFAMILY.poppins_regular,
-    color: COLORS.secondaryTextColor,
+    color: COLORS.primaryWhite,
   },
   changeCoin: {
     fontSize: FONTSIZE.size_16,
@@ -283,6 +274,17 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_20,
     fontFamily: FONTFAMILY.poppins_regular,
     color: COLORS.secondaryTextColor,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.secondaryBGColor,
+    borderRadius: BORDERRADIUS.radius_10,
+    borderWidth: 1,
+    borderColor: COLORS.strokeColor,
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    marginVertical: 10,
   },
   input: {
     color: COLORS.primaryWhite,

@@ -28,6 +28,8 @@ import {API_URL} from '@env';
 import {useAuth} from './auth/AuthContext';
 import {useCallback} from 'react';
 import {useTheme} from '../utils/ThemeContext';
+import NoWalletFoundImageDark from '../../assets/images/emptyState/NoWalletFound.png';
+import NoWalletFoundImagelight from '../../assets/images/emptyState/NoWalletFoundLight.png';
 
 const walletTabs = ['Assets', 'Transaction'];
 
@@ -139,14 +141,14 @@ const WalletScreen: React.FC = () => {
           styles.EmptyContainer,
           {backgroundColor: theme.primaryBGColor},
         ]}>
-        <View style={styles.ImageContainer}>
+        <View style={styles.ImageContainer}> 
           <Image
-            source={require('../../assets/images/emptyState/NoWalletFound.png')}
+            source={isDarkMode ? NoWalletFoundImageDark : NoWalletFoundImagelight}
             style={styles.emptyStateImage}
             resizeMode="contain"
           />
         </View>
-        <Text style={[styles.emptyStateHeaderText, {color: theme}]}>
+        <Text style={[styles.emptyStateHeaderText, {color: theme.textColor}]}>
           No wallet found
         </Text>
         <Text style={styles.bodyText}>
@@ -157,7 +159,7 @@ const WalletScreen: React.FC = () => {
           onPress={handleCreateWallet}
           activeOpacity={0.7}
           style={styles.createWalletBtn}>
-          <Text style={styles.createWalletText}>Create Wallet</Text>
+          <Text style={[styles.createWalletText, {color: theme.primaryBGColor}]}>Create Wallet</Text>
         </TouchableOpacity>
       </View>
     );

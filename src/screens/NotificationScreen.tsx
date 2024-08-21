@@ -16,6 +16,8 @@ import axios from 'axios';
 import { NotificationSkeleton } from '../components/ui/skeletons';
 import RedCircleIcon from '../../assets/SVG/RedDot';
 import { useTheme } from '../utils/ThemeContext';
+import EmptyNotficationDark from '../../assets/images/emptyState/EmptyNotification.png'
+import EmptyNotficationLight from '../../assets/images/emptyState/EmptyNotificationLight.png'
 
 const NotificationStatus = ['unread', 'read' , 'dismissed' , 'archived' , 'action_taken'] as const
 
@@ -131,7 +133,7 @@ const NotificationsScreen: React.FC = () => {
       ) : (
         <View style={styles.EmptyContainer}>
           <Image
-            source={require('../../assets/images/emptyState/EmptyNotification.png')}
+            source={isDarkMode ? EmptyNotficationDark : EmptyNotficationLight}
             style={styles.emptyStateImage}
             resizeMode="contain"
           />

@@ -142,11 +142,10 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   receiverAddressContainer: {
-    backgroundColor: COLORS.secondaryBGColor,
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginBottom: SPACING.space_32,
-    paddingHorizontal: 6,
+    padding: 6,
     overflow: 'hidden',
     margin: SPACING.space_8,
     borderRadius: BORDERRADIUS.radius_8,

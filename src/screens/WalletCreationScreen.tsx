@@ -40,7 +40,13 @@ const WalletCreationScreen: React.FC = () => {
   const handleCreateWallet = async () => {
     if (password !== confirmPassword) {
       setError('Passwords do not match');
-      return;
+      
+    }
+
+    if (name.length < 6 || name.length > 12 ) {
+      setError('Wallet name must be between 6 and 12 characters')
+
+      return(null);
     }
 
     setLoading(true);
@@ -108,12 +114,14 @@ const WalletCreationScreen: React.FC = () => {
               value={password}
               onChangeText={setPassword}
               secureTextEntry={true}
+              showVisibilityToggle={true}
             />
             <TextInput
               placeholder="Confirm Password"
               value={confirmPassword}
               onChangeText={setConfirmPassword}
               secureTextEntry={true}
+              showVisibilityToggle={true}
             />
             {error ? <Text style={styles.errorText}>{error}</Text> : null}
             <View style={styles.loginBtnWrapper}>
@@ -125,7 +133,7 @@ const WalletCreationScreen: React.FC = () => {
                 {loading ? (
                   <ActivityIndicator color={COLORS.primaryBGColor} />
                 ) : (
-                  <Text style={[styles.loginText, {color: theme.textColor}]}>
+                  <Text style={[styles.loginText, {color: theme.primaryBGColor}]}>
                     Create Wallet
                   </Text>
                 )}

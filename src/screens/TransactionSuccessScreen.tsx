@@ -54,6 +54,8 @@ const TransactionSuccessScreen: React.FC = () => {
 
           const totalTransactions = metadataResponse.data.metadata.count;
 
+          
+
           // Fetch the most recent transaction using the count - 1 as the offset
           if (totalTransactions > 0) {
             const lastTransactionResponse = await axios.get(
@@ -66,6 +68,8 @@ const TransactionSuccessScreen: React.FC = () => {
                 },
               },
             );
+
+            console.log(lastTransactionResponse.data.transactions[0])
 
             if (
               lastTransactionResponse.status === 200 &&
