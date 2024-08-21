@@ -28,6 +28,8 @@ import {useAuth} from './auth/AuthContext';
 import {useCallback} from 'react';
 import {useTheme} from '../utils/ThemeContext';
 import { useTranslation } from 'react-i18next';
+import NoWalletFoundImageDark from '../../assets/images/emptyState/NoWalletFound.png';
+import NoWalletFoundImagelight from '../../assets/images/emptyState/NoWalletFoundLight.png';
 
 
 const WalletScreen: React.FC = () => {
@@ -128,9 +130,9 @@ const WalletScreen: React.FC = () => {
           styles.EmptyContainer,
           {backgroundColor: theme.primaryBGColor},
         ]}>
-        <View style={styles.ImageContainer}>
+        <View style={styles.ImageContainer}> 
           <Image
-            source={require('../../assets/images/emptyState/NoWalletFound.png')}
+            source={isDarkMode ? NoWalletFoundImageDark : NoWalletFoundImagelight}
             style={styles.emptyStateImage}
             resizeMode="contain"
           />

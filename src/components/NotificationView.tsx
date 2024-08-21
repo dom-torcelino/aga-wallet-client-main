@@ -15,13 +15,16 @@ import BackButton from './ui/BackButton';
 import {API_URL} from '@env';
 import axios from 'axios';
 import {useTheme} from '../utils/ThemeContext';
+import EmptyNotficationDark from '../../assets/images/emptyState/EmptyNotification.png'
+import EmptyNotficationLight from '../../assets/images/emptyState/EmptyNotificationLight.png'
+
 
 const NotificationView: React.FC = () => {
   const {token, loggedIn} = useAuth();
   const [notifications, setNotifications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const skeletonCount = 8;
-  const {theme} = useTheme();
+  const {theme, isDarkMode} = useTheme();
 
   const fetchNotification = async () => {
     try {
@@ -90,7 +93,7 @@ const NotificationView: React.FC = () => {
       ) : (
         <View style={styles.EmptyContainer}>
           <Image
-            source={require('../../assets/images/emptyState/EmptyNotification.png')}
+            source={isDarkMode ? EmptyNotficationDark : EmptyNotficationLight}
             style={styles.emptyStateImage}
             resizeMode="contain"
           />

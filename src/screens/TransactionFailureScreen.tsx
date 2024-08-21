@@ -16,19 +16,21 @@ import {
   FONTSIZE,
   SPACING,
 } from '../constants/theme';
+import TransferFailedImageDark from '../../assets/images/emptyState/TransferFailedDark.png';
+import TransferFailedImageLight from '../../assets/images/emptyState/TransferFailedLight.png';
 import {useTheme} from '../utils/ThemeContext';
 
 const {height, width} = Dimensions.get('window');
 
 const TransactionFailureScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const {theme} = useTheme();
+  const {isDarkMode, theme} = useTheme();
 
   return (
     <View style={[styles.container, {backgroundColor: theme.primaryBGColor}]}>
       <View style={styles.transferHeader}>
         <Image
-          source={require('../../assets/images/emptyState/TransferFailed.png')}
+          source={isDarkMode ? TransferFailedImageDark : TransferFailedImageLight}
           style={styles.TransferFailedImage}
           resizeMode="contain"
         />

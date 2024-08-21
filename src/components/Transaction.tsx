@@ -17,6 +17,8 @@ import {RootStackParamList} from '../types/types'; // Import the type
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
 import MoneySendIcon from '../../assets/SVG/MoneySendIcon';
 import MoneyReceivedIcon from '../../assets/SVG/MoneyReceivedIcon';
+import EmptyTransactionDark from '../../assets/images/emptyState/EmptyTransaction.png';
+import EmptyTransactionLight from '../../assets/images/emptyState/EmptyTransactionLight.png';
 // @ts-ignore
 import {API_URL} from '@env';
 import {useTheme} from '../utils/ThemeContext';
@@ -67,7 +69,7 @@ const Transaction: React.FC = () => {
   const [loadingMore, setLoadingMore] = useState(false);
   const skeletonCount = 5;
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const {isDarkMode, toggleTheme, theme} = useTheme();
+  const {theme, isDarkMode} = useTheme();
 
   useEffect(() => {
     let isMounted = true;
@@ -86,7 +88,7 @@ const Transaction: React.FC = () => {
               },
             },
           );
-
+ 
           if (isMounted && response.status === 200) {
             const sortedTransactions = response.data.transactions.sort(
               (a: TransactionData, b: TransactionData) =>
@@ -107,7 +109,7 @@ const Transaction: React.FC = () => {
         }
       }
     };
-
+    
     fetchTransactions();
 
     return () => {
@@ -169,7 +171,7 @@ const Transaction: React.FC = () => {
         navigation.navigate('TransactionDetails', {transaction: item})
       }>
       <View style={styles.dataContainer}>
-        <View style={styles.iconWrapper}>
+        <View style={[styles.iconWrapper, {backgroundColor: theme.layeBGColor}]}>
           {item.tx_type === 't' ? (
             <MoneySendIcon size={30} fillColor={'#C12727'} />
           ) : (
@@ -225,13 +227,13 @@ const Transaction: React.FC = () => {
   const renderEmptyState = () => (
     <View style={styles.emptyStateContainer}>
       <Image
-        source={require('../../assets/images/emptyState/EmptyTransaction.png')}
+        source={isDarkMode ? EmptyTransactionDark : EmptyTransactionLight}
         style={styles.emptyStateImage}
         resizeMode="contain"
       />
-      <Text style={styles.emptyStateHeaderText}>Empty Transaction</Text>
-      <Text style={styles.bodyText}>
-        It seems there are no transaction added yet{' '}
+      <Text style={[styles.emptyStateHeaderText, {color: theme.textColor}]}>Empty Transaction</Text>
+      <Text style={[styles.bodyText, {color: theme.secondaryTextColor}]}>
+       {` It seems there are no transaction \n added yet`}
       </Text>
     </View>
   );

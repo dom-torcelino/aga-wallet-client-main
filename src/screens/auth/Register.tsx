@@ -120,12 +120,14 @@ const Register: React.FC = () => {
               value={password}
               onChangeText={setPassword}
               secureTextEntry={true}
+              showVisibilityToggle={true}
             />
             <TextInput
               placeholder="Confirm Password"
               value={confirmPassword}
               onChangeText={setConfirmPassword}
               secureTextEntry={true}
+              showVisibilityToggle={true}
             />
 
             {error ? <Text style={styles.errorText}>{error}</Text> : null}

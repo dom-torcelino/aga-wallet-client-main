@@ -46,7 +46,7 @@ interface CardBalanceProps {
 const CardBalance: React.FC<CardBalanceProps> = ({balance}) => {
   const { t } = useTranslation(["wallet"]);
   const {pressHandler, pressHandler2} = useBottomSheet();
-  const [balanceVisible, setBalanceVisible] = useState(true);
+  const [balanceVisible, setBalanceVisible] = useState<boolean>(true);
   // const [balance, setBalance] = useState(13827.80);
   const {theme} = useTheme();
 
