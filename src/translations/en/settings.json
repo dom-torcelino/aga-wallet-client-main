@@ -1,0 +1,9 @@
+{
+    "settings": "Settings",
+    "currency": "Currency",
+    "language": "Language",
+    "theme": "Theme",
+    "lockWallet": "Lock Wallet",
+    "currentVersion": "Current Version",
+    "logout": "Log out"
+}

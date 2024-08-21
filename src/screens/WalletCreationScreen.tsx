@@ -24,10 +24,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // @ts-ignore
 import {API_URL} from '@env';
 import {useTheme} from '../utils/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const {height} = Dimensions.get('window');
 
 const WalletCreationScreen: React.FC = () => {
+  const { t } = useTranslation("createwallet"); 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const {token, setAccountAddress} = useAuth();
   const [name, setName] = useState<string>('');
@@ -91,26 +93,25 @@ const WalletCreationScreen: React.FC = () => {
         <View style={styles.container}>
           <View style={styles.wFull}>
             <Text style={[styles.headerText, {color: theme.textColor}]}>
-              Set up your wallet
+              {t("createwallet:setupYourWallet")}
             </Text>
             <Text style={[styles.subText, {color: theme.secondaryTextColor}]}>
-              Aga supports multiple blockchains and is always adding support for
-              more.
+              {t("createwallet:setupYourWalletDescription")}
             </Text>
             <TextInput
-              placeholder="Wallet Name"
+              placeholder={t("createwallet:walletName")}
               value={name}
               onChangeText={setName}
               secureTextEntry={false}
             />
             <TextInput
-              placeholder="Password"
+              placeholder={t("createwallet:password")}
               value={password}
               onChangeText={setPassword}
               secureTextEntry={true}
             />
             <TextInput
-              placeholder="Confirm Password"
+              placeholder={t("createwallet:confirmPassword")}
               value={confirmPassword}
               onChangeText={setConfirmPassword}
               secureTextEntry={true}
@@ -126,7 +127,7 @@ const WalletCreationScreen: React.FC = () => {
                   <ActivityIndicator color={COLORS.primaryBGColor} />
                 ) : (
                   <Text style={[styles.loginText, {color: theme.textColor}]}>
-                    Create Wallet
+                    {t("createwallet:createWallet")}
                   </Text>
                 )}
               </TouchableOpacity>

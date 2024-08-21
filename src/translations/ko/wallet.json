@@ -1,0 +1,11 @@
+{
+    "wallet": "지갑",
+    "totalBalance": "총 잔액",
+    "transfer": "이체",
+    "receive": "받다",
+    "assets": "자산",
+    "transactions": "거래",
+    "noWalletFound": "지갑을 찾을 수 없습니다",
+    "noWalletDescription": "지갑이 없으면 이 기능을 사용할 수 없습니다.",
+    "createWallet": "지갑 생성"
+  }

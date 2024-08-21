@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 import {
   BORDERRADIUS,
   COLORS,
@@ -14,36 +15,73 @@ import {
   FONTSIZE,
   SPACING,
 } from '../constants/theme';
-import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {RootStackParamList} from '../types/types';
-import {useAuth} from './auth/AuthContext'; // Import the useAuth hook
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { RootStackParamList } from '../types/types';
+import { useAuth } from './auth/AuthContext'; 
 import HeaderBar from '../components/HeaderBar';
-import {useTheme} from '../utils/ThemeContext';
+import { useTheme } from '../utils/ThemeContext';
+import { Picker } from '../components/Picker';
+import { useTranslation } from 'react-i18next';
+import i18next from 'i18next';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
+
+const languageOptions = [
+  { label: "🇬🇧 English", value: "en" },
+  { label: "🇯🇵 Japanese", value: "jp" },
+  { label: "🇨🇳 Chinese", value: "cn" },
+  { label: "🇰🇷 Korean", value: "ko" }
+];
+
+const currencyOptions = [
+  { label: "USD($)", value: "USD" },
+  { label: "YEN(¥)", value: "YEN" },
+  { label: "CNY(¥)", value: "CNY" },
+  { label: "KRW(₩)", value: "KRW" }
+];
+
+export const LANGUAGE_KEY = "selectedLanguage";  // Key for AsyncStorage
 
 const SettingsScreen: React.FC = () => {
+  const { t } = useTranslation(['settings']);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const {logout} = useAuth(); // Destructure the logout function from useAuth
-  const {isDarkMode, toggleTheme, theme} = useTheme();
+  const { logout } = useAuth();
+  const { isDarkMode, toggleTheme, theme } = useTheme();
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("en");
+  const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
+
+  const onChangeLanguage = async (lang: string) => {
+		void i18next.changeLanguage(lang);
+    setSelectedLanguage(lang)
+    await AsyncStorage.setItem(LANGUAGE_KEY, lang);  // Persist the selected language
+	};
 
   const handleLogout = async () => {
     try {
-      await logout(); // Use the logout function from AuthContext
+      await logout();  // Use the logout function from AuthContext
       navigation.navigate('Login');
     } catch (error) {
       console.error('Error during logout:', error);
     }
   };
 
+  // Initialize translations and wait for i18next to be ready
+  useEffect(() => {
+    const getLanguage = async () => {
+      try {
+        const savedLanguage = await AsyncStorage.getItem(LANGUAGE_KEY);
+        const initialLanguage = savedLanguage || 'en';
+        setSelectedLanguage(initialLanguage)
+      } catch (error) {
+        console.error('Failed to load translations:', error);
+      }
+    };
+    getLanguage();
+  }, []);
+
   return (
-    <View style={[styles.container, {backgroundColor: theme.primaryBGColor}]}>
-      {/* <StatusBar
-        backgroundColor={theme.primaryBGColor}
-        barStyle={theme.isDarkMode ? 'light-content' : 'dark-content'}
-        translucent={false} // Make sure it's not translucent
-      /> */}
-      <HeaderBar title={'Settings'} />
+    <View style={[styles.container, { backgroundColor: theme.primaryBGColor }]}>
+      <HeaderBar title={t("settings:settings")} />
       <View
         style={[
           styles.settingsContainer,
@@ -51,23 +89,32 @@ const SettingsScreen: React.FC = () => {
             backgroundColor: theme.secondaryBGColor,
             borderColor: theme.borderStroke,
           },
-        ]}>
-        <TouchableOpacity style={styles.buttonContainer}>
-          <Text style={[styles.textColor, {color: theme.textColor}]}>
-            Currency
-          </Text>
-          <Text style={[styles.textColor, {color: theme.textColor}]}>
-            USD (Default)
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonContainer}>
-          <Text style={[styles.textColor, {color: theme.textColor}]}>
-            Language
-          </Text>
-          <Text style={[styles.textColor, {color: theme.textColor}]}>
-            English (Default)
-          </Text>
-        </TouchableOpacity>
+        ]}
+      >
+        <View style={styles.buttonContainer}>
+          <View style={styles.pickerButton}>
+            <Text style={[styles.textColor, { flex: 1 }, { color: theme.textColor }]}>
+              {t("settings:currency")}
+            </Text>
+            <Picker
+              options={currencyOptions}
+              selectedValue={selectedCurrency}
+              onValueChange={setSelectedCurrency}
+            />
+          </View>
+        </View>
+        <View style={styles.buttonContainer}>
+          <View style={styles.pickerButton}>
+            <Text style={[styles.textColor, { flex: 1 }, { color: theme.textColor }]}>
+              {t("settings:language")}
+            </Text>
+            <Picker
+              options={languageOptions}
+              selectedValue={selectedLanguage}
+              onValueChange={onChangeLanguage}
+            />
+          </View>
+        </View>
       </View>
       <View
         style={[
@@ -76,25 +123,26 @@ const SettingsScreen: React.FC = () => {
             backgroundColor: theme.secondaryBGColor,
             borderColor: theme.borderStroke,
           },
-        ]}>
+        ]}
+      >
         <TouchableOpacity style={styles.buttonContainer} onPress={toggleTheme}>
-          <Text style={[styles.textColor, {color: theme.textColor}]}>
-            Theme
+          <Text style={[styles.textColor, { color: theme.textColor }]}>
+            {t("settings:theme")}
           </Text>
-          <Text style={[styles.textColor, {color: theme.textColor}]}>
+          <Text style={[styles.textColor, { color: theme.textColor }]}>
             {isDarkMode ? 'Dark' : 'Light'}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonContainer}>
-          <Text style={[styles.textColor, {color: theme.textColor}]}>
-            Lock Wallet
+          <Text style={[styles.textColor, { color: theme.textColor }]}>
+            {t("settings:lockWallet")}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonContainer}>
-          <Text style={[styles.textColor, {color: theme.textColor}]}>
-            Current Version
+          <Text style={[styles.textColor, { color: theme.textColor }]}>
+            {t("settings:currentVersion")}
           </Text>
-          <Text style={[styles.textColor, {color: theme.textColor}]}>
+          <Text style={[styles.textColor, { color: theme.textColor }]}>
             1.0.0
           </Text>
         </TouchableOpacity>
@@ -106,15 +154,17 @@ const SettingsScreen: React.FC = () => {
             backgroundColor: theme.secondaryBGColor,
             borderColor: theme.borderStroke,
           },
-        ]}>
+        ]}
+      >
         <TouchableOpacity
           style={[
             styles.logoutButton,
-            {backgroundColor: theme.secondaryBGColor},
+            { backgroundColor: theme.secondaryBGColor },
           ]}
-          onPress={handleLogout}>
-          <Text style={[styles.logoutText, {color: theme.textColor}]}>
-            Log out
+          onPress={handleLogout}
+        >
+          <Text style={[styles.logoutText, { color: theme.textColor }]}>
+            {t("settings:logout")}
           </Text>
         </TouchableOpacity>
       </View>
@@ -133,28 +183,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  pickerButton: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   settingsContainer: {
     flexDirection: 'column',
-    // alignItems: 'center',
-    // backgroundColor: COLORS.secondaryBGColor,
     marginTop: SPACING.space_15,
     borderWidth: 1,
     borderColor: COLORS.borderStroke,
     borderRadius: 12,
-
     justifyContent: 'space-between',
   },
-
   textColor: {
     fontSize: FONTSIZE.size_18,
-    // color: COLORS.secondaryTextColor,f
     color: COLORS.textColor,
-    fontFamily: FONTFAMILY.poppins_regular,
-  },
-
-  secondaryText: {
-    fontSize: FONTSIZE.size_14,
-    color: COLORS.secondaryTextColor,
     fontFamily: FONTFAMILY.poppins_regular,
   },
   logoutButton: {
@@ -164,7 +209,6 @@ const styles = StyleSheet.create({
   },
   logoutText: {
     fontSize: FONTSIZE.size_16,
-    // color: COLORS.secondaryTextColor,
     color: COLORS.textColor,
     textAlign: 'center',
     fontFamily: FONTFAMILY.poppins_semibold,

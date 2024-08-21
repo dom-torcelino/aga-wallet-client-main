@@ -1,0 +1,11 @@
+{
+    "wallet": "Wallet",
+    "totalBalance": "Total balance",
+    "transfer": "Transfer",
+    "receive": "Receive",
+    "assets": "Assets",
+    "transactions": "Transactions",
+    "noWalletFound": "No wallet found",
+    "noWalletDescription": "You cant use this feature if you have no wallet.",
+    "createWallet": "Create Wallet" 
+}

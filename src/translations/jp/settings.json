@@ -1,0 +1,9 @@
+{
+    "settings": "設定",
+    "currency": "通貨",
+    "language": "言語",
+    "theme": "テーマ",
+    "lockWallet": "ウォレットをロックする",
+    "currentVersion": "現在のバージョン",
+    "logout": "ログアウト"
+  }

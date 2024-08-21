@@ -4,7 +4,7 @@ import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
 import {useTheme} from '../utils/ThemeContext';
 
 interface TabButtonProps {
-  name: 'All' | 'Slot' | 'Casino' | 'Poker';
+  name: string;
   activeTab: string;
   onHandleSearchType: () => void;
 }
@@ -49,14 +49,12 @@ const TabButton: React.FC<TabButtonProps> = ({
 };
 
 interface TabsProps {
-  tabs: ('All' | 'Slot' | 'Casino' | 'Poker')[];
+  tabs: string[];
   activeTab: string;
-  setActiveTab: (tab: 'All' | 'Slot' | 'Casino' | 'RPG') => void;
+  setActiveTab: (tab: string) => void;
 }
 
-const Tabs: React.FC<TabsProps> = ({tabs, activeTab, setActiveTab}) => {
-  const {theme} = useTheme();
-
+const Tabs: React.FC<TabsProps> = ({ tabs, activeTab, setActiveTab}) => {
   return (
     <View>
       <FlatList
@@ -66,7 +64,7 @@ const Tabs: React.FC<TabsProps> = ({tabs, activeTab, setActiveTab}) => {
             name={item}
             activeTab={activeTab}
             onHandleSearchType={() =>
-              setActiveTab(item as 'All' | 'Slot' | 'Casino' | 'RPG')
+              setActiveTab(item)
             }
             key={index}
           />

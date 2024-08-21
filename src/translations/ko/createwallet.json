@@ -1,0 +1,8 @@
+{
+    "setupYourWallet": "지갑 설정",
+    "setupYourWalletDescription": "AGA 지갑은 여러 블록체인을 지원하며 지속적으로 더 많은 블록체인을 추가하고 있습니다.",
+    "walletName": "지갑 이름",
+    "password": "비밀번호",
+    "confirmPassword": "비밀번호 확인",
+    "createWallet": "지갑 생성"
+}

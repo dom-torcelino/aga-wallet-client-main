@@ -16,6 +16,7 @@ import axios from 'axios';
 import { NotificationSkeleton } from '../components/ui/skeletons';
 import RedCircleIcon from '../../assets/SVG/RedDot';
 import { useTheme } from '../utils/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const NotificationStatus = ['unread', 'read' , 'dismissed' , 'archived' , 'action_taken'] as const
 
@@ -33,6 +34,7 @@ const LIMIT_PER_PAGE = 10;
 const SKELETON_COUNT = 6;
 
 const NotificationsScreen: React.FC = () => {
+  const { t } = useTranslation(["wallet"]);
   const { token, loggedIn, userId } = useAuth();
   const [totalNotifications, setTotalNotifications] = useState<number>(0);
   const [page, setPage] = useState(1);

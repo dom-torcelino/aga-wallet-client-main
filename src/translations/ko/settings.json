@@ -1,0 +1,9 @@
+{
+    "settings": "설정",
+    "currency": "통화",
+    "language": "언어",
+    "theme": "테마",
+    "lockWallet": "지갑 잠금",
+    "currentVersion": "현재 버전",
+    "logout": "로그아웃"
+  }

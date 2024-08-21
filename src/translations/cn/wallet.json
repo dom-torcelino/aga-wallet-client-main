@@ -1,0 +1,11 @@
+{
+    "wallet": "钱包",
+    "totalBalance": "总余额",
+    "transfer": "转账",
+    "receive": "接收",
+    "assets": "资产",
+    "transactions": "交易",
+    "noWalletFound": "未找到钱包",
+    "noWalletDescription": "如果您没有钱包，则无法使用此功能。",
+    "createWallet": "创建钱包"
+}

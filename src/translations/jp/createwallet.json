@@ -1,0 +1,8 @@
+{
+    "setupYourWallet": "ウォレットを設定する",
+    "setupYourWalletDescription": "AGAウォレットは複数のブロックチェーンをサポートしており、常にサポートを追加しています。",
+    "walletName": "ウォレット名",
+    "password": "パスワード",
+    "confirmPassword": "パスワードの確認",
+    "createWallet": "ウォレットを作成する"
+}

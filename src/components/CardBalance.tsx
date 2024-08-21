@@ -21,6 +21,7 @@ import EyeCloseIcon from '../../assets/SVG/EyeCloseIcon';
 import type {TouchableOpacityProps} from 'react-native';
 import {useBottomSheet} from './BottomSheetContext';
 import { useTheme } from '../utils/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 type CustomButtonProps = {
   title: string;
@@ -43,6 +44,7 @@ interface CardBalanceProps {
 }
 
 const CardBalance: React.FC<CardBalanceProps> = ({balance}) => {
+  const { t } = useTranslation(["wallet"]);
   const {pressHandler, pressHandler2} = useBottomSheet();
   const [balanceVisible, setBalanceVisible] = useState(true);
   // const [balance, setBalance] = useState(13827.80);
@@ -58,7 +60,7 @@ const CardBalance: React.FC<CardBalanceProps> = ({balance}) => {
         <TouchableWithoutFeedback onPress={toggleBalanceVisibility}>
           <View>
             <View style={styles.balanceTitleContainer}>
-              <Text style={[styles.balanceTitle, {color: theme.textColor}]}>Total balance</Text>
+              <Text style={[styles.balanceTitle, {color: theme.textColor}]}>{t("wallet:totalBalance")}</Text>
               {balanceVisible ? (
                 <EyeOpenIcon size={25} fillColor={theme.textColor} />
               ) : (
@@ -73,12 +75,12 @@ const CardBalance: React.FC<CardBalanceProps> = ({balance}) => {
       </View>
       <View style={styles.ButtonContainer}>
         <CustomButton
-          title="Transfer"
+          title={t("wallet:transfer")}
           onPress={pressHandler}
           Icon={MoneySendIcon}
         />
         <CustomButton
-          title="Receive"
+          title={t("wallet:receive")}
           onPress={pressHandler2}
           Icon={MoneyReceivedIcon}
         />
