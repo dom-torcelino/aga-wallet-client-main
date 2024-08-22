@@ -42,7 +42,12 @@ const {width} = Dimensions.get('window');
 const groupByDate = (transactions: TransactionData[]) => {
   return transactions.reduce(
     (grouped: {title: string; data: TransactionData[]}[], transaction) => {
-      const date = new Date(transaction.tx_created_at).toDateString();
+      const date = new Date(transaction.tx_created_at).toLocaleDateString('en-US',{ 
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      });
       const group = grouped.find(g => g.title === date);
       if (group) {
         group.data.push(transaction);
