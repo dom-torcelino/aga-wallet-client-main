@@ -189,6 +189,7 @@ const Login: React.FC = () => {
               value={password}
               onChangeText={setPassword}
               secureTextEntry={true}
+              showVisibilityToggle={true}
               
             />
             {error ? <Text style={styles.errorText}>{error}</Text> : null}
@@ -200,7 +201,7 @@ const Login: React.FC = () => {
                 {loading ? (
                   <ActivityIndicator color={COLORS.primaryBGColor} />
                 ) : (
-                  <Text style={[styles.loginText, {color: theme.textColor}]}>{t("login:login")}</Text>
+                  <Text style={[styles.loginText, {color: theme.primaryBGColor}]}>{t("login:login")}</Text>
                 )}
               </TouchableOpacity>
             </View>
@@ -214,9 +215,9 @@ const Login: React.FC = () => {
           </View>
 
           <View style={styles.signInOptions}>
-            <View style={styles.lineStyles} />
+            <View style={[styles.lineStyles, {backgroundColor: theme.strokeColor}]} />
             <Text style={[styles.signUpText, {color: theme.textColor}]}>{t("login:orSignInWith")}</Text>
-            <View style={styles.lineStyles} />
+            <View style={[styles.lineStyles, {backgroundColor: theme.strokeColor}]} />
           </View>
 
           <View style={styles.socialSignIn}>

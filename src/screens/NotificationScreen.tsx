@@ -133,18 +133,18 @@ const NotificationsScreen: React.FC = () => {
           />
         </>
       ) : (
-        <View style={styles.EmptyContainer}>
+        <View style={[styles.EmptyContainer, {backgroundColor: theme.primaryBGColor}]}>
           <Image
             source={isDarkMode ? EmptyNotficationDark : EmptyNotficationLight}
             style={styles.emptyStateImage}
             resizeMode="contain"
           />
-          <Text style={styles.emptyStateHeaderText}>No notifications found</Text>
+          <Text style={[styles.emptyStateHeaderText, {color: theme.textColor}]}>No notifications found</Text>
           <Text style={styles.bodyText}>
             You currently have no notifications. {'\n'}Check back later for updates.
           </Text>
           <TouchableOpacity onPress={() => fetchNotification(1, LIMIT_PER_PAGE)} activeOpacity={0.7} style={styles.reloadBtn}>
-            <Text style={styles.reloadText}>Reload Notifications</Text>
+            <Text style={[styles.reloadText, {color: theme.primaryBGColor}]}>Reload Notifications</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -183,7 +183,8 @@ const styles = StyleSheet.create({
   },
   EmptyContainer: {
     flex: 1,
-    justifyContent: 'center',
+    marginTop: 40,
+    justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: COLORS.primaryBGColor,
     paddingHorizontal: SPACING.space_16,

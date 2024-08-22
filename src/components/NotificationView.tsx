@@ -108,7 +108,7 @@ const NotificationView: React.FC = () => {
             onPress={handleReloadNotifications}
             activeOpacity={0.7}
             style={styles.reloadBtn}>
-            <Text style={styles.reloadText}>Reload Notifications</Text>
+            <Text style={[styles.reloadText, {color: theme.primaryBGColor}]}>Reload Notifications</Text>
           </TouchableOpacity>
         </View>
       )}
