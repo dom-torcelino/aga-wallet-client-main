@@ -10,12 +10,14 @@ import BackButton from '../components/ui/BackButton';
 import { useTheme } from '../utils/ThemeContext';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 type TokenDetailsRouteProp = RouteProp<RootStackParamList, 'TokenDetails'>;
 
 const {height, width} = Dimensions.get('window');
 
 const TokenDetails: React.FC = () => {
+  const { t } = useTranslation("tokendetails");
   const route = useRoute<TokenDetailsRouteProp>();
   const { token } = route.params;
   const { balance } = useAuth();
@@ -30,7 +32,6 @@ const TokenDetails: React.FC = () => {
           backgroundColor: theme.primaryBGColor,
         },
       ]}>
-      {/* <BackButton /> */}
       <View
         style={[
           styles.assetContainer,
@@ -46,22 +47,22 @@ const TokenDetails: React.FC = () => {
           style={styles.image}
         />
 
-        <Text style={[styles.fiat, {color: theme.textColor}]}>${balance.toFixed(2)}</Text>
+        <Text style={[styles.fiat, {color: theme.textColor}]}>${balance.toLocaleString()}</Text>
 
         <View style={styles.row}>
           <Text style={[styles.crypto, { color: theme.textColor }]}>
-            {token.crypto}
+            {balance.toLocaleString()}
           </Text>
           <Text style={[styles.coin, { color: theme.textColor }]}>
             {token.coin}
           </Text>
         </View>
         <View style={styles.rowAsset}>
-        <Text style={[styles.crypto, {color: theme.textColor}]}>
-            Assets
+        <Text style={[styles.assets, { color: theme.textColor }]}>
+            {t("tokendetails:assets")}
           </Text>
           <Text style={[styles.coin, {color: theme.textColor}]}>
-              {token.crypto}
+              {balance.toLocaleString()}
           </Text>
         </View>
         {/* <Text style={styles.fiat}>${token.fiat}</Text> */}
@@ -70,7 +71,7 @@ const TokenDetails: React.FC = () => {
           <TouchableOpacity style={[styles.button, {backgroundColor: theme.primaryGoldHex} ]}>
             <Text style={[styles.buttonText, {color: theme.textColor}]}
             onPress={() => navigation.navigate('Home')}>
-              Back to wallet
+               {t("tokendetails:backToWallet")}
             </Text>
           </TouchableOpacity>
       </View>
@@ -122,6 +123,12 @@ const styles = StyleSheet.create({
   },
   crypto: {
     fontSize: FONTSIZE.size_24,
+    fontFamily: FONTFAMILY.poppins_regular,
+    color: COLORS.primaryWhite,
+    marginVertical: 10,
+  },
+  assets: {
+    fontSize: FONTSIZE.size_16,
     fontFamily: FONTFAMILY.poppins_regular,
     color: COLORS.primaryWhite,
     marginVertical: 10,

@@ -9,7 +9,7 @@ import Register from '../screens/auth/Register';
 import { COLORS } from '../constants/theme';
 import BottomTabNavigator from './BottomTabNavigator';
 import { RootStackParamList } from '../types/types'; // Import the type
-import TokenDetails from '../screens/TokenDetails';
+import TokenDetails from '../screens/TokenDetailsScreen';
 import QrScanner from '../QrScanner';
 import { Easing } from 'react-native';
 import ResetPassword from '../components/ResetPassword';
@@ -18,7 +18,7 @@ import TransactionSuccessScreen from '../screens/TransactionSuccessScreen';
 import TransactionFailureScreen from '../screens/TransactionFailureScreen';
 import EnterPasswordScreen from '../screens/SendAssetPasswordScreen';
 import TransactionDetails from '../components/TransactionDetails';
-import GameView from '../components/GameView';
+import GameView from '../screens/GameViewScreen';
 import { useTheme } from '../utils/ThemeContext';
 import NotificationsScreen from '../screens/NotificationScreen';
 import { SendAssetScreen } from '../screens/SendAssetScreen';
@@ -140,6 +140,7 @@ const AuthNavigator = () => {
         name="TokenDetails"
         component={TokenDetails}
         options={{
+          title: `${t('tokendetails:tokenDetails')}`,
           headerShown: true,
           headerTitleAlign: 'center',
           headerStyle: {
@@ -214,7 +215,7 @@ const AuthNavigator = () => {
         name="GameView"
         component={GameView}
         options={{
-          title: `${t("sendassetamount:sendAssetAmount")}`,
+          title: `${t("gameview:game")}`,
           headerShown: true,
           headerTitleAlign: 'center',
           headerStyle: {
