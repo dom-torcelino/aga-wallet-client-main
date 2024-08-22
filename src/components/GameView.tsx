@@ -15,11 +15,17 @@ const GameView: React.FC = () => {
   const {isDarkMode, toggleTheme, theme} = useTheme();
 
   return (
+    
     <View style={[styles.container, {backgroundColor: theme.primaryBGColor}]}>
-      <BackButton />
+
       <View style={styles.itemsCenter}>
-        <Text style={[styles.gameTitle, {color: theme.textColor}]}>{game.game_name}</Text>
         <Image source={{uri: game.game_image}} style={styles.gameImage} />
+        <Text style={[styles.gameTitle, {color: theme.textColor}]}>{game.game_name}</Text>
+        <View  style={styles.gameDetails}>
+          <Text style={[styles.gameDescription, {color: theme.textColor}]}>Genre: {game.game_genre}</Text>
+          <Text style={[styles.gameDescription, {color: theme.textColor}]}>Active Player: {game.game_players}</Text>
+        </View>
+        <Text style={[styles.gameDescription, {color: theme.textColor}]}>{game.game_description}</Text>
       </View>
 
       <TouchableOpacity style={styles.playButton}>
@@ -35,11 +41,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.primaryBGColor,
-    padding: 20,
+    padding: 10,
+    justifyContent:'space-between',
   },
 
   itemsCenter: {
-    alignItems: 'center',
+    // alignItems: 'center',
   },
 
   gameImage: {
@@ -48,16 +55,32 @@ const styles = StyleSheet.create({
     borderRadius: BORDERRADIUS.radius_15,
     marginBottom: 20,
   },
+  gameDetails: {
+    display:'flex',
+    flexDirection:'row',
+    justifyContent:'space-around',
+    padding:20,
+    borderWidth:1,
+    borderColor:'#3d3d3d',
+    marginBottom:20,
+    borderRadius:10
+  },
   gameTitle: {
+    alignSelf:'center',
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+  },
+  gameDescription: {
+    fontSize: 16,
+    fontWeight: '300',
+    // marginBottom: 20,
   },
   playButton: {
     backgroundColor: COLORS.primaryColor,
     paddingVertical: 15,
     paddingHorizontal: 30,
-    borderRadius: BORDERRADIUS.radius_25,
+    borderRadius: BORDERRADIUS.radius_15,
   },
   playButtonText: {
     color: COLORS.primaryWhite,
