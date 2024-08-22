@@ -87,7 +87,7 @@ export const SendAssetScreen: React.FC = () => {
                 </Text>
                 <Text
                   style={[styles.crypto, {color: theme.secondaryTextColor}]}>
-                  {balance.toFixed(2)}
+                  {balance.toLocaleString()}
                 </Text>
               </View>
             </View>

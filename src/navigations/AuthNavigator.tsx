@@ -53,7 +53,6 @@ const AuthNavigator = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName='TransactionFailure'
       screenOptions={{
         headerTintColor: COLORS.primaryWhite,
         headerBackTitleVisible: false,

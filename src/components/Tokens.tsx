@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
 import {useAuth} from '../screens/auth/AuthContext';
 import TransactionSkeleton from './ui/TransactionSkeleton'; // Import the skeleton loader component
@@ -24,6 +24,13 @@ export interface TokenData {
   fiat: string;
 }
 
+
+export interface Asset {
+  tokenSymbol: string,
+  walletAddress: string,
+  balance: number
+}
+
 interface TokensProps {
   onPressToken: (item: TokenData) => void;
 }
@@ -32,7 +39,7 @@ const {width} = Dimensions.get('window');
 const IMAGE_SIZE = width * 0.11;
 const skeletonCount = 5;
 
-const Tokens: React.FC<TokensProps> = ({onPressToken}) => {
+const Tokens: React.FC<TokensProps> = ({onPressToken }) => {
   const {userId, token, loggedIn, balance} = useAuth();
   const [tokenData, setTokenData] = useState<TokenData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -120,8 +127,7 @@ const Tokens: React.FC<TokensProps> = ({onPressToken}) => {
           <Text style={[styles.crypto, {color: theme.textColor}]}>
             {item.crypto}
           </Text>
-          {/* <Text style={styles.fiat}>(${item.fiat})</Text> */}
-          <Text style={styles.fiat}>${balance.toFixed(2)}</Text>
+          <Text style={styles.fiat}>${balance.toLocaleString()}</Text>
         </View>
       </TouchableOpacity>
     );
