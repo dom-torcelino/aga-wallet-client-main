@@ -1,0 +1,9 @@
+{
+    "sendAssetAmount": "Send Amount",
+    "availableBalance": "Available Balance: ",
+    "sendingTo": "Sending to:",
+    "send": "Send",
+    "errorInvalidAmount": "Please enter a valid amount to send",
+    "errorBalanceNotEnough": "You do not have enough balance to send this amount."
+  }
+  

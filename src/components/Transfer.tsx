@@ -1,7 +1,6 @@
 import {StyleSheet, View} from 'react-native';
 import React from 'react';
-import Tokens from './Tokens';
-import {mockTokens, TokenData} from '../data/mockData';
+import Tokens, { TokenData } from './Tokens';
 import {COLORS, SPACING} from '../constants/theme';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
 import {RootStackParamList} from '../types/types';
@@ -15,12 +14,12 @@ const Transfer: React.FC<TransferProps> = ({closeBottomSheet}) => {
 
   const onPressToken = (item: TokenData) => {
     closeBottomSheet();
-    navigation.navigate('SendToken', {token: item});
+    navigation.navigate('SendAsset', {token: item});
   };
 
   return (
     <View style={styles.TransferContainer}>
-      <Tokens title="Tokens" data={mockTokens} onPressToken={onPressToken} />
+      <Tokens onPressToken={onPressToken} />
     </View>
   );
 };

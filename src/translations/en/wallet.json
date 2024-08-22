@@ -6,6 +6,13 @@
     "assets": "Assets",
     "transactions": "Transactions",
     "noWalletFound": "No wallet found",
-    "noWalletDescription": "You cant use this feature if you have no wallet.",
-    "createWallet": "Create Wallet" 
-}
+    "noWalletDescription": "You can't use this feature if you have no wallet.",
+    "createWallet": "Create Wallet",
+    "emptyTransaction": "Empty Transaction",
+    "emptyTransactionDescription": "It seems there are no transactions added yet.",
+    "selectAsset": "Select Asset",
+    "searchTokenName": "Search token name",
+    "myWalletDetails": "My Wallet Details",
+    "myWalletDetailsDescription": "You can only receive tokens supported by AGA Wallet. Receiving tokens from other networks may result to loss of your assets.",
+    "copyWalletAddress": "Copy Wallet Address"
+  }

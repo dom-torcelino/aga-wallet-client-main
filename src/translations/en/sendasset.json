@@ -1,0 +1,12 @@
+{
+  "sendAsset": "Send Asset",
+  "change": "Change",
+  "whoAreYouSending": "Who are you sending this to?",
+  "egAddress": "e.g: 16HFHicyvB9RXFTxrBazas...",
+  "enterTheRecipientAddress": "Enter the recipient's wallet address.",
+  "mistransferredAssets": "Mistransferred assets cannot be recovered due to the nature of the blockchain.",
+  "whenTransferring": "When transferring to an exchange or external wallet, please ensure it is transferred to the correct blockchain network.",
+  "transferringByUsername": "Transferring by username is a feature that can be used when sending between AGA wallet users.",
+  "continue": "Continue",
+  "errorInvalidAddress": "The wallet address is not valid. Please check and try again."
+}

@@ -24,44 +24,38 @@ import {
 } from '../constants/theme';
 import {RootStackParamList} from '../types/types';
 import ScanIcon from '../../assets/SVG/ScanIcon';
-import {useBottomSheet} from './BottomSheetContext';
-import BackButton from './ui/BackButton';
-import {useAuth} from '../screens/auth/AuthContext';
+import {useAuth} from './auth/AuthContext';
 import {useTheme} from '../utils/ThemeContext';
+import { useBottomSheet } from '../components/BottomSheetContext';
+import { validateWalletAddress } from '../utils/validators';
+import { useTranslation } from 'react-i18next';
 
 const {height, width} = Dimensions.get('window');
 const IMAGE_SIZE = width * 0.11;
 
-type SendTokenRouteProp = RouteProp<RootStackParamList, 'SendToken'>;
+type SendAssetScreenProp = RouteProp<RootStackParamList, 'SendAsset'>;
 
-const SendToken: React.FC = () => {
+export const SendAssetScreen: React.FC = () => {
+  const { t } = useTranslation();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const {pressHandler} = useBottomSheet();
-  const route = useRoute<SendTokenRouteProp>();
+  const {theme} = useTheme();
+  const { pressHandler } = useBottomSheet();
+  const route = useRoute<SendAssetScreenProp>();
   const {token} = route.params;
   const {balance} = useAuth();
 
-  const [recipient_address, setRecipient_address] = useState<string>('');
+  const [recipientAddress, setRecipientAddress] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const {theme} = useTheme();
 
-  const validateAddress = (address: string) => {
-    const addressRegex = /^5[a-zA-Z0-9]{47}$/; // Update the regex to match your wallet address format
-    return addressRegex.test(address);
-  };
-
-  const onPressButton = () => {
-    if (validateAddress(recipient_address)) {
+  const onPressContinue = () => {
+    if (validateWalletAddress(recipientAddress)) {
       setErrorMessage('');
-      navigation.navigate('SendAmount', {
+      navigation.navigate('SendAssetAmount', {
         token,
-        recipient_address,
-        setRecipient_address,
+        recipientAddress,
       });
     } else {
-      setErrorMessage(
-        'The wallet address is not valid. Please check and try again.',
-      );
+      setErrorMessage(t("sendasset:errorInvalidAddress"));
     }
   };
 
@@ -69,7 +63,6 @@ const SendToken: React.FC = () => {
     <SafeAreaView
       style={[styles.main, {backgroundColor: theme.primaryBGColor}]}>
       <View>
-        {/* <BackButton /> */}
         <View style={styles.container}>
           <View
             style={[
@@ -92,7 +85,6 @@ const SendToken: React.FC = () => {
                 <Text style={[styles.coin, {color: theme.textColor}]}>
                   {token.coin}
                 </Text>
-                {/* <Text style={styles.crypto}>{token.crypto}</Text> */}
                 <Text
                   style={[styles.crypto, {color: theme.secondaryTextColor}]}>
                   {balance.toFixed(2)}
@@ -100,14 +92,14 @@ const SendToken: React.FC = () => {
               </View>
             </View>
             <TouchableOpacity onPress={pressHandler}>
-              <Text style={styles.changeCoin}>Change</Text>
+              <Text style={styles.changeCoin}>{t("sendasset:change")}</Text>
             </TouchableOpacity>
           </View>
         </View>
 
         <View>
           <Text style={[styles.addressHeading, {color: theme.textColor}]}>
-            Who are you sending to?
+          {t("sendasset:whoAreYouSending")}
           </Text>
           <View
             style={[
@@ -119,17 +111,17 @@ const SendToken: React.FC = () => {
             ]}>
             <TextInput
               style={[styles.input, {color: theme.textColor}]}
-              placeholder="e.g : 16HFHicyvB9RXFTxrBazas..."
+              placeholder={t("sendasset:egAddress")}
               placeholderTextColor={theme.placeHolderTextColor}
-              value={recipient_address}
+              value={recipientAddress}
               onChangeText={text => {
-                setRecipient_address(text);
-                setErrorMessage(''); // Clear error message on input change
+                setRecipientAddress(text);
+                setErrorMessage('');
               }}
             />
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('QrScanner', {setRecipient_address})
+                navigation.navigate('QrScanner', { setRecipient_address: setRecipientAddress })
               }>
               <ScanIcon
                 fill={theme.textColor}
@@ -145,7 +137,7 @@ const SendToken: React.FC = () => {
             style={[styles.addressValidation, {color: theme.textColor}]}
             numberOfLines={1}
             ellipsizeMode="tail">
-            {recipient_address || "Enter the recipient's wallet address."}
+            {recipientAddress || t("sendasset:enterTheRecipientAddress")}
           </Text>
         </View>
         <View>
@@ -162,8 +154,7 @@ const SendToken: React.FC = () => {
                 styles.reminderText,
                 {color: theme.placeHolderTextColor},
               ]}>
-              Mistransferred assets cannot be recovered due to the nature of the
-              blockchain.
+              {t("sendasset:mistransferredAssets")}
             </Text>
           </View>
           <View style={styles.reminderContainer}>
@@ -179,8 +170,7 @@ const SendToken: React.FC = () => {
                 styles.reminderText,
                 {color: theme.placeHolderTextColor},
               ]}>
-              When transferring to an exchange or external wallet, please make
-              sure it’s transferred to the same blockchain network.
+              {t("sendasset:whenTransferring")}
             </Text>
           </View>
           <View style={styles.reminderContainer}>
@@ -196,18 +186,17 @@ const SendToken: React.FC = () => {
                 styles.reminderText,
                 {color: theme.placeHolderTextColor},
               ]}>
-              Transferring by username is a function that can be used when
-              transferring between AGA wallet users.
+              {t("sendasset:transferringByUsername")}
             </Text>
           </View>
         </View>
       </View>
       <View style={styles.nextButtonContainer}>
         <TouchableOpacity
-          onPress={onPressButton}
+          onPress={onPressContinue}
           activeOpacity={0.7}
           style={styles.nextButton}>
-          <Text style={styles.buttonText}>Continue</Text>
+          <Text style={styles.buttonText}>{t("sendasset:continue")}</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -356,5 +345,3 @@ const styles = StyleSheet.create({
     fontFamily: FONTFAMILY.poppins_semibold,
   },
 });
-
-export default SendToken;

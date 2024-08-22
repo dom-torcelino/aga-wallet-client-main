@@ -19,6 +19,8 @@ import BackDrop from './BackDrop';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {COLORS, FONTFAMILY, FONTSIZE} from '../constants/theme';
 import {useTheme} from '../utils/ThemeContext';
+import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 interface Props extends AnimatedScrollViewProps {
   snapTo: string;
@@ -33,6 +35,7 @@ export interface BottomSheetMethods {
 
 const BottomSheetScrollView = forwardRef<BottomSheetMethods, Props>(
   ({snapTo, children, backDropColor, ...rest}: Props, ref) => {
+    const { t } = useTranslation();
     const inset = useSafeAreaInsets();
     const {height} = Dimensions.get('screen');
     const percentage = parseFloat(snapTo.replace('%', '')) / 100;
@@ -180,10 +183,10 @@ const BottomSheetScrollView = forwardRef<BottomSheetMethods, Props>(
               <View style={styles.line} />
               <View style={styles.searchBoxContainer}>
                 <Text style={[styles.textStyles, {color: theme.textColor}]}>
-                  Select Assets
+                  {t("wallet:myWalletDetails")}
                 </Text>
                 <TextInput
-                  placeholder="Search Token Name"
+                  placeholder={t("wallet:searchTokenName")}
                   style={[
                     styles.searchBox,
                     {

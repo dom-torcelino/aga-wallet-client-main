@@ -1,0 +1,8 @@
+{
+    "transactionDone": "取引完了！",
+    "transactionDoneDescription": "取引が正常に完了しました。",
+    "transactionDetails": "取引の詳細",
+    "amount": "金額",
+    "receiver": "受取人",
+    "transactionHash": "取引ハッシュ"
+}

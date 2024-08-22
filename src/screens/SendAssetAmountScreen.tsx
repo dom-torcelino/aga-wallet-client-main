@@ -16,32 +16,28 @@ import {
   FONTSIZE,
   SPACING,
 } from '../constants/theme';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { RootStackParamList } from '../types/types';
-import { useAuth } from '../screens/auth/AuthContext';
-import { useTheme } from '../utils/ThemeContext';
-import { isNumericValue } from '../utils/validators';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
+import {RootStackParamList} from '../types/types';
+import {useAuth} from './auth/AuthContext';
+import {useTheme} from '../utils/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const {height} = Dimensions.get('window');
 
 type SendAmountRouteProp = RouteProp<RootStackParamList, 'SendAssetAmount'>;
 
-const SendAmount: React.FC = () => {
+export const SendAssetAmountScreen: React.FC = () => {
+  const { t } = useTranslation();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const route = useRoute<SendAmountRouteProp>();
   const { token, recipientAddress } = route.params;
-  const { balance, accountAddress } = useAuth();
+  const {balance, accountAddress} = useAuth();
   const {theme} = useTheme();
-
-  // State to manage the input value, initialized with '0'
   const [amount, setAmount] = useState('0');
-
-  // State to manage error message
   const [error, setError] = useState<string | null>(null);
-
-  // Handle input change to ensure numeric input and prevent starting with 0
   const handleInputChange = (text: string) => {
-    let numericValue = isNumericValue(text)
+    let numericValue = text.replace(/[^0-9.]/g, '').slice(0, 10);
+
     if (numericValue.length > 1 && numericValue.startsWith('0')) {
       numericValue = numericValue.slice(1);
     }
@@ -53,17 +49,17 @@ const SendAmount: React.FC = () => {
   const handleSend = () => {
     const numericAmount = parseFloat(amount);
     if (isNaN(numericAmount) || numericAmount <= 0) {
-      setError('Please enter a valid amount to send.');
+      setError(t("sendassetamount:errorInvalidAmount"));
       return;
     }
     if (numericAmount > balance) {
-      setError('You do not have enough balance to send this amount.');
+      setError(t("sendassetamount:errorBalanceNotEnough"));
       return;
     }
 
     navigation.navigate('SendAssetPassword', {
-      token,
       walletAddress: accountAddress,
+      token,
       recipientAddress,
       amount: numericAmount,
     });
@@ -73,9 +69,10 @@ const SendAmount: React.FC = () => {
     <SafeAreaView
       style={[styles.main, {backgroundColor: theme.primaryBGColor}]}>
       <View>
+        {/* <BackButton /> */}
         <Text
           style={[styles.addressHeading, {color: theme.secondaryTextColor}]}>
-          Available Balance: {balance.toFixed(2)}
+          {t("sendassetamount:availableBalance")}{balance.toLocaleString()}
         </Text>
         <TextInput
           autoFocus={true}
@@ -85,8 +82,6 @@ const SendAmount: React.FC = () => {
           value={amount}
           onChangeText={handleInputChange}
         />
-        {/* Display error message if there is one */}
-
         <View>
           <View
             style={[
@@ -95,7 +90,7 @@ const SendAmount: React.FC = () => {
             ]}>
             <Text
               style={[styles.reminderText, {color: theme.secondaryTextColor}]}>
-              Sending to:
+              {t("sendassetamount:sendingTo")}
             </Text>
             <Text
               style={[styles.addressValidation, {color: theme.textColor}]}
@@ -109,7 +104,7 @@ const SendAmount: React.FC = () => {
       </View>
       <View style={styles.nextButtonContainer}>
         <TouchableOpacity style={styles.nextButton} onPress={handleSend}>
-          <Text style={styles.buttonText}>Send</Text>
+          <Text style={styles.buttonText}>{t("sendassetamount:send")}</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -198,5 +193,3 @@ const styles = StyleSheet.create({
     fontFamily: FONTFAMILY.poppins_semibold,
   },
 });
-
-export default SendAmount;

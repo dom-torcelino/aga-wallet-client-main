@@ -14,8 +14,6 @@ import TransactionSkeleton from './ui/TransactionSkeleton'; // Import the skelet
 // @ts-ignore
 import {API_URL} from '@env';
 import {useTheme} from '../utils/ThemeContext';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../types/types';
 
 export interface TokenData {
   id: number;
@@ -26,13 +24,15 @@ export interface TokenData {
   fiat: string;
 }
 
+interface TokensProps {
+  onPressToken: (item: TokenData) => void;
+}
+
 const {width} = Dimensions.get('window');
 const IMAGE_SIZE = width * 0.11;
 const skeletonCount = 5;
 
-
-const Tokens = () => {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+const Tokens: React.FC<TokensProps> = ({onPressToken}) => {
   const {userId, token, loggedIn, balance} = useAuth();
   const [tokenData, setTokenData] = useState<TokenData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -89,10 +89,6 @@ const Tokens = () => {
       isMounted = false;
     };
   }, [userId, token, loggedIn]);
-
-  const onPressToken = (token: TokenData) => {
-    navigation.navigate('TokenDetails', { token });
-  };
 
   const renderItem = ({item}: {item: TokenData}) => {
     if (!item.id) {

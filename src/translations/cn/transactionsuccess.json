@@ -1,0 +1,8 @@
+{
+    "transactionDone": "交易完成！",
+    "transactionDoneDescription": "交易已成功完成。",
+    "transactionDetails": "交易详情",
+    "amount": "金额",
+    "receiver": "接收者",
+    "transactionHash": "交易哈希"
+}

@@ -1,0 +1,13 @@
+{
+    "sendAsset": "发送资产",
+    "change": "更改",
+    "whoAreYouSending": "你要发送给谁？",
+    "egAddress": "例如：16HFHicyvB9RXFTxrBazas...",
+    "enterTheRecipientAddress": "输入收件人的钱包地址。",
+    "mistransferredAssets": "由于区块链的特性，误转的资产无法找回。",
+    "whenTransferring": "当转账到交易所或外部钱包时，请确保转账到正确的区块链网络。",
+    "transferringByUsername": "按用户名转账是 AGA 钱包用户之间转账时可以使用的功能。",
+    "continue": "继续",
+    "errorInvalidAddress": "钱包地址无效。请检查并重试。"
+}
+  

@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react';
 import {Text, View, TouchableOpacity, FlatList} from 'react-native';
-import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
+import { FONTFAMILY, FONTSIZE, SPACING } from '../constants/theme';
 import {useTheme} from '../utils/ThemeContext';
 
 interface TabButtonProps {
