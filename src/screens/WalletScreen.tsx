@@ -76,6 +76,7 @@ const WalletScreen: React.FC = () => {
         },
       });
 
+
       if (response.ok) {
         const data = await response.json();
         if (data.wallets.length > 0) {
@@ -130,7 +131,6 @@ const WalletScreen: React.FC = () => {
   };
 
   const data = [{key: 'content'}];
-
   if (!hasWallet) {
     return (
       <View

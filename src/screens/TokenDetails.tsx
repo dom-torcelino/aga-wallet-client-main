@@ -1,21 +1,26 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import { StyleSheet, Text, View, Image, Dimensions } from 'react-native';
 import React from 'react';
 import {RouteProp, useRoute} from '@react-navigation/native';
-import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
+import {BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
+
 // import { TokenData } from '../data/mockData';
-import {useAuth} from '../screens/auth/AuthContext';
-import {RootStackParamList} from '../types/types'; // Import the type
-import BackButton from './ui/BackButton';
-import {useTheme} from '../utils/ThemeContext';
+import { useAuth } from './auth/AuthContext';
+import { RootStackParamList } from '../types/types'; // Import the type
+import BackButton from '../components/ui/BackButton';
+import { useTheme } from '../utils/ThemeContext';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
 
 type TokenDetailsRouteProp = RouteProp<RootStackParamList, 'TokenDetails'>;
 
+const {height, width} = Dimensions.get('window');
+
 const TokenDetails: React.FC = () => {
   const route = useRoute<TokenDetailsRouteProp>();
-  const {token} = route.params;
-  const {balance} = useAuth();
-  const {isDarkMode, toggleTheme, theme} = useTheme();
+  const { token } = route.params;
+  const { balance } = useAuth();
+  const { theme } = useTheme();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   return (
     <View
@@ -26,11 +31,6 @@ const TokenDetails: React.FC = () => {
         },
       ]}>
       {/* <BackButton /> */}
-      <View>
-      <Text style={[styles.coinName, {color: theme.textColor}]}>
-          {token.coinName}
-      </Text>
-      </View>
       <View
         style={[
           styles.assetContainer,
@@ -41,31 +41,40 @@ const TokenDetails: React.FC = () => {
         ]}>
         <Image
           source={
-            typeof token.image === 'string' ? {uri: token.image} : token.image
+            typeof token.image === 'string' ? { uri: token.image } : token.image
           }
           style={styles.image}
         />
 
-        <Text style={styles.fiat}>${balance.toFixed(2)}</Text>
+        <Text style={[styles.fiat, {color: theme.textColor}]}>${balance.toFixed(2)}</Text>
 
         <View style={styles.row}>
-          <Text style={[styles.crypto, {color: theme.textColor}]}>
+          <Text style={[styles.crypto, { color: theme.textColor }]}>
             {token.crypto}
           </Text>
-          <Text style={[styles.coin, {color: theme.textColor}]}>
+          <Text style={[styles.coin, { color: theme.textColor }]}>
             {token.coin}
           </Text>
         </View>
+        <View style={styles.rowAsset}>
+        <Text style={[styles.crypto, {color: theme.textColor}]}>
+            Assets
+          </Text>
+          <Text style={[styles.coin, {color: theme.textColor}]}>
+              {token.crypto}
+          </Text>
+        </View>
         {/* <Text style={styles.fiat}>${token.fiat}</Text> */}
-
       </View>
-      <View>
-          <TouchableOpacity style={[styles.button ]}>
-            <Text style={[styles.buttonText, {color: theme.textColor}]}>
-              Go Back
+      <View style={[styles.bottomRow ]}>
+          <TouchableOpacity style={[styles.button, {backgroundColor: theme.primaryGoldHex} ]}>
+            <Text style={[styles.buttonText, {color: theme.textColor}]}
+            onPress={() => navigation.navigate('Home')}>
+              Back to wallet
             </Text>
           </TouchableOpacity>
       </View>
+
     </View>
   );
 };
@@ -73,25 +82,31 @@ const TokenDetails: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.primaryBGColor,
     padding: 20,
+    justifyContent:'space-between'
   },
-
   assetContainer: {
-    backgroundColor: COLORS.secondaryBGColor,
     padding: SPACING.space_15,
     borderRadius: 12,
     alignItems: 'center',
-    marginTop: 30
+    marginTop: 30,
   },
   image: {
     width: 80,
     height: 80,
-    position:'absolute',
+    position: 'absolute',
     top: -40
   },
   row: {
     flexDirection: 'row',
+  },
+  rowAsset: {
+    borderTopColor:'#272727',
+    borderTopWidth:1,
+    flexDirection: 'row',
+    justifyContent:'space-between',
+    width: '100%',
+    padding: 15
   },
   coin: { 
     fontSize: FONTSIZE.size_24, 
@@ -114,26 +129,27 @@ const styles = StyleSheet.create({
   fiat: {
     fontSize: FONTSIZE.size_20,
     fontFamily: FONTFAMILY.poppins_regular,
-    color: COLORS.secondaryTextColor,
     marginTop: 25
   },
   button: {
-    position: 'absolute',
+    height: height * 0.07,
     width: '100%',
-    top: 0,
     fontSize: FONTSIZE.size_20,
     fontFamily: FONTFAMILY.poppins_regular,
-    color: COLORS.secondaryTextColor,
     marginTop: 25,
-    backgroundColor: COLORS.primaryLightGreyHex
+    borderRadius:10,
+    justifyContent: 'center'
   },
-  buttonText: { 
-    fontSize: FONTSIZE.size_24, 
-    fontFamily: FONTFAMILY.poppins_medium,
+  buttonText: {
+    fontSize: FONTSIZE.size_18,
+    fontFamily: FONTFAMILY.poppins_semibold,
     color: COLORS.primaryWhite,
     margin: 10,
-    textAlign:'center'
+    textAlign: 'center'
   },
+  bottomRow:{
+    marginBottom:20
+  }
 });
 
 export default TokenDetails;

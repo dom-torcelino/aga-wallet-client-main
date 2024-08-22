@@ -42,7 +42,12 @@ const {width} = Dimensions.get('window');
 const groupByDate = (transactions: TransactionData[]) => {
   return transactions.reduce(
     (grouped: {title: string; data: TransactionData[]}[], transaction) => {
-      const date = new Date(transaction.tx_created_at).toDateString();
+      const date = new Date(transaction.tx_created_at).toLocaleDateString('en-US',{ 
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      });
       const group = grouped.find(g => g.title === date);
       if (group) {
         group.data.push(transaction);
@@ -262,13 +267,13 @@ const Transaction: React.FC = () => {
       />
       {transactions.length < transactionCount && !loading && (
         <TouchableOpacity
-          style={styles.loadMoreButton}
+          style={[styles.loadMoreButton, {backgroundColor: theme.layeBGColor, borderColor: theme.borderStroke}]}
           onPress={loadMore}
           disabled={loadingMore}>
           {loadingMore ? (
             <ActivityIndicator size="small" color={COLORS.primaryWhite} />
           ) : (
-            <Text style={styles.loadMoreText}>Load More</Text>
+            <Text style={[styles.loadMoreText, { color: theme.textColor}]}>Load More</Text>
           )}
         </TouchableOpacity>
       )}
