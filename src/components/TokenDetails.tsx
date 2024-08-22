@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View, Image} from 'react-native';
 import React from 'react';
 import {RouteProp, useRoute} from '@react-navigation/native';
-import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
+import {BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
 // import { TokenData } from '../data/mockData';
 import {useAuth} from '../screens/auth/AuthContext';
 import {RootStackParamList} from '../types/types'; // Import the type
@@ -26,11 +26,6 @@ const TokenDetails: React.FC = () => {
         },
       ]}>
       {/* <BackButton /> */}
-      <View>
-      <Text style={[styles.coinName, {color: theme.textColor}]}>
-          {token.coinName}
-      </Text>
-      </View>
       <View
         style={[
           styles.assetContainer,
@@ -56,16 +51,24 @@ const TokenDetails: React.FC = () => {
             {token.coin}
           </Text>
         </View>
+        <View style={styles.rowAsset}>
+        <Text style={[styles.crypto, {color: theme.textColor}]}>
+            Assets
+          </Text>
+          <Text style={[styles.coin, {color: theme.textColor}]}>
+              {token.crypto}
+          </Text>
+        </View>
         {/* <Text style={styles.fiat}>${token.fiat}</Text> */}
-
       </View>
-      <View>
+      <View style={[styles.bottomRow ]}>
           <TouchableOpacity style={[styles.button ]}>
             <Text style={[styles.buttonText, {color: theme.textColor}]}>
-              Go Back
+              Back to wallet
             </Text>
           </TouchableOpacity>
       </View>
+
     </View>
   );
 };
@@ -73,16 +76,14 @@ const TokenDetails: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.primaryBGColor,
     padding: 20,
+    justifyContent:'space-between'
   },
-
   assetContainer: {
-    backgroundColor: COLORS.secondaryBGColor,
     padding: SPACING.space_15,
     borderRadius: 12,
     alignItems: 'center',
-    marginTop: 30
+    marginTop: 30,
   },
   image: {
     width: 80,
@@ -92,6 +93,14 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
+  },
+  rowAsset: {
+    borderTopColor:'#272727',
+    borderTopWidth:1,
+    flexDirection: 'row',
+    justifyContent:'space-between',
+    width: '100%',
+    padding: 15
   },
   coin: { 
     fontSize: FONTSIZE.size_24, 
@@ -118,14 +127,15 @@ const styles = StyleSheet.create({
     marginTop: 25
   },
   button: {
-    position: 'absolute',
+    // position: 'absolute',
     width: '100%',
-    top: 0,
+    // top: 0,
     fontSize: FONTSIZE.size_20,
     fontFamily: FONTFAMILY.poppins_regular,
     color: COLORS.secondaryTextColor,
     marginTop: 25,
-    backgroundColor: COLORS.primaryLightGreyHex
+    backgroundColor: COLORS.primaryLightGreyHex,
+    borderRadius:10
   },
   buttonText: { 
     fontSize: FONTSIZE.size_24, 
@@ -134,6 +144,9 @@ const styles = StyleSheet.create({
     margin: 10,
     textAlign:'center'
   },
+  bottomRow:{
+    marginBottom:20
+  }
 });
 
 export default TokenDetails;
