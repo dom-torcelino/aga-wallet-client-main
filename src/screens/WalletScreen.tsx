@@ -79,7 +79,6 @@ const WalletScreen: React.FC = () => {
 
       if (response.ok) {
         const wallet = await response.json();
-        console.log(wallet, 'wallet 123');
         if (wallet.wallets.length > 0) {
           const fetchedAccountAddress = wallet.wallets[0].accountAddress;
           const fetchedBalance = wallet.wallets[0].free;

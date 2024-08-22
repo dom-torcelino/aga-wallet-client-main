@@ -68,7 +68,7 @@ const TokenDetails: React.FC = () => {
       </View>
       <View style={[styles.bottomRow ]}>
           <TouchableOpacity style={[styles.button, {backgroundColor: theme.primaryGoldHex} ]}>
-            <Text style={[styles.buttonText, {color: theme.textColor}]}
+            <Text style={[styles.buttonText, {color: theme.primaryBGColor}]}
             onPress={() => navigation.navigate('Home')}>
               Back to wallet
             </Text>

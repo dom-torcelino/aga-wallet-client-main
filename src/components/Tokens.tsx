@@ -90,7 +90,7 @@ const Tokens: React.FC<TokensProps> = ({onPressToken}) => {
     };
   }, [userId, token, loggedIn]);
 
-  const renderItem = ({item}: {item: TokenData}) => {
+  const renderItem = ({item, index}: {item: TokenData, index: number}) => {
     if (!item.id) {
       return null;
     }
@@ -118,10 +118,14 @@ const Tokens: React.FC<TokensProps> = ({onPressToken}) => {
         </View>
         <View style={styles.rightSideContainer}>
           <Text style={[styles.crypto, {color: theme.textColor}]}>
-            {item.crypto}
+            {/* {item.crypto} */}
+            {index === 0 ? balance.toFixed(2) : item.crypto}
           </Text>
           {/* <Text style={styles.fiat}>(${item.fiat})</Text> */}
-          <Text style={styles.fiat}>${balance.toFixed(2)}</Text>
+          <Text style={styles.fiat}>
+          {index === 0 ? '$' + balance.toFixed(2) : '$' + item.crypto}
+            {/* ${balance.toFixed(2)} */}
+            </Text>
         </View>
       </TouchableOpacity>
     );
