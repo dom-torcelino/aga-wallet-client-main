@@ -34,7 +34,7 @@ const languageOptions = [
 ];
 
 const currencyOptions = [
-  { label: "USD($)", value: "USD" },
+  { label: "USD(Default)", value: "USD" },
   { label: "YEN(¥)", value: "YEN" },
   { label: "CNY(¥)", value: "CNY" },
   { label: "KRW(₩)", value: "KRW" }
@@ -97,6 +97,7 @@ const SettingsScreen: React.FC = () => {
               {t("settings:currency")}
             </Text>
             <Picker
+              disabled
               options={currencyOptions}
               selectedValue={selectedCurrency}
               onValueChange={setSelectedCurrency}

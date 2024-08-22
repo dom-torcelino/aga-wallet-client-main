@@ -4,15 +4,17 @@ import {BORDERRADIUS, COLORS} from '../constants/theme';
 
 import {useRoute, RouteProp} from '@react-navigation/native';
 import {RootStackParamList} from '../types/types';
-import BackButton from './ui/BackButton';
+import BackButton from '../components/ui/BackButton';
 import {useTheme} from '../utils/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
-type GameViewRouteProp = RouteProp<RootStackParamList, 'GameView'>;
+type GameViewScreenRouteProp = RouteProp<RootStackParamList, 'GameView'>;
 
-const GameView: React.FC = () => {
-  const route = useRoute<GameViewRouteProp>();
-  const {game} = route.params;
-  const {isDarkMode, toggleTheme, theme} = useTheme();
+const GameViewScreen: React.FC = () => {
+  const { t } = useTranslation(["gameview"]);
+  const route = useRoute<GameViewScreenRouteProp>();
+  const { game } = route.params;
+  const { theme } = useTheme();
 
   return (
     
@@ -22,15 +24,15 @@ const GameView: React.FC = () => {
         <Image source={{uri: game.game_image}} style={styles.gameImage} />
         <Text style={[styles.gameTitle, {color: theme.textColor}]}>{game.game_name}</Text>
         <View  style={styles.gameDetails}>
-          <Text style={[styles.gameDescription, {color: theme.textColor}]}>Genre: {game.game_genre}</Text>
-          <Text style={[styles.gameDescription, {color: theme.textColor}]}>Active Player: {game.game_players}</Text>
+          <Text style={[styles.gameDescription, {color: theme.textColor}]}>{t("gameview:genre")}: {game.game_genre}</Text>
+          <Text style={[styles.gameDescription, {color: theme.textColor}]}>{t("gameview:activePlayer")}: {game.game_players}</Text>
         </View>
         <Text style={[styles.gameDescription, {color: theme.textColor}]}>{game.game_description}</Text>
       </View>
 
       <TouchableOpacity style={styles.playButton}>
         <Text style={[styles.playButtonText, {color: theme.textColor}]}>
-          Play Now
+        {t("gameview:playNow")}
         </Text>
       </TouchableOpacity>
     </View>
@@ -90,4 +92,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GameView;
+export default GameViewScreen;

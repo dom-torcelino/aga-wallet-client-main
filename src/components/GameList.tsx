@@ -14,6 +14,7 @@ import {useAuth} from '../screens/auth/AuthContext';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
 import {RootStackParamList} from '../types/types';
 import {useTheme} from '../utils/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const {width} = Dimensions.get('window');
 const itemWidth = ( width -50 ) ;
@@ -34,6 +35,7 @@ export interface GameListData {
 }
 
 export const GameList: React.FC<GameListProps> = ({data = []}) => {
+  const { t } = useTranslation(['games']);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { theme } = useTheme();
   const renderItem = ({item}: {item: GameListData}) => (
@@ -50,7 +52,7 @@ export const GameList: React.FC<GameListProps> = ({data = []}) => {
       <Image source={{uri: item.game_image}} style={styles.ImageStyles} />
       <Text style={[styles.TextStyles, {color: theme.textColor}]}>{item.game_name}</Text>
       <View style={styles.infoRow}>
-        <Text style={[styles.TextStyles2, {color: theme.secondaryTextColor}]}>Total Players: {item.game_players}</Text>
+        <Text style={[styles.TextStyles2, {color: theme.secondaryTextColor}]}>{t("games:totalPlayers")}: {item.game_players}</Text>
       </View>
     </TouchableOpacity>
   );

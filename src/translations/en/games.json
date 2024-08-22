@@ -1,4 +1,6 @@
 {
-    "games": "Games",
-    "all": "All"
+   "games": "Games",
+    "all": "All",
+    "totalPlayers": "Total Players"
+
 }

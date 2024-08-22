@@ -14,7 +14,7 @@ import HeaderBar from '../components/HeaderBar';
 import CardBalance from '../components/CardBalance';
 import Tabs from '../components/Tabs';
 import Transaction from '../components/Transaction';
-import Tokens, { TokenData } from '../components/Tokens';
+import Tokens, { Asset, TokenData } from '../components/Tokens';
 import {
   useNavigation,
   NavigationProp,
@@ -31,9 +31,9 @@ import { useTranslation } from 'react-i18next';
 import NoWalletFoundImageDark from '../../assets/images/emptyState/NoWalletFound.png';
 import NoWalletFoundImagelight from '../../assets/images/emptyState/NoWalletFoundLight.png';
 
-
 const WalletScreen: React.FC = () => {
   const { t } = useTranslation(["wallet"]);
+  const [assets, setAssets] = useState<Asset[]>([])
   const isFocused = useIsFocused();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const {token, userId, setAccountAddress, setBalance, balance, loggedIn} = useAuth();
@@ -78,14 +78,20 @@ const WalletScreen: React.FC = () => {
 
 
       if (response.ok) {
-        const wallet = await response.json();
-        if (wallet.wallets.length > 0) {
-          const fetchedAccountAddress = wallet.wallets[0].accountAddress;
-          const fetchedBalance = wallet.wallets[0].free;
-
-          setAccountAddress(fetchedAccountAddress);
-          setBalance(fetchedBalance);
+        const data = await response.json();
+        if (data.wallets.length > 0) {
+          const wallet = data.wallets[0]
+          setAccountAddress(wallet.accountAddress);
+          setBalance(wallet.free);
           setHasWallet(true);
+          
+          const asset = {
+            tokenSymbol: wallet.tokenSymbol,
+            walletAddress: wallet.accountAddress,
+            balance: wallet.free
+          } as Asset
+          setAssets([asset])
+          
           setActiveTab(t("wallet:assets"))
         } else {
           setHasWallet(false);
@@ -106,10 +112,10 @@ const WalletScreen: React.FC = () => {
 
   const renderTabContent = () => {
     switch (activeTab) {
+      case t("wallet:assets"):
+        return <Tokens onPressToken={onPressToken} />;
       case t("wallet:transactions"):
         return <Transaction />;
-      case t("wallet:assets"):
-        return <Tokens onPressToken={onPressToken}/>;
       default:
         return null;
     }
@@ -124,9 +130,8 @@ const WalletScreen: React.FC = () => {
     navigation.navigate('WalletCreation');
   };
 
-  const data = [{key: 'content'}]; // Dummy data for FlatList
+  const data = [{key: 'content'}];
   if (!hasWallet) {
-    // Show button to create a wallet if no wallet exists
     return (
       <View
         style={[
@@ -140,13 +145,17 @@ const WalletScreen: React.FC = () => {
             resizeMode="contain"
           />
         </View>
-        <Text style={[styles.emptyStateHeaderText, {color: theme.secondaryTextColor }]}>
+        <Text 
+          style={[
+            styles.emptyStateHeaderText, 
+            {color: theme.secondaryTextColor }
+          ]}
+        >
           {t("wallet:noWalletFound")}
         </Text>
         <Text style={styles.bodyText}>
           {t("wallet:noWalletDescription")}
         </Text>
-        {/* <Button title="Create Wallet" onPress={handleCreateWallet} /> */}
         <TouchableOpacity
           onPress={handleCreateWallet}
           activeOpacity={0.7}

@@ -13,6 +13,7 @@ type PickerProps = {
     options: PickerOption[];
     selectedValue: string;
     onValueChange: (value: string) => void;
+    disabled?: boolean;
     style?: StyleProp<ViewStyle>,
     containerStyle?: StyleProp<ViewStyle>;
     backdropStyle?: StyleProp<ViewStyle>;
@@ -22,7 +23,8 @@ type PickerProps = {
 };
 
 // Cu1stomPicker Component
-export const Picker: React.FC<PickerProps> = ({ options, selectedValue, onValueChange, style, backdropStyle, selectedItemStyle, buttonStyle, itemStyle }) => {
+export const Picker: React.FC<PickerProps> = ({ options, selectedValue, onValueChange, style, backdropStyle, selectedItemStyle, buttonStyle, itemStyle, disabled = false }) => {
+
     const [modalVisible, setModalVisible] = useState(false);
 
     const handleSelect = (value: string) => {
@@ -40,7 +42,7 @@ export const Picker: React.FC<PickerProps> = ({ options, selectedValue, onValueC
                 styles.buttonStyle,
                 buttonStyle
             ]}
-            onPress={() => setModalVisible(true)}
+            onPress={() => disabled ? () => {} : setModalVisible(true)}
         >
             <Text style={[
                     styles.selectedItemStyle,
