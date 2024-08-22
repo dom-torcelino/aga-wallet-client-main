@@ -1,7 +1,7 @@
 package com.agawallet
 
-import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import android.app.Application
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication

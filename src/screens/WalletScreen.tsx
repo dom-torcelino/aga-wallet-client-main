@@ -76,8 +76,10 @@ const WalletScreen: React.FC = () => {
         },
       });
 
+
       if (response.ok) {
         const wallet = await response.json();
+        console.log(wallet, 'wallet 123');
         if (wallet.wallets.length > 0) {
           const fetchedAccountAddress = wallet.wallets[0].accountAddress;
           const fetchedBalance = wallet.wallets[0].free;
@@ -124,7 +126,6 @@ const WalletScreen: React.FC = () => {
   };
 
   const data = [{key: 'content'}]; // Dummy data for FlatList
-
   if (!hasWallet) {
     // Show button to create a wallet if no wallet exists
     return (

@@ -78,7 +78,8 @@ const BottomTabNavigator = () => {
         }
 
         const wallets = await response.json();
-        if (wallets.length === 0) {
+        console.log(wallets.metadata.count);
+        if (wallets.metadata.count === 0) {
           navigation.navigate('WalletCreation');
         } else {
           setData(wallets);
@@ -90,6 +91,7 @@ const BottomTabNavigator = () => {
 
     checkWallet();
   }, [navigation]);
+
   return (
     <Tab.Navigator
       tabBarPosition="bottom"

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, Dimensions } from 'react-native';
 import React from 'react';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
@@ -9,14 +9,18 @@ import { RootStackParamList } from '../types/types'; // Import the type
 import BackButton from '../components/ui/BackButton';
 import { useTheme } from '../utils/ThemeContext';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
 
 type TokenDetailsRouteProp = RouteProp<RootStackParamList, 'TokenDetails'>;
+
+const {height, width} = Dimensions.get('window');
 
 const TokenDetails: React.FC = () => {
   const route = useRoute<TokenDetailsRouteProp>();
   const { token } = route.params;
   const { balance } = useAuth();
-  const { isDarkMode, toggleTheme, theme } = useTheme();
+  const { theme } = useTheme();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   return (
     <View
@@ -42,7 +46,7 @@ const TokenDetails: React.FC = () => {
           style={styles.image}
         />
 
-        <Text style={styles.fiat}>${balance.toFixed(2)}</Text>
+        <Text style={[styles.fiat, {color: theme.textColor}]}>${balance.toFixed(2)}</Text>
 
         <View style={styles.row}>
           <Text style={[styles.crypto, { color: theme.textColor }]}>
@@ -63,8 +67,9 @@ const TokenDetails: React.FC = () => {
         {/* <Text style={styles.fiat}>${token.fiat}</Text> */}
       </View>
       <View style={[styles.bottomRow ]}>
-          <TouchableOpacity style={[styles.button ]}>
-            <Text style={[styles.buttonText, {color: theme.textColor}]}>
+          <TouchableOpacity style={[styles.button, {backgroundColor: theme.primaryGoldHex} ]}>
+            <Text style={[styles.buttonText, {color: theme.textColor}]}
+            onPress={() => navigation.navigate('Home')}>
               Back to wallet
             </Text>
           </TouchableOpacity>
@@ -124,23 +129,20 @@ const styles = StyleSheet.create({
   fiat: {
     fontSize: FONTSIZE.size_20,
     fontFamily: FONTFAMILY.poppins_regular,
-    color: COLORS.secondaryTextColor,
     marginTop: 25
   },
   button: {
-    // position: 'absolute',
+    height: height * 0.07,
     width: '100%',
-    // top: 0,
     fontSize: FONTSIZE.size_20,
     fontFamily: FONTFAMILY.poppins_regular,
-    color: COLORS.secondaryTextColor,
     marginTop: 25,
-    backgroundColor: COLORS.primaryLightGreyHex,
-    borderRadius:10
+    borderRadius:10,
+    justifyContent: 'center'
   },
   buttonText: {
-    fontSize: FONTSIZE.size_24,
-    fontFamily: FONTFAMILY.poppins_medium,
+    fontSize: FONTSIZE.size_18,
+    fontFamily: FONTFAMILY.poppins_semibold,
     color: COLORS.primaryWhite,
     margin: 10,
     textAlign: 'center'

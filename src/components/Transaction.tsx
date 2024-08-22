@@ -267,13 +267,13 @@ const Transaction: React.FC = () => {
       />
       {transactions.length < transactionCount && !loading && (
         <TouchableOpacity
-          style={styles.loadMoreButton}
+          style={[styles.loadMoreButton, {backgroundColor: theme.layeBGColor, borderColor: theme.borderStroke}]}
           onPress={loadMore}
           disabled={loadingMore}>
           {loadingMore ? (
             <ActivityIndicator size="small" color={COLORS.primaryWhite} />
           ) : (
-            <Text style={styles.loadMoreText}>Load More</Text>
+            <Text style={[styles.loadMoreText, { color: theme.textColor}]}>Load More</Text>
           )}
         </TouchableOpacity>
       )}

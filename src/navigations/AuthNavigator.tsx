@@ -53,7 +53,7 @@ const AuthNavigator = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName='TransactionFailure'
+      // initialRouteName='TransactionFailure'
       screenOptions={{
         headerTintColor: COLORS.primaryWhite,
         headerBackTitleVisible: false,
@@ -213,7 +213,18 @@ const AuthNavigator = () => {
       <Stack.Screen
         name="GameView"
         component={GameView}
-        options={{ headerShown: false }}
+        options={{
+          title: `${t("sendassetamount:sendAssetAmount")}`,
+          headerShown: true,
+          headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: theme.primaryBGColor,
+            elevation: 0,
+            shadowOpacity: 0,
+          },
+          headerTintColor: theme.textColor,
+        }}
+        
       />
     </Stack.Navigator>
   );
