@@ -53,6 +53,7 @@ const AuthNavigator = () => {
 
   return (
     <Stack.Navigator
+      initialRouteName='TransactionFailure'
       screenOptions={{
         headerTintColor: COLORS.primaryWhite,
         headerBackTitleVisible: false,
@@ -170,7 +171,7 @@ const AuthNavigator = () => {
         options={{
           headerShown: true,
           headerTitleAlign: 'center',
-          title: "Notifications",
+          title: `${t("notifications:notifications")}`,
           headerStyle: {
             backgroundColor: theme.primaryBGColor,
             elevation: 0,

@@ -160,15 +160,6 @@ const TransactionSuccessScreen: React.FC = () => {
                 {transaction.tx_hash}
               </Text>
             </View>
-            {/* <Text style={styles.detailText}>
-              Transaction Hash: {transaction.tx_hash}
-            </Text> */}
-            {/* <Text style={styles.detailText}>
-              Status: {transaction.tx_status === 's' ? 'Success' : 'Failed'}
-            </Text> */}
-            {/* <Text style={styles.detailText}>
-              Receiver: {transaction.tx_wallet_recipient_address}
-            </Text> */}
           </>
         ) : (
           <Text style={styles.detailText}>

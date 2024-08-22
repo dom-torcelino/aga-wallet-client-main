@@ -38,6 +38,7 @@ const WalletScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const {token, userId, setAccountAddress, setBalance, balance, loggedIn} = useAuth();
   const [activeTab, setActiveTab] = useState<string>(t("wallet:assets"));
+  const tabs =  [t("wallet:assets"), t("wallet:transactions")]
   const [refreshing, setRefreshing] = useState(false);
   const [hasWallet, setHasWallet] = useState<boolean>(true);
   const { theme, isDarkMode } = useTheme();
@@ -84,16 +85,14 @@ const WalletScreen: React.FC = () => {
           setAccountAddress(fetchedAccountAddress);
           setBalance(fetchedBalance);
           setHasWallet(true);
+          setActiveTab(t("wallet:assets"))
         } else {
           setHasWallet(false);
         }
       } else {
         setHasWallet(false);
-        console.log('Failed to fetch wallet address');
       }
     } catch (error) {
-      // console.error('Failed to fetch wallet data:', error);
-      console.log('Failed to fetch wallet data:');
       setHasWallet(false);
     }
   };
@@ -172,7 +171,7 @@ const WalletScreen: React.FC = () => {
             <HeaderBar title={t("wallet:wallet")} />
             <CardBalance balance={balance} />
             <Tabs
-              tabs={[t("wallet:assets"), t("wallet:transactions")]}
+              tabs={tabs}
               activeTab={activeTab}
               setActiveTab={setActiveTab}
             />

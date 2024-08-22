@@ -1,9 +1,5 @@
 {
-    "transactionDone": "Transaction Done",
-    "transactionDoneDescription": "Transaction has been done successfully.",
-    "transactionDetails": "Transaction Details",
-    "amount": "Amount",
-    "receiver": "Receiver",
-    "transactionHash": "Transaction Hash",
-    "backToWallet": "Back to Wallet"
+    "transactionFailed": "取引失敗",
+    "transactionFailedDescription": "技術的な問題により、取引が拒否されました。",
+    "backToWallet": "ウォレットに戻る"
 }

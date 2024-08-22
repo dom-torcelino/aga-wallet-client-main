@@ -9,15 +9,15 @@ import GameList from '../components/GameList';
 import { useAuth } from './auth/AuthContext';
 // @ts-ignore
 import {API_URL} from '@env';
+import { useTranslation } from 'react-i18next';
 
-const gameTabs = ['All', 'Slot', 'Casino', 'RPG'];
 
 const GameScreen: React.FC = () => {
+  const { t } = useTranslation(['games'])
+  const gameTabs = [`${t("games:all")}`, 'Slot', 'Casino', 'RPG'];
   const { theme } = useTheme()
   const { token } = useAuth();
-  const [activeTab, setActiveTab] = useState<
-    'All' | 'Slot' | 'Casino' | 'RPG'
-  >('All');
+  const [activeTab, setActiveTab] = useState<string>(`${t("games:all")}`);
 
   const [genre, setGenre] = useState("");
   const [games, setGames] = useState([])
@@ -40,7 +40,7 @@ const GameScreen: React.FC = () => {
     <View
       style={[styles.ScreenContainer, {backgroundColor: theme.primaryBGColor}]}>
       {/* <StatusBar backgroundColor={COLORS.primaryBGColor} /> */}
-      <HeaderBar title={'Game'} />
+      <HeaderBar title={t("games:games")} />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.ScrollViewFlex}>
@@ -52,7 +52,7 @@ const GameScreen: React.FC = () => {
           activeTab={activeTab}
           setActiveTab={(tab) => {
             setActiveTab(tab)
-            setGenre(tab == "All" ? "" : tab)
+            setGenre(tab == `${t("games:all")}` ? "" : tab)
           }}
         />
            {/* <GameList data={filterData()} /> */}

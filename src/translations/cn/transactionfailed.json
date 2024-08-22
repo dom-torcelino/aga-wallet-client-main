@@ -1,9 +1,5 @@
 {
-    "transactionDone": "Transaction Done",
-    "transactionDoneDescription": "Transaction has been done successfully.",
-    "transactionDetails": "Transaction Details",
-    "amount": "Amount",
-    "receiver": "Receiver",
-    "transactionHash": "Transaction Hash",
-    "backToWallet": "Back to Wallet"
+    "transactionFailed": "交易失败",
+    "transactionFailedDescription": "由于技术问题，您的交易已被拒绝。",
+    "backToWallet": "返回钱包"
 }
