@@ -7,6 +7,7 @@ import {useAuth} from '../screens/auth/AuthContext';
 import {RootStackParamList} from '../types/types'; // Import the type
 import BackButton from './ui/BackButton';
 import {useTheme} from '../utils/ThemeContext';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type TokenDetailsRouteProp = RouteProp<RootStackParamList, 'TokenDetails'>;
 
@@ -25,6 +26,11 @@ const TokenDetails: React.FC = () => {
         },
       ]}>
       {/* <BackButton /> */}
+      <View>
+      <Text style={[styles.coinName, {color: theme.textColor}]}>
+          {token.coinName}
+      </Text>
+      </View>
       <View
         style={[
           styles.assetContainer,
@@ -39,9 +45,8 @@ const TokenDetails: React.FC = () => {
           }
           style={styles.image}
         />
-        <Text style={[styles.coinName, {color: theme.textColor}]}>
-          {token.coinName}
-        </Text>
+
+        <Text style={styles.fiat}>${balance.toFixed(2)}</Text>
 
         <View style={styles.row}>
           <Text style={[styles.crypto, {color: theme.textColor}]}>
@@ -52,7 +57,14 @@ const TokenDetails: React.FC = () => {
           </Text>
         </View>
         {/* <Text style={styles.fiat}>${token.fiat}</Text> */}
-        <Text style={styles.fiat}>${balance.toFixed(2)}</Text>
+
+      </View>
+      <View>
+          <TouchableOpacity style={[styles.button ]}>
+            <Text style={[styles.buttonText, {color: theme.textColor}]}>
+              Go Back
+            </Text>
+          </TouchableOpacity>
       </View>
     </View>
   );
@@ -63,7 +75,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.primaryBGColor,
     padding: 20,
-    marginTop:50
   },
 
   assetContainer: {
@@ -71,24 +82,28 @@ const styles = StyleSheet.create({
     padding: SPACING.space_15,
     borderRadius: 12,
     alignItems: 'center',
+    marginTop: 30
   },
   image: {
     width: 80,
     height: 80,
+    position:'absolute',
+    top: -40
   },
   row: {
     flexDirection: 'row',
   },
-  coin: {
-    fontSize: FONTSIZE.size_24,
+  coin: { 
+    fontSize: FONTSIZE.size_24, 
     fontFamily: FONTFAMILY.poppins_medium,
     color: COLORS.primaryWhite,
     margin: 10,
   },
   coinName: {
-    fontSize: FONTSIZE.size_20,
+    fontSize: FONTSIZE.size_30,
     fontFamily: FONTFAMILY.poppins_regular,
     color: COLORS.secondaryTextColor,
+    textAlign: 'center'
   },
   crypto: {
     fontSize: FONTSIZE.size_24,
@@ -100,6 +115,24 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_20,
     fontFamily: FONTFAMILY.poppins_regular,
     color: COLORS.secondaryTextColor,
+    marginTop: 25
+  },
+  button: {
+    position: 'absolute',
+    width: '100%',
+    top: 0,
+    fontSize: FONTSIZE.size_20,
+    fontFamily: FONTFAMILY.poppins_regular,
+    color: COLORS.secondaryTextColor,
+    marginTop: 25,
+    backgroundColor: COLORS.primaryLightGreyHex
+  },
+  buttonText: { 
+    fontSize: FONTSIZE.size_24, 
+    fontFamily: FONTFAMILY.poppins_medium,
+    color: COLORS.primaryWhite,
+    margin: 10,
+    textAlign:'center'
   },
 });
 
