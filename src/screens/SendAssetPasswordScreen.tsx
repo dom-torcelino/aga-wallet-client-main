@@ -25,13 +25,15 @@ import {
 import {API_URL} from '@env';
 import {useAuth} from './auth/AuthContext';
 import {useTheme} from '../utils/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
-type EnterPasswordRouteProp = RouteProp<RootStackParamList, 'EnterPassword'>;
+type EnterPasswordRouteProp = RouteProp<RootStackParamList, 'SendAssetPassword'>;
 
 const EnterPasswordScreen: React.FC = () => {
+  const { t } = useTranslation(["sendassetpassword"]);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const route = useRoute<EnterPasswordRouteProp>();
-  const {amount, recipient_address} = route.params;
+  const {amount, recipientAddress } = route.params;
   const {token: authToken, accountAddress: sender_address} = useAuth();
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -53,13 +55,18 @@ const EnterPasswordScreen: React.FC = () => {
           body: JSON.stringify({
             amount,
             sender_address,
-            recipient_address,
+            recipient_address: recipientAddress,
             password,
           }),
         });
 
+        const transaction = await response.json()
+
         if (response.ok) {
-          navigation.navigate('TransactionSuccessScreen');
+          navigation.navigate('TransactionSuccess', { 
+            blockHash: transaction.block_hash,
+            transactionHash:  transaction.transaction_hash
+          });
         } else {
           setError('Incorrect password and try again.');
         }
@@ -77,7 +84,7 @@ const EnterPasswordScreen: React.FC = () => {
   return (
     <View style={[styles.container, {backgroundColor: theme.primaryBGColor}]}>
       <Text style={[styles.title, {color: theme.textColor}]}>
-        Enter your wallet password
+        {t("sendassetpassword:enterYourWalletPassword")}
       </Text>
       <TextInput
         autoFocus={true}
@@ -85,19 +92,18 @@ const EnterPasswordScreen: React.FC = () => {
         maxLength={64}
         onChangeText={text => {
           setPassword(text);
-          setError(null); // Clear error when user starts typing
+          setError(null);
         }}
         secureTextEntry={true}
         style={[styles.input, {color: theme.textColor}]}
       />
-      {/* Display error message if there is one */}
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
       {loading ? (
         <ActivityIndicator size="large" color={COLORS.primaryGoldHex} />
       ) : (
         <TouchableOpacity onPress={handleConfirm} style={styles.button}>
-          <Text style={styles.buttonText}>Confirm</Text>
+          <Text style={styles.buttonText}>{t("sendassetpassword:confirm")}</Text>
         </TouchableOpacity>
       )}
     </View>

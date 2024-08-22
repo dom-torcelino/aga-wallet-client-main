@@ -1,0 +1,9 @@
+{
+    "transactionDone": "Transaction Done",
+    "transactionDoneDescription": "Transaction has been done successfully.",
+    "transactionDetails": "Transaction Details",
+    "amount": "Amount",
+    "receiver": "Receiver",
+    "transactionHash": "Transaction Hash",
+    "backToWallet": "Back to Wallet"
+}

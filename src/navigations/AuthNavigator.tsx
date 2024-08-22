@@ -16,7 +16,7 @@ import ResetPassword from '../components/ResetPassword';
 import WalletCreationScreen from '../screens/WalletCreationScreen';
 import TransactionSuccessScreen from '../screens/TransactionSuccessScreen';
 import TransactionFailureScreen from '../screens/TransactionFailureScreen';
-import EnterPasswordScreen from '../screens/EnterPasswordScreen';
+import EnterPasswordScreen from '../screens/SendAssetPasswordScreen';
 import TransactionDetails from '../components/TransactionDetails';
 import GameView from '../components/GameView';
 import {useTheme} from '../utils/ThemeContext';
@@ -200,7 +200,7 @@ const AuthNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="TransactionSuccessScreen"
+        name="TransactionSuccess"
         component={TransactionSuccessScreen}
         options={{headerShown: false}}
       />

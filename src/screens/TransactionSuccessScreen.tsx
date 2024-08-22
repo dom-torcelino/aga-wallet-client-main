@@ -25,12 +25,14 @@ import moment from 'moment';
 import {useTheme} from '../utils/ThemeContext';
 import TransferSuccessImageDark from '../../assets/images/emptyState/TransferSuccessDark.png';
 import TransferSuccessImageLight from '../../assets/images/emptyState/TransferSuccessLight.png';
+import { useTranslation } from 'react-i18next';
 
 const {height, width} = Dimensions.get('window');
 
 const TransactionSuccessScreen: React.FC = () => {
+  const { t } = useTranslation("transactionsuccess");
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const [lastTransaction, setLastTransaction] = useState<any>(null);
+  const [transaction, setTransaction] = useState<Record<string, string> | null>(null)
   const [loading, setLoading] = useState<boolean>(true);
   const {token, accountAddress, loggedIn} = useAuth();
   const formatDate = (date: string) => {
@@ -54,9 +56,6 @@ const TransactionSuccessScreen: React.FC = () => {
 
           const totalTransactions = metadataResponse.data.metadata.count;
 
-          
-
-          // Fetch the most recent transaction using the count - 1 as the offset
           if (totalTransactions > 0) {
             const lastTransactionResponse = await axios.get(
               `${API_URL}/v1/wallets/${accountAddress}/transactions?limit=1&offset=${
@@ -68,14 +67,11 @@ const TransactionSuccessScreen: React.FC = () => {
                 },
               },
             );
-
-            console.log(lastTransactionResponse.data.transactions[0])
-
             if (
               lastTransactionResponse.status === 200 &&
               lastTransactionResponse.data.transactions.length > 0
             ) {
-              setLastTransaction(lastTransactionResponse.data.transactions[0]);
+              setTransaction(lastTransactionResponse.data.transactions[0]);
             }
           }
         } catch (error) {
@@ -89,7 +85,7 @@ const TransactionSuccessScreen: React.FC = () => {
     fetchLastTransaction();
   }, [token, accountAddress, loggedIn]);
 
-  if (loading) {
+  if (loading || !transaction) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color={COLORS.primaryWhite} />
@@ -106,25 +102,22 @@ const TransactionSuccessScreen: React.FC = () => {
           resizeMode="contain"
         />
         <Text style={[styles.title, {color: theme.textColor}]}>
-          Transaction Done!
+          {t("transactionsuccess:transactionDone")}
         </Text>
         <Text style={[styles.bodyText, {color: theme.secondaryTextColor}]}>
-          Transaction has been done {'\n'}successfully
+          {t("transactionsuccess:transactionDoneDescription")}
         </Text>
         <Text style={[styles.timeText, {color: theme.textColor}]}>
-          {formatDate(lastTransaction.tx_created_at)}
+          {formatDate(transaction.tx_created_at)}
         </Text>
       </View>
 
       <View style={styles.transferDetails}>
         <Text style={[styles.h2, {color: theme.textColor}]}>
-          Transaction Details
+        {t("transactionsuccess:transactionDetails")}
         </Text>
-        {lastTransaction ? (
+        {transaction ? (
           <>
-            {/* <Text style={styles.detailText}>
-              Transaction ID: {lastTransaction.tx_id}
-            </Text> */}
             <View
               style={[
                 styles.TransactionContainer,
@@ -135,10 +128,10 @@ const TransactionSuccessScreen: React.FC = () => {
               ]}>
               <Text
                 style={[styles.detailText, {color: theme.secondaryTextColor}]}>
-                Amount
+                {t("transactionsuccess:amount")}
               </Text>
               <Text style={[styles.apiText, {color: theme.textColor}]}>
-                {lastTransaction.tx_amount}
+                {transaction.tx_amount}
               </Text>
             </View>
             <View
@@ -149,9 +142,9 @@ const TransactionSuccessScreen: React.FC = () => {
                   borderColor: theme.borderStroke,
                 },
               ]}>
-              <Text style={styles.detailText}>Receiver</Text>
+              <Text style={styles.detailText}>{t("transactionsuccess:receiver")}</Text>
               <Text style={[styles.apiText, {color: theme.textColor}]}>
-                {lastTransaction.tx_wallet_recipient_address}
+                {transaction.tx_wallet_recipient_address}
               </Text>
             </View>
             <View
@@ -162,19 +155,19 @@ const TransactionSuccessScreen: React.FC = () => {
                   borderColor: theme.borderStroke,
                 },
               ]}>
-              <Text style={styles.detailText}>Transaction Hash</Text>
+              <Text style={styles.detailText}>{t("transactionsuccess:transactionHash")}</Text>
               <Text style={[styles.apiText, {color: theme.textColor}]}>
-                {lastTransaction.tx_hash}
+                {transaction.tx_hash}
               </Text>
             </View>
             {/* <Text style={styles.detailText}>
-              Transaction Hash: {lastTransaction.tx_hash}
+              Transaction Hash: {transaction.tx_hash}
             </Text> */}
             {/* <Text style={styles.detailText}>
-              Status: {lastTransaction.tx_status === 's' ? 'Success' : 'Failed'}
+              Status: {transaction.tx_status === 's' ? 'Success' : 'Failed'}
             </Text> */}
             {/* <Text style={styles.detailText}>
-              Receiver: {lastTransaction.tx_wallet_recipient_address}
+              Receiver: {transaction.tx_wallet_recipient_address}
             </Text> */}
           </>
         ) : (
