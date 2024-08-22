@@ -1,9 +1,5 @@
 {
-    "transactionDone": "Transaction Done",
-    "transactionDoneDescription": "Transaction has been done successfully.",
-    "transactionDetails": "Transaction Details",
-    "amount": "Amount",
-    "receiver": "Receiver",
-    "transactionHash": "Transaction Hash",
-    "backToWallet": "Back to Wallet"
+    "transactionFailed": "Transaction Failed",
+    "transactionFailedDescription": "Your transaction has been declined due to a technical issue.",
+    "backToWallet": "Back to wallet"
 }

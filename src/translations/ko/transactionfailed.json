@@ -1,9 +1,5 @@
 {
-    "transactionDone": "Transaction Done",
-    "transactionDoneDescription": "Transaction has been done successfully.",
-    "transactionDetails": "Transaction Details",
-    "amount": "Amount",
-    "receiver": "Receiver",
-    "transactionHash": "Transaction Hash",
-    "backToWallet": "Back to Wallet"
+    "transactionFailed": "거래 실패",
+    "transactionFailedDescription": "기술적인 문제로 인해 거래가 거부되었습니다.",
+    "backToWallet": "지갑으로 돌아가기"
 }

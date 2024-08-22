@@ -19,10 +19,12 @@ import {
 import TransferFailedImageDark from '../../assets/images/emptyState/TransferFailedDark.png';
 import TransferFailedImageLight from '../../assets/images/emptyState/TransferFailedLight.png';
 import {useTheme} from '../utils/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const {height, width} = Dimensions.get('window');
 
 const TransactionFailureScreen: React.FC = () => {
+  const { t } = useTranslation(["transactionfailed"]);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const {isDarkMode, theme} = useTheme();
 
@@ -35,10 +37,10 @@ const TransactionFailureScreen: React.FC = () => {
           resizeMode="contain"
         />
         <Text style={[styles.title, {color: theme.textColor}]}>
-          Transaction Failed!
+          {t("transactionfailed:transactionFailed")}
         </Text>
         <Text style={[styles.bodyText, {color: theme.secondaryTextColor}]}>
-          Your transfer has been declined due {'\n'}to a technical issue
+          {t("transactionfailed:transactionFailedDescription")}
         </Text>
       </View>
 
@@ -47,7 +49,7 @@ const TransactionFailureScreen: React.FC = () => {
           onPress={() => navigation.navigate('Home')}
           style={styles.button}>
           <Text style={[styles.buttonText, {color: theme.textColor}]}>
-            Back to Wallet
+            {t("transactionfailed:backToWallet")}
           </Text>
         </TouchableOpacity>
       </View>

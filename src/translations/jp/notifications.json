@@ -1,0 +1,6 @@
+{
+    "notifications": "通知",
+    "noNotificationsFound": "通知が見つかりません",
+    "noNotificationsFoundDescription": "現在、通知はありません。後で更新を確認してください。",
+    "reloadNotifications": "通知を再読み込み"
+}

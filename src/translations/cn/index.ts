@@ -11,3 +11,6 @@ export { default as sendassetamount } from './sendassetamount.json';
 export { default as sendassetpassword } from './sendassetpassword.json';
 export { default as transactionfailed } from './transactionfailed.json';
 export { default as transactionsuccess } from './transactionsuccess.json';
+export { default as notifications } from './notifications.json';
+export { default as games } from './games.json';
+

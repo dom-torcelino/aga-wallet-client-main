@@ -36,7 +36,7 @@ const LIMIT_PER_PAGE = 10;
 const SKELETON_COUNT = 6;
 
 const NotificationsScreen: React.FC = () => {
-  const { t } = useTranslation(["wallet"]);
+  const { t } = useTranslation(["notifications"]);
   const { token, loggedIn, userId } = useAuth();
   const [totalNotifications, setTotalNotifications] = useState<number>(0);
   const [page, setPage] = useState(1);
@@ -139,12 +139,12 @@ const NotificationsScreen: React.FC = () => {
             style={styles.emptyStateImage}
             resizeMode="contain"
           />
-          <Text style={[styles.emptyStateHeaderText, {color: theme.textColor}]}>No notifications found</Text>
+          <Text style={[styles.emptyStateHeaderText, {color: theme.textColor}]}>{t("notifications:noNotificationsFound")}</Text>
           <Text style={styles.bodyText}>
-            You currently have no notifications. {'\n'}Check back later for updates.
+            {t("notifications:noNotificationsFoundDescription")}
           </Text>
           <TouchableOpacity onPress={() => fetchNotification(1, LIMIT_PER_PAGE)} activeOpacity={0.7} style={styles.reloadBtn}>
-            <Text style={[styles.reloadText, {color: theme.primaryBGColor}]}>Reload Notifications</Text>
+            <Text style={[styles.reloadText, {color: theme.primaryBGColor}]}>{t("notifications:reloadNotifications")}</Text>
           </TouchableOpacity>
         </View>
       )}
