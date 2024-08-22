@@ -1,21 +1,21 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import React from 'react';
-import {RouteProp, useRoute} from '@react-navigation/native';
-import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
+import { RouteProp, useRoute } from '@react-navigation/native';
+import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../constants/theme';
 // import { TokenData } from '../data/mockData';
-import {useAuth} from '../screens/auth/AuthContext';
-import {RootStackParamList} from '../types/types'; // Import the type
-import BackButton from './ui/BackButton';
-import {useTheme} from '../utils/ThemeContext';
+import { useAuth } from './auth/AuthContext';
+import { RootStackParamList } from '../types/types'; // Import the type
+import BackButton from '../components/ui/BackButton';
+import { useTheme } from '../utils/ThemeContext';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type TokenDetailsRouteProp = RouteProp<RootStackParamList, 'TokenDetails'>;
 
 const TokenDetails: React.FC = () => {
   const route = useRoute<TokenDetailsRouteProp>();
-  const {token} = route.params;
-  const {balance} = useAuth();
-  const {isDarkMode, toggleTheme, theme} = useTheme();
+  const { token } = route.params;
+  const { balance } = useAuth();
+  const { isDarkMode, toggleTheme, theme } = useTheme();
 
   return (
     <View
@@ -27,9 +27,9 @@ const TokenDetails: React.FC = () => {
       ]}>
       {/* <BackButton /> */}
       <View>
-      <Text style={[styles.coinName, {color: theme.textColor}]}>
+        <Text style={[styles.coinName, { color: theme.textColor }]}>
           {token.coinName}
-      </Text>
+        </Text>
       </View>
       <View
         style={[
@@ -41,7 +41,7 @@ const TokenDetails: React.FC = () => {
         ]}>
         <Image
           source={
-            typeof token.image === 'string' ? {uri: token.image} : token.image
+            typeof token.image === 'string' ? { uri: token.image } : token.image
           }
           style={styles.image}
         />
@@ -49,10 +49,10 @@ const TokenDetails: React.FC = () => {
         <Text style={styles.fiat}>${balance.toFixed(2)}</Text>
 
         <View style={styles.row}>
-          <Text style={[styles.crypto, {color: theme.textColor}]}>
+          <Text style={[styles.crypto, { color: theme.textColor }]}>
             {token.crypto}
           </Text>
-          <Text style={[styles.coin, {color: theme.textColor}]}>
+          <Text style={[styles.coin, { color: theme.textColor }]}>
             {token.coin}
           </Text>
         </View>
@@ -60,11 +60,11 @@ const TokenDetails: React.FC = () => {
 
       </View>
       <View>
-          <TouchableOpacity style={[styles.button ]}>
-            <Text style={[styles.buttonText, {color: theme.textColor}]}>
-              Go Back
-            </Text>
-          </TouchableOpacity>
+        <TouchableOpacity style={[styles.button]}>
+          <Text style={[styles.buttonText, { color: theme.textColor }]}>
+            Go Back
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -87,14 +87,14 @@ const styles = StyleSheet.create({
   image: {
     width: 80,
     height: 80,
-    position:'absolute',
+    position: 'absolute',
     top: -40
   },
   row: {
     flexDirection: 'row',
   },
-  coin: { 
-    fontSize: FONTSIZE.size_24, 
+  coin: {
+    fontSize: FONTSIZE.size_24,
     fontFamily: FONTFAMILY.poppins_medium,
     color: COLORS.primaryWhite,
     margin: 10,
@@ -127,12 +127,12 @@ const styles = StyleSheet.create({
     marginTop: 25,
     backgroundColor: COLORS.primaryLightGreyHex
   },
-  buttonText: { 
-    fontSize: FONTSIZE.size_24, 
+  buttonText: {
+    fontSize: FONTSIZE.size_24,
     fontFamily: FONTFAMILY.poppins_medium,
     color: COLORS.primaryWhite,
     margin: 10,
-    textAlign:'center'
+    textAlign: 'center'
   },
 });
 

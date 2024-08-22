@@ -6,12 +6,12 @@ import {
 import Login from '../screens/auth/Login';
 import ForgotPassword from '../screens/auth/ForgotPassword';
 import Register from '../screens/auth/Register';
-import {COLORS} from '../constants/theme';
+import { COLORS } from '../constants/theme';
 import BottomTabNavigator from './BottomTabNavigator';
-import {RootStackParamList} from '../types/types'; // Import the type
-import TokenDetails from '../components/TokenDetails';
+import { RootStackParamList } from '../types/types'; // Import the type
+import TokenDetails from '../screens/TokenDetails';
 import QrScanner from '../QrScanner';
-import {Easing } from 'react-native';
+import { Easing } from 'react-native';
 import ResetPassword from '../components/ResetPassword';
 import WalletCreationScreen from '../screens/WalletCreationScreen';
 import TransactionSuccessScreen from '../screens/TransactionSuccessScreen';
@@ -19,7 +19,7 @@ import TransactionFailureScreen from '../screens/TransactionFailureScreen';
 import EnterPasswordScreen from '../screens/SendAssetPasswordScreen';
 import TransactionDetails from '../components/TransactionDetails';
 import GameView from '../components/GameView';
-import {useTheme} from '../utils/ThemeContext';
+import { useTheme } from '../utils/ThemeContext';
 import NotificationsScreen from '../screens/NotificationScreen';
 import { SendAssetScreen } from '../screens/SendAssetScreen';
 import { useTranslation } from 'react-i18next';
@@ -48,7 +48,7 @@ const closeConfig = {
 };
 
 const AuthNavigator = () => {
-  const {theme} = useTheme();
+  const { theme } = useTheme();
   const { t } = useTranslation();
 
   return (
@@ -70,7 +70,7 @@ const AuthNavigator = () => {
       <Stack.Screen
         name="Login"
         component={Login}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Register"
@@ -103,17 +103,17 @@ const AuthNavigator = () => {
       <Stack.Screen
         name="ResetPassword"
         component={ResetPassword}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="WalletCreation"
         component={WalletCreationScreen}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Home"
         component={BottomTabNavigator}
-        options={{headerShown: false, gestureEnabled: false}}
+        options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
         name="SendAsset"
@@ -133,7 +133,7 @@ const AuthNavigator = () => {
       <Stack.Screen
         name="SendAssetPassword"
         component={EnterPasswordScreen}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="TokenDetails"
@@ -163,7 +163,7 @@ const AuthNavigator = () => {
           headerTintColor: theme.textColor,
         }}
       />
-       
+
       <Stack.Screen
         name="NotificationsScreen"
         component={NotificationsScreen}
@@ -182,7 +182,7 @@ const AuthNavigator = () => {
       <Stack.Screen
         name="QrScanner"
         component={QrScanner}
-        options={{ headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="SendAssetAmount"
@@ -202,17 +202,17 @@ const AuthNavigator = () => {
       <Stack.Screen
         name="TransactionSuccess"
         component={TransactionSuccessScreen}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="TransactionFailure"
         component={TransactionFailureScreen}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="GameView"
         component={GameView}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
