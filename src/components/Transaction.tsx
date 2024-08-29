@@ -127,6 +127,7 @@ const Transaction: React.FC = () => {
   useEffect(() => {
     const intervalId = setInterval(async () => {
       if (loggedIn && accountAddress) {
+        
         try {
           const response = await axios.get(
             `${API_URL}/v1/wallets/${accountAddress}/transactions?limit=1&offset=0`,
@@ -148,7 +149,7 @@ const Transaction: React.FC = () => {
         }
       }
     }, 10000); // Poll every 10 seconds
-
+    
     return () => clearInterval(intervalId);
   }, [transactionCount, loggedIn, accountAddress, token]);
 
@@ -179,6 +180,7 @@ const Transaction: React.FC = () => {
       }>
       <View style={styles.dataContainer}>
         <View style={[styles.iconWrapper, {backgroundColor: theme.layeBGColor}]}>
+          
           {item.tx_type === 't' ? (
             <MoneySendIcon size={30} fillColor={'#C12727'} />
           ) : (
@@ -188,8 +190,8 @@ const Transaction: React.FC = () => {
         <View>
           <Text style={[styles.name, {color: theme.textColor}]}>
             {item.tx_type === 't'
-              ? truncateAddress(item.tx_wallet_recipient_address)
-              : truncateAddress(item.tx_wallet_sender_address)}
+              ? truncateAddress(item.tx_wallet_sender_address)
+              : truncateAddress(item.tx_wallet_recipient_address) }
           </Text>
           <Text style={styles.type}>
             {item.tx_type === 't' ? 'transfer' : 'received'}
@@ -201,7 +203,7 @@ const Transaction: React.FC = () => {
           styles.amount,
           {
             color:
-              item.tx_type === 't'
+            item.tx_type === 't'
                 ? COLORS.redTextColor
                 : COLORS.greenTextColor,
           },

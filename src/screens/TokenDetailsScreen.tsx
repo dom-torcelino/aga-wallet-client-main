@@ -6,7 +6,6 @@ import {BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/
 // import { TokenData } from '../data/mockData';
 import { useAuth } from './auth/AuthContext';
 import { RootStackParamList } from '../types/types'; // Import the type
-import BackButton from '../components/ui/BackButton';
 import { useTheme } from '../utils/ThemeContext';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
@@ -15,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 type TokenDetailsRouteProp = RouteProp<RootStackParamList, 'TokenDetails'>;
 
 const {height, width} = Dimensions.get('window');
+const IMAGE_SIZE = width * 0.18;
 
 const TokenDetails: React.FC = () => {
   const { t } = useTranslation("tokendetails");
@@ -23,6 +23,7 @@ const TokenDetails: React.FC = () => {
   const { balance } = useAuth();
   const { theme } = useTheme();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
 
   return (
     <View
@@ -40,18 +41,25 @@ const TokenDetails: React.FC = () => {
             borderColor: theme.borderStroke,
           },
         ]}>
-        <Image
-          source={
-            typeof token.image === 'string' ? { uri: token.image } : token.image
-          }
-          style={styles.image}
-        />
+        <View style={[
+        styles.imageContainer,
+        {
+          backgroundColor: theme.layeBGColor,
+        },
+      ]}>
+          <Image
+            source={
+              typeof token.image === 'string' ? { uri: token.image } : token.image
+            }
+            style={styles.image}
+          />
+        </View>
 
         <Text style={[styles.fiat, {color: theme.textColor}]}>${balance.toLocaleString()}</Text>
 
         <View style={styles.row}>
           <Text style={[styles.crypto, { color: theme.textColor }]}>
-            {balance.toLocaleString()}
+            {token.coin === 'AGA' ? balance.toLocaleString() : 0}
           </Text>
           <Text style={[styles.coin, { color: theme.textColor }]}>
             {token.coin}
@@ -62,7 +70,7 @@ const TokenDetails: React.FC = () => {
             {t("tokendetails:assets")}
           </Text>
           <Text style={[styles.coin, {color: theme.textColor}]}>
-              {balance.toLocaleString()}
+          {token.coin === 'AGA' ? balance.toLocaleString() : 0}
           </Text>
         </View>
         {/* <Text style={styles.fiat}>${token.fiat}</Text> */}
@@ -92,11 +100,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 30,
   },
-  image: {
-    width: 80,
-    height: 80,
+  imageContainer: {
     position: 'absolute',
+    padding: 10,
+    borderRadius: IMAGE_SIZE / 1,
+    overflow: 'hidden',
+    // margin:10,
     top: -40
+  },
+  image: {
+    width: IMAGE_SIZE,
+    height: IMAGE_SIZE,
+    resizeMode: 'contain',
+
   },
   row: {
     flexDirection: 'row',
@@ -136,7 +152,7 @@ const styles = StyleSheet.create({
   fiat: {
     fontSize: FONTSIZE.size_20,
     fontFamily: FONTFAMILY.poppins_regular,
-    marginTop: 25
+    marginTop: 40
   },
   button: {
     height: height * 0.07,

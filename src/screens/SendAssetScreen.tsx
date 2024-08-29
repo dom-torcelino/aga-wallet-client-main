@@ -87,7 +87,7 @@ export const SendAssetScreen: React.FC = () => {
                 </Text>
                 <Text
                   style={[styles.crypto, {color: theme.secondaryTextColor}]}>
-                  {balance.toLocaleString()}
+                  {token.coin === 'AGA' ? balance.toLocaleString() : 0}
                 </Text>
               </View>
             </View>

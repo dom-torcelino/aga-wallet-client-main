@@ -106,7 +106,7 @@ const Login: React.FC = () => {
       await GoogleSignin.signOut();
       await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
       const { user } = await GoogleSignin.signIn();
-      console.log(user);
+      // console.log(user);
       const accessToken = (await GoogleSignin.getTokens()).accessToken;
       const response = await fetch(`${API_URL}/v1/auth/google`, {
         method: 'POST',
@@ -132,7 +132,6 @@ const Login: React.FC = () => {
   }
 
   async function onFacebookButtonPress() {
-
     try {
       // Attempt login with permissions
       const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
@@ -147,13 +146,32 @@ const Login: React.FC = () => {
       if (!data) {
         throw 'Something went wrong obtaining access token';
       }
-
       // Create a Firebase credential with the AccessToken
       const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
-
       // Sign-in the user with the credential
       auth().signInWithCredential(facebookCredential);
-      console.log('User sign in successfully');
+
+      const accessToken = facebookCredential.token;
+
+      const response = await fetch(`${API_URL}/v1/auth/facebook`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ access_token: accessToken }),
+      });
+
+      if (response.ok) {
+         const data: AuthResponse = await response.json();
+         const { token, user } = data;
+         const { user_id } = user;
+         await login(token, user_id);
+         navigation.navigate('Home');
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || 'Login failed');
+      }
+      console.log('User sign in successfully using facebook');
     } catch (error) {
       console.log('login error', error);
     }
@@ -196,7 +214,7 @@ const Login: React.FC = () => {
             <View style={styles.loginBtnWrapper}>
               <TouchableOpacity
                 onPress={handleLogin}
-                activeOpacity={0.7}
+                activeOpacity={0.9}
                 style={styles.loginBtn}>
                 {loading ? (
                   <ActivityIndicator color={COLORS.primaryBGColor} />

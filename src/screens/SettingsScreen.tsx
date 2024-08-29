@@ -81,7 +81,7 @@ const SettingsScreen: React.FC = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.primaryBGColor }]}>
-      <HeaderBar title={t("settings:settings")} />
+      <HeaderBar title={t("settings:settings")} showNotificationIcon={true}/>
       <View
         style={[
           styles.settingsContainer,

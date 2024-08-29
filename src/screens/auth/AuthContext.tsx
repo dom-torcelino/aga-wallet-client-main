@@ -6,9 +6,9 @@ import React, {
   ReactNode,
 } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios'; // Example if you are using axios for API calls
+import axios from 'axios';
 //@ts-ignore
-import { API_URL } from '@env'; // Assuming you're using dotenv for environment variables
+import { API_URL } from '@env';
 
 interface AuthContextProps {
   token: {accessToken: string} | null;
@@ -69,11 +69,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
         } else {
           setLoggedIn(false);
         }
+        
       } catch (error) {
         console.error('Failed to load token', error);
       } finally {
         setLoading(false);
       }
+
     };
 
     loadToken();
@@ -84,12 +86,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
       const response = await axios.post(`${API_URL}/validate-token`, {
         token: accessToken,
       });
+      console.log('test: ', response);
       return response.data.isValid;
     } catch (error) {
       // console.error('Token validation failed', error);
       console.log('Token validation failed');
       return false;
     }
+
   };
 
   const login = async (token: {accessToken: string}, userId: number) => {
@@ -98,7 +102,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
       setToken(token);
       setUserId(userId);
       setLoggedIn(true);
-      setAccountAddress(null); // Optionally reset account address
+      setAccountAddress(null);
     } catch (error) {
       console.error('Failed to login', error);
     }

@@ -88,7 +88,10 @@ const Tokens: React.FC<TokensProps> = ({onPressToken }) => {
           }
         }
       }
+      
     };
+
+   
 
     fetchTokenData();
 

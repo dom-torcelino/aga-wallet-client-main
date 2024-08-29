@@ -177,7 +177,7 @@ const WalletScreen: React.FC = () => {
         }
         ListHeaderComponent={
           <>
-            <HeaderBar title={t("wallet:wallet")} />
+            <HeaderBar title={t("wallet:wallet")} showNotificationIcon={true} />
             <CardBalance balance={balance} />
             <Tabs
               tabs={tabs}

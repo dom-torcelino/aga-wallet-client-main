@@ -40,7 +40,7 @@ const GameScreen: React.FC = () => {
     <View
       style={[styles.ScreenContainer, {backgroundColor: theme.primaryBGColor}]}>
       {/* <StatusBar backgroundColor={COLORS.primaryBGColor} /> */}
-      <HeaderBar title={t("games:games")} />
+      <HeaderBar title={t("games:games")} balanceComponent={true}/>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.ScrollViewFlex}>
