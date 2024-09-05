@@ -92,7 +92,6 @@ const WalletScreen: React.FC = () => {
           } as Asset
           setAssets([asset])
           
-          setActiveTab(t("wallet:assets"))
         } else {
           setHasWallet(false);
         }

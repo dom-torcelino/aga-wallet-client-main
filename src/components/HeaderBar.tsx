@@ -31,7 +31,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({title, showNotificationIcon, balan
         <NotificationIcon fillColor={theme.textColor} size={28} />
       </TouchableOpacity>
       )}
-      {balanceComponent && <View style={styles.balanceContainer}>
+      {balanceComponent && <View style={[styles.balanceContainer, {backgroundColor: theme.secondaryBGColor}]}>
         <Text style={[styles.balanceText, {color: theme.textColor} ]}>{balance.toLocaleString()}</Text></View>}
     </View>
   );
@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
     color: COLORS.primaryWhiteHex,
   },
   balanceContainer: {
-    backgroundColor: COLORS.secondaryBGColor,
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 16,

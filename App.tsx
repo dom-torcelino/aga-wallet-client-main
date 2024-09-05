@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { StatusBar, View, ActivityIndicator, PermissionsAndroid } from 'react-native';
+import { StatusBar, View, ActivityIndicator, PermissionsAndroid, Platform, Alert, Linking } from 'react-native';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -19,11 +19,10 @@ import './src/translations'; // Ensure translations are imported
 import i18next from 'i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LANGUAGE_KEY } from './src/screens/SettingsScreen';
-import messaging from '@react-native-firebase/messaging'; 
 import axios from 'axios';
+import messaging, { requestPermission } from '@react-native-firebase/messaging';
 // @ts-ignore
 import { API_URL } from '@env';
-
 
 const App: React.FC = () => {
   const bottomSheetRef = useRef<BottomSheetMethods>(null);
@@ -32,99 +31,6 @@ const App: React.FC = () => {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [isTranslationReady, setIsTranslationReady] = useState(false); // Track when translations are ready
   const {token, userId} = useAuth();
-
-  // Handle background messages using setBackgroundMessageHandler
-// messaging().setBackgroundMessageHandler(async remoteMessage => {
-//   console.log('Message handled in the background!', remoteMessage);
-
-//   const notificationData = remoteMessage.data;
-
-//   try {
-//     const response = await axios.post(`http://${API_URL}/v1/users/${userId}/notifications`,
-//     {
-//       notifications: [
-//         {
-//           notifications_types: notificationData.type || 'transaction',
-//           notifications_message: notificationData.message || 'Notification Message',
-//           notification_status: 'unread',
-//         }
-//       ]
-//     },
-//       {
-//         headers: {
-//           Authorization: `Bearer ${token?.accessToken}`,
-//           'Content-Type': 'application/json'
-//         },
-       
-//       },
-//     );
-//     console.log(token?.accessToken)
-//     console.log('Notification data sent to the backend successfully:', response.data);
-//   } catch (error) {
-//     console.error('Error sending notification data to the backend:', error);
-//   }
-// });
-
-// // Check if app was launched in the background and conditionally render null if so
-// function HeadlessCheck({ isHeadless }) {
-//   if (isHeadless) {
-//     // App has been launched in the background by iOS, ignore
-//     return null;
-//   }
-
-//   // Render the app component on foreground launch
-//   return <App />;
-// }
-
-
-  useEffect(() => {
-    const requestUserPersmission  = async () => {
-      PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
-    const authStatus = await messaging().requestPermission();
-    const enabled = 
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED || 
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-      if (enabled) {
-        console.log('Authorization status:', authStatus);
-        const token = await messaging().getToken();
-        // console.log('FCM token:', token);
-      } else {
-        console.log('User has not enabled notifications.');
-      }
-    };
-
-    requestUserPersmission();
-
-    
-  }, [])
-
-  // Register background handler
-  messaging().setBackgroundMessageHandler(async remoteMessage => {
-    console.log('Message handled in the background!', remoteMessage);
-  });
-
-
-  // async function requestUserPermission() {
-  //   const authStatus = await messaging().requestPermission();
-  //   const enabled =
-  //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-  //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-  
-  //   if (enabled) {
-  //     console.log('Authorization status:', authStatus);
-  //   }
-  // }
-
-  // const getToken = async() => {
-  //   const token = await messaging().getToken()
-  //   console.log("Token: = ", token)
-  // }
-
-  // useEffect(() => {
-  //   requestUserPermission()
-  //   getToken()
-  // })
 
   const pressHandler = useCallback(() => {
     bottomSheetRef.current?.expand();

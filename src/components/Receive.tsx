@@ -61,7 +61,7 @@ const Receive: React.FC<TransferProps> = ({closeBottomSheet2, showToast}) => {
         <Text style={styles.walletID}>{accountAddress}</Text>
         <TouchableWithoutFeedback onPress={copyToClipboard}>
           <View style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>{t("wallet:copyWalletAddress")}</Text>
+            <Text style={[styles.buttonText, {color: theme.primaryBGColor}]}>{t("wallet:copyWalletAddress")}</Text>
           </View>
         </TouchableWithoutFeedback>
       </SafeAreaView>

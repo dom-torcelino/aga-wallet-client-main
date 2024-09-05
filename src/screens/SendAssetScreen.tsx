@@ -196,7 +196,7 @@ export const SendAssetScreen: React.FC = () => {
           onPress={onPressContinue}
           activeOpacity={0.7}
           style={styles.nextButton}>
-          <Text style={styles.buttonText}>{t("sendasset:continue")}</Text>
+          <Text style={[styles.buttonText, {color: theme.primaryBGColor}]}>{t("sendasset:continue")}</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

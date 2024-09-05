@@ -53,6 +53,10 @@ const Login: React.FC = () => {
     });
   }, []);
 
+  
+
+ 
+  //Email Input Validation 
   const validateEmail = (email: string) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
@@ -86,6 +90,7 @@ const Login: React.FC = () => {
         const { token, user } = loginData;
         const { user_id } = user;
         await login(token, user_id);
+        // await registerFCMToken(token);
         navigation.navigate('Home');
         console.log('Log In Sucess');
       } else {
@@ -100,7 +105,7 @@ const Login: React.FC = () => {
 
   };
 
-
+  // Google Login
   async function onGoogleButtonPress() {
     try {
       await GoogleSignin.signOut();
@@ -121,6 +126,7 @@ const Login: React.FC = () => {
         const { token, user } = data;
         const { user_id } = user;
         await login(token, user_id);
+        // await registerFCMToken(token);
         navigation.navigate('Home');
       } else {
         const errorData = await response.json();
@@ -131,6 +137,7 @@ const Login: React.FC = () => {
     }
   }
 
+  // Facebook Login
   async function onFacebookButtonPress() {
     try {
       // Attempt login with permissions
@@ -166,6 +173,7 @@ const Login: React.FC = () => {
          const { token, user } = data;
          const { user_id } = user;
          await login(token, user_id);
+        //  await registerFCMToken(token);
          navigation.navigate('Home');
       } else {
         const errorData = await response.json();
