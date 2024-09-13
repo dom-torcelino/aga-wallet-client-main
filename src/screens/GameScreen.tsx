@@ -14,10 +14,25 @@ import { useTranslation } from 'react-i18next';
 
 const GameScreen: React.FC = () => {
   const { t } = useTranslation(['games'])
-  const gameTabs = [`${t("games:all")}`, 'Slot', 'Casino', 'RPG'];
+  // const gameTabs = [`${t("games:all")}`, 'Slot', 'Casino', 'RPG'];
+  const gameTabs = [
+    {
+      key: 'all', label: t("games:all")
+    },
+    {
+      key: 'slot', label: 'Slot' 
+    },
+    {
+      key: 'casino', label: 'Casino'
+    },
+    {
+      key: 'rpg', label: 'RPG'
+    }
+  ];
+
+  const [activeTab, setActiveTab] = useState<string>(`${t("games:all")}`);
   const { theme } = useTheme()
   const { token } = useAuth();
-  const [activeTab, setActiveTab] = useState<string>(`${t("games:all")}`);
 
   const [genre, setGenre] = useState("");
   const [games, setGames] = useState([])
@@ -48,11 +63,15 @@ const GameScreen: React.FC = () => {
           <CarouselSlider />
         </View>
         <Tabs
-          tabs={gameTabs}
-          activeTab={activeTab}
-          setActiveTab={(tab) => {
-            setActiveTab(tab)
-            setGenre(tab == `${t("games:all")}` ? "" : tab)
+          tabs={gameTabs.map(tab => tab.label)}
+          activeTab={gameTabs.find(tab => tab.key === activeTab)?.label || t("games:all")}
+          setActiveTab={(tabLabel) => {
+            // Find the tab key based on the selected label
+            const selectedTab = gameTabs.find(tab => tab.label === tabLabel);
+            if (selectedTab) {
+              setActiveTab(selectedTab.key);
+              setGenre(selectedTab.key === 'all' ? "" : selectedTab.key);
+            }
           }}
         />
            {/* <GameList data={filterData()} /> */}

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   BackHandler,
+  Dimensions,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
@@ -28,8 +29,11 @@ import {useAuth} from './auth/AuthContext';
 import {useCallback} from 'react';
 import {useTheme} from '../utils/ThemeContext';
 import { useTranslation } from 'react-i18next';
+import EmptyState from '../components/ui/EmptyState';
 import NoWalletFoundImageDark from '../../assets/images/emptyState/NoWalletFound.png';
 import NoWalletFoundImagelight from '../../assets/images/emptyState/NoWalletFoundLight.png';
+
+const {height} = Dimensions.get('window');
 
 const WalletScreen: React.FC = () => {
   const { t } = useTranslation(["wallet"]);
@@ -42,6 +46,7 @@ const WalletScreen: React.FC = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [hasWallet, setHasWallet] = useState<boolean>(true);
   const { theme, isDarkMode } = useTheme();
+  
 
   const onPressToken = (item: TokenData) => {
     navigation.navigate('TokenDetails', {token: item});
@@ -51,6 +56,8 @@ const WalletScreen: React.FC = () => {
     const backAction = () => {
       if (isFocused) {
         BackHandler.exitApp();
+        <div className="
+        "></div>
         return true;
       }
       return false;
@@ -70,19 +77,23 @@ const WalletScreen: React.FC = () => {
         throw new Error('User is not logged in or no user token/userId found');
       }
 
-      const response = await fetch(`${API_URL}/v1/users/${userId}/wallets`, {
+      const response = await fetch(`${API_URL}/v1/users/${userId}/accounts`, {
         headers: {
           Authorization: `Bearer ${token.accessToken}`,
         },
       });
 
-
+      
+      
       if (response.ok) {
-        const data = await response.json();
-        if (data.wallets.length > 0) {
-          const wallet = data.wallets[0]
-          setAccountAddress(wallet.accountAddress);
-          setBalance(wallet.free);
+        const walletData = await response.json();
+        // console.log(walletData.accounts[0].account_address);
+
+        // console.log(walletData.metadata.count > 0);
+        if (walletData.metadata.count > 0) {
+          const wallet = walletData.accounts[0]
+          setAccountAddress(walletData.accounts[0].account_address);
+          setBalance(wallet.free); //TODO FIX BALANCE IN BACKEND
           setHasWallet(true);
           
           const asset = {
@@ -137,7 +148,16 @@ const WalletScreen: React.FC = () => {
           styles.EmptyContainer,
           {backgroundColor: theme.primaryBGColor},
         ]}>
-        <View style={styles.ImageContainer}> 
+          <EmptyState
+            image = {isDarkMode ? NoWalletFoundImageDark : NoWalletFoundImagelight}
+            headerText = {t("wallet:noWalletFound")}
+            bodyText = {t("wallet:noWalletDescription")}
+            theme = {theme}
+            showButton ={true}
+            buttonText = {t("wallet:createWallet")}
+            onPressButton={handleCreateWallet}
+          />
+        {/* <View style={styles.ImageContainer}> 
           <Image
             source={isDarkMode ? NoWalletFoundImageDark : NoWalletFoundImagelight}
             style={styles.emptyStateImage}
@@ -159,8 +179,8 @@ const WalletScreen: React.FC = () => {
           onPress={handleCreateWallet}
           activeOpacity={0.7}
           style={styles.createWalletBtn}>
-          <Text style={styles.createWalletText}>{t("wallet:createWallet")}</Text>
-        </TouchableOpacity>
+          <Text style={[styles.createWalletText, {color: theme.primaryBGColor}]}>{t("wallet:createWallet")}</Text>
+        </TouchableOpacity> */}
       </View>
     );
   }
@@ -185,7 +205,8 @@ const WalletScreen: React.FC = () => {
             />
           </>
         }
-        renderItem={() => <View>{renderTabContent()}</View>}
+        renderItem={() => <View>{renderTabContent()}</View>
+      }
         showsVerticalScrollIndicator={false}
       />
     </View>
@@ -195,15 +216,15 @@ const WalletScreen: React.FC = () => {
 const styles = StyleSheet.create({
   ScreenContainer: {
     flex: 1,
-    backgroundColor: COLORS.primaryBGColor,
   },
   ScreenWrapper: {
     paddingHorizontal: SPACING.space_16,
+
   },
   EmptyContainer: {
     flex: 1,
     justifyContent: 'center',
-    // alignItems: 'center',
+   
     backgroundColor: COLORS.primaryBGColor,
     paddingHorizontal: SPACING.space_16,
   },
@@ -234,6 +255,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
+    height: height * 0.06,
     backgroundColor: COLORS.primaryGoldHex,
     padding: 10,
     borderRadius: 10,

@@ -23,6 +23,7 @@ import EmptyTransactionLight from '../../assets/images/emptyState/EmptyTransacti
 import {API_URL} from '@env';
 import {useTheme} from '../utils/ThemeContext';
 import { useTranslation } from 'react-i18next';
+import EmptyState from './ui/EmptyState';
 
 interface TransactionData {
   tx_id: number;
@@ -234,17 +235,26 @@ const Transaction: React.FC = () => {
   };
 
   const renderEmptyState = () => (
-    <View style={styles.emptyStateContainer}>
-      <Image
-        source={isDarkMode ? EmptyTransactionDark : EmptyTransactionLight}
-        style={styles.emptyStateImage}
-        resizeMode="contain"
-      />
-      <Text style={[styles.emptyStateHeaderText, {color: theme.textColor}]}>{t("wallet:emptyTransaction")}</Text>
-      <Text style={[styles.bodyText, {color: theme.secondaryTextColor}]}>
-       {t("wallet:emptyTransactionDescription")}
-      </Text>
+    // <View style={styles.emptyStateContainer}>
+    //   <Image
+    //     source={isDarkMode ? EmptyTransactionDark : EmptyTransactionLight}
+    //     style={styles.emptyStateImage}
+    //     resizeMode="contain"
+    //   />
+    //   <Text style={[styles.emptyStateHeaderText, {color: theme.textColor}]}>{t("wallet:emptyTransaction")}</Text>
+    //   <Text style={[styles.bodyText, {color: theme.secondaryTextColor}]}>
+    //    {t("wallet:emptyTransactionDescription")}
+    //   </Text>
+    // </View>
+    <View style={styles.emptyContainer}>
+      <EmptyState
+      image={isDarkMode ? EmptyTransactionDark : EmptyTransactionLight}
+      headerText={t('wallet:emptyTransaction')}
+      bodyText={t('wallet:emptyTransactionDescription')}
+      theme={theme}
+    />
     </View>
+    
   );
 
   return (
@@ -286,6 +296,7 @@ const Transaction: React.FC = () => {
 const styles = StyleSheet.create({
   TransactionStyles: {
     // marginBottom: 20,
+    flex: 1,
   },
   dateHeader: {
     fontSize: FONTSIZE.size_14,
@@ -307,6 +318,13 @@ const styles = StyleSheet.create({
   dataContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 50,
+    
   },
   iconWrapper: {
     marginRight: 10,

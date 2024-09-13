@@ -67,7 +67,10 @@ const CardBalance: React.FC<CardBalanceProps> = ({balance}) => {
               )}
             </View>
             <Text style={[styles.balanceStyle, {color: theme.textColor}]}>
-              $ {balanceVisible ? balance.toLocaleString() : '*****'}
+              $ {balanceVisible ? 
+              // balance.toLocaleString() 
+              '25,000'
+              : '*****'}
             </Text>
           </View>
         </TouchableWithoutFeedback>

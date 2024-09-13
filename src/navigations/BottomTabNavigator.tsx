@@ -13,6 +13,7 @@ import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../types/types';
 import { useTheme } from '../utils/ThemeContext';
 import messaging from '@react-native-firebase/messaging';
+import { useAuth } from '../screens/auth/AuthContext';
 // @ts-ignore
 import {API_URL} from '@env';
 
@@ -51,6 +52,7 @@ const SettingsTabIcon = ({ focused }: { focused: boolean }) => {
 
 const BottomTabNavigator = () => {
   const [data, setData] = useState<any>(null);
+  const { setAccountAddress } = useAuth();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { theme } = useTheme();
 
@@ -129,11 +131,13 @@ const BottomTabNavigator = () => {
         // Request permission only after login
         await checkPermissionAndRegisterToken(token.accessToken);
 
-        const response = await fetch(`${API_URL}/v1/users/${userId}/wallets`, {
+        const response = await fetch(`${API_URL}/v1/users/${userId}/accounts`, {
           headers: {
             Authorization: `Bearer ${token.accessToken}`,
           },
         });
+
+        // console.log('response: ', response)
 
         if (!response.ok) {
           navigation.navigate('WalletCreation');
@@ -141,10 +145,14 @@ const BottomTabNavigator = () => {
         }
 
         const wallets = await response.json();
+
         if (wallets.metadata.count === 0) {
           navigation.navigate('WalletCreation');
         } else {
           setData(wallets);
+          setAccountAddress(wallets.accounts[0].account_address);
+
+     
         }
       } catch (error) {
         console.error('Error fetching wallets:', error);

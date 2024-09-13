@@ -40,6 +40,8 @@ const Receive: React.FC<TransferProps> = ({closeBottomSheet2, showToast}) => {
     closeBottomSheet2();
   };
 
+  // console.log(accountAddress)
+
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <SafeAreaView style={styles.receiveContainer}>
@@ -51,7 +53,10 @@ const Receive: React.FC<TransferProps> = ({closeBottomSheet2, showToast}) => {
         </Text>
         <View style={styles.qrContainer}>
           {!accountAddress ? (
-            <WalletAddressLoading />
+            // <WalletAddressLoading />
+            <Text style={[styles.headerText, {color: theme.textColor}]}>
+              No qr
+            </Text>
           ) : (
             <View style={styles.qrWrapper}>
               <QRCode value={accountAddress} size={SIZE} />

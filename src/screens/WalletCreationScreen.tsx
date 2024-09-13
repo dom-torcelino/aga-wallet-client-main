@@ -19,28 +19,28 @@ import {
 } from '../constants/theme';
 import {RootStackParamList} from '../types/types';
 import TextInput from '../components/ui/TextInput';
-import {useAuth} from './auth/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // @ts-ignore
 import {API_URL} from '@env';
 import {useTheme} from '../utils/ThemeContext';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from './auth/AuthContext';
 
 const {height} = Dimensions.get('window');
 
 const WalletCreationScreen: React.FC = () => {
   const { t } = useTranslation("createwallet"); 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const {token, setAccountAddress} = useAuth();
+  const {token, userId, setAccountAddress } = useAuth();
   const [name, setName] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [account_password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const {theme} = useTheme();
 
   const handleCreateWallet = async () => {
-    if (password !== confirmPassword) {
+    if (account_password !== confirmPassword) {
       setError('Passwords do not match');
       
     }
@@ -62,14 +62,16 @@ const WalletCreationScreen: React.FC = () => {
       }
 
       // Fetch to create wallet
-      const walletResponse = await fetch(`${API_URL}/v1/wallets/create`, {
+      const walletResponse = await fetch(`${API_URL}/v1/users/${userId}/accounts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token.accessToken}`, // Use the Bearer token
         },
-        body: JSON.stringify({account_id: name, password}), // Include account ID and password
+        body: JSON.stringify({account_code: name, account_password}), // Include account ID and password
       });
+
+      console.log('userId:', userId)
 
       setLoading(false);
 
@@ -77,17 +79,19 @@ const WalletCreationScreen: React.FC = () => {
         const walletData = await walletResponse.json();
         const {wallet_address} = walletData;
         setAccountAddress(wallet_address);
-        await AsyncStorage.setItem('walletPassword', password); // Save the wallet password
+        await AsyncStorage.setItem('walletPassword', account_password); // Save the wallet password
         navigation.navigate('Home'); // Navigate to home or other screen
       } else {
         const walletErrorData = await walletResponse.json();
         setError(walletErrorData.message || 'Wallet creation failed');
       }
+      console.log('walletResponse: ', walletResponse)
     } catch (error) {
       setLoading(false);
       setError('An error occurred. Please try again.');
       console.error(error);
     }
+    
   };
 
   return (
@@ -112,7 +116,7 @@ const WalletCreationScreen: React.FC = () => {
             />
             <TextInput
               placeholder={t("createwallet:password")}
-              value={password}
+              value={account_password}
               onChangeText={setPassword}
               secureTextEntry={true}
               showVisibilityToggle={true}
@@ -134,7 +138,7 @@ const WalletCreationScreen: React.FC = () => {
                 {loading ? (
                   <ActivityIndicator color={COLORS.primaryBGColor} />
                 ) : (
-                  <Text style={[styles.loginText, {color: theme.textColor}]}>
+                  <Text style={[styles.loginText, {color: theme.primaryBGColor}]}>
                     {t("createwallet:createWallet")}
                   </Text>
                 )}
@@ -191,7 +195,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    height: '100%',
+    height: height * 0.07,
     backgroundColor: COLORS.primaryGoldHex,
     borderRadius: BORDERRADIUS.radius_15,
   },

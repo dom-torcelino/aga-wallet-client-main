@@ -15,6 +15,10 @@ import {useNavigation, NavigationProp} from '@react-navigation/native';
 import {RootStackParamList} from '../types/types';
 import {useTheme} from '../utils/ThemeContext';
 import { useTranslation } from 'react-i18next';
+import EmptyState from './ui/EmptyState';
+import NoGameFoundLight from '../../assets/images/emptyState/NoGameFoundLight.png'
+import NoGameFoundDark from '../../assets/images/emptyState/NoGameFoundDark.png'
+
 
 const {width} = Dimensions.get('window');
 const itemWidth = ( width -50 ) ;
@@ -37,7 +41,7 @@ export interface GameListData {
 export const GameList: React.FC<GameListProps> = ({data = []}) => {
   const { t } = useTranslation(['games']);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const { theme } = useTheme();
+  const { theme, isDarkMode } = useTheme();
   const renderItem = ({item}: {item: GameListData}) => (
     <TouchableOpacity
       style={[
@@ -57,6 +61,29 @@ export const GameList: React.FC<GameListProps> = ({data = []}) => {
     </TouchableOpacity>
   );
 
+  const renderEmptyState = () => (
+    // <View style={styles.emptyStateContainer}>
+    //   <Image
+    //     source={isDarkMode ? EmptyTransactionDark : EmptyTransactionLight}
+    //     style={styles.emptyStateImage}
+    //     resizeMode="contain"
+    //   />
+    //   <Text style={[styles.emptyStateHeaderText, {color: theme.textColor}]}>{t("wallet:emptyTransaction")}</Text>
+    //   <Text style={[styles.bodyText, {color: theme.secondaryTextColor}]}>
+    //    {t("wallet:emptyTransactionDescription")}
+    //   </Text>
+    // </View>
+    <View style={styles.emptyContainer}>
+      <EmptyState
+      image={isDarkMode ? NoGameFoundDark : NoGameFoundLight}
+      headerText={t('wallet:NoGameFound')}
+      bodyText={t('wallet:NoGameFoundDescription')}
+      theme={theme}
+    />
+    </View>
+    
+  );
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -64,6 +91,8 @@ export const GameList: React.FC<GameListProps> = ({data = []}) => {
         renderItem={renderItem}
         keyExtractor={item => item.game_id.toString()}
         scrollEnabled={false}
+        ListEmptyComponent={renderEmptyState 
+        }
       />
        
     </View>
@@ -109,6 +138,13 @@ const styles = StyleSheet.create({
     width: '100%', 
 
     marginBottom: 10,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 50,
+
   },
 });
 

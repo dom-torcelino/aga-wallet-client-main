@@ -14,6 +14,10 @@ import TransactionSkeleton from './ui/TransactionSkeleton'; // Import the skelet
 // @ts-ignore
 import {API_URL} from '@env';
 import {useTheme} from '../utils/ThemeContext';
+import EmptyAssetLight from '../../assets/images/emptyState/NoAssetLight.png'
+import EmptyAssetDark from '../../assets/images/emptyState/NoAssetDark.png'
+import EmptyState from './ui/EmptyState';
+import { useTranslation } from 'react-i18next';
 
 export interface TokenData {
   id: number;
@@ -40,10 +44,11 @@ const IMAGE_SIZE = width * 0.11;
 const skeletonCount = 5;
 
 const Tokens: React.FC<TokensProps> = ({onPressToken }) => {
+  const { t } = useTranslation(["wallet"])
   const {userId, token, loggedIn, balance} = useAuth();
   const [tokenData, setTokenData] = useState<TokenData[]>([]);
   const [loading, setLoading] = useState(true);
-  const {theme} = useTheme();
+  const {theme, isDarkMode} = useTheme();
 
   useEffect(() => { 
     let isMounted = true;
@@ -141,8 +146,21 @@ const Tokens: React.FC<TokensProps> = ({onPressToken }) => {
     );
   };
 
+  const renderEmptyState = () => {
+    return ( 
+      <View style={styles.emptyContainer}>
+        <EmptyState
+        image={isDarkMode ? EmptyAssetDark : EmptyAssetLight}
+        headerText={t('wallet:emptyAssets')}
+        bodyText={t('wallet:emptyAssetsDescription')}
+        theme={theme}
+      />
+      </View>
+    )
+  }
+
   return (
-    <View style={styles.tokenStyles}>
+    <View style={styles.assetsStyles}>
       <FlatList
         data={loading ? Array(skeletonCount).fill({}) : tokenData}
         renderItem={loading ? () => <TransactionSkeleton /> : renderItem}
@@ -150,14 +168,16 @@ const Tokens: React.FC<TokensProps> = ({onPressToken }) => {
           item.id ? item.id.toString() : index.toString()
         }
         scrollEnabled={false}
+        ListEmptyComponent={!loading && tokenData.length === 0 ? renderEmptyState : null}
       />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  tokenStyles: {
+  assetsStyles: {
     marginBottom: 20,
+    flex: 1,
   },
   loadingContainer: {
     flex: 1,
@@ -213,6 +233,12 @@ const styles = StyleSheet.create({
   },
   rightSideContainer: {
     justifyContent: 'flex-end',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 50,
   },
 });
 

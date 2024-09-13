@@ -31,11 +31,18 @@ const HeaderBar: React.FC<HeaderBarProps> = ({title, showNotificationIcon, balan
         <NotificationIcon fillColor={theme.textColor} size={28} />
       </TouchableOpacity>
       )}
-      {balanceComponent && <View style={[styles.balanceContainer, {backgroundColor: theme.secondaryBGColor}]}>
-        <Text style={[styles.balanceText, {color: theme.textColor} ]}>{balance.toLocaleString()}</Text></View>}
+      
+      {balanceComponent && 
+        <View style={[styles.balanceContainer, {backgroundColor: theme.secondaryBGColor}]}>
+          <Text style={[styles.balanceText, {color: theme.textColor} ]}>
+            {/* {balance.toLocaleString()} */}
+            25,000
+          </Text>
+        </View>}
     </View>
   );
 };
+
 const styles = StyleSheet.create({
 
   HeaderContainer: {
@@ -50,12 +57,11 @@ const styles = StyleSheet.create({
     color: COLORS.primaryWhiteHex,
   },
   balanceContainer: {
+    minWidth: '20%',
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 16,
-    justifyContent: 'center',
     alignItems: 'center',
-    textAlign: 'center',
   },
   balanceText: {
     color: COLORS.textColor,

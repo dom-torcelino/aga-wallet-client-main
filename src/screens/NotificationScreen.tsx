@@ -19,6 +19,7 @@ import { useTheme } from '../utils/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import EmptyNotficationDark from '../../assets/images/emptyState/EmptyNotification.png'
 import EmptyNotficationLight from '../../assets/images/emptyState/EmptyNotificationLight.png'
+import EmptyState from '../components/ui/EmptyState';
 
 const NotificationStatus = ['unread', 'read' , 'dismissed' , 'archived' , 'action_taken'] as const
 
@@ -133,20 +134,29 @@ const NotificationsScreen: React.FC = () => {
           />
         </>
       ) : (
-        <View style={[styles.EmptyContainer, {backgroundColor: theme.primaryBGColor}]}>
-          <Image
-            source={isDarkMode ? EmptyNotficationDark : EmptyNotficationLight}
-            style={styles.emptyStateImage}
-            resizeMode="contain"
-          />
-          <Text style={[styles.emptyStateHeaderText, {color: theme.textColor}]}>{t("notifications:noNotificationsFound")}</Text>
-          <Text style={styles.bodyText}>
-            {t("notifications:noNotificationsFoundDescription")}
-          </Text>
-          <TouchableOpacity onPress={() => fetchNotification(1, LIMIT_PER_PAGE)} activeOpacity={0.7} style={styles.reloadBtn}>
-            <Text style={[styles.reloadText, {color: theme.primaryBGColor}]}>{t("notifications:reloadNotifications")}</Text>
-          </TouchableOpacity>
-        </View>
+        <EmptyState
+          image={isDarkMode ? EmptyNotficationDark : EmptyNotficationLight}
+          headerText={t('wallet:emptyTransaction')}
+          bodyText={t('wallet:emptyTransactionDescription')}
+          theme={theme}
+          showButton={true}
+          buttonText={t("notifications:reloadNotifications")}
+          onPressButton={() => fetchNotification(1, LIMIT_PER_PAGE)}
+        />
+        // <View style={[styles.EmptyContainer, {backgroundColor: theme.primaryBGColor}]}>
+        //   <Image
+        //     source={isDarkMode ? EmptyNotficationDark : EmptyNotficationLight}
+        //     style={styles.emptyStateImage}
+        //     resizeMode="contain"
+        //   />
+        //   <Text style={[styles.emptyStateHeaderText, {color: theme.textColor}]}>{t("notifications:noNotificationsFound")}</Text>
+        //   <Text style={styles.bodyText}>
+        //     {t("notifications:noNotificationsFoundDescription")}
+        //   </Text>
+        //   <TouchableOpacity onPress={() => fetchNotification(1, LIMIT_PER_PAGE)} activeOpacity={0.7} style={styles.reloadBtn}>
+        //     <Text style={[styles.reloadText, {color: theme.primaryBGColor}]}>{t("notifications:reloadNotifications")}</Text>
+        //   </TouchableOpacity>
+        // </View>
       )}
     </View>
   );
