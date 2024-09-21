@@ -1,7 +1,11 @@
 {
+
+  "name": "이름",
   "login": "로그인",
   "email": "이메일",
   "password": "비밀번호",
+  "confirmPassword": "비밀번호 확인",
+  "register": "등록",
   "dontHaveAnAccount": "계정이 없으신가요?",
   "signUp": "가입하기",
   "orSignInWith": "또는 다음으로 로그인",

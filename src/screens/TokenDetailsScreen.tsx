@@ -10,6 +10,7 @@ import { useTheme } from '../utils/ThemeContext';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import Tokens, { TokenData } from '../components/Tokens';
 
 type TokenDetailsRouteProp = RouteProp<RootStackParamList, 'TokenDetails'>;
 
@@ -24,6 +25,9 @@ const TokenDetails: React.FC = () => {
   const { theme } = useTheme();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
+  const onPressToken = (item: TokenData) => {
+    navigation.navigate('SendAsset', {token: item})
+  };
 
   return (
     <View
@@ -76,10 +80,20 @@ const TokenDetails: React.FC = () => {
         {/* <Text style={styles.fiat}>${token.fiat}</Text> */}
       </View>
       <View style={[styles.bottomRow ]}>
-          <TouchableOpacity style={[styles.button, {backgroundColor: theme.primaryGoldHex} ]}>
+          {/* <TouchableOpacity style={[styles.button, {backgroundColor: theme.primaryGoldHex} ]}>
             <Text style={[styles.buttonText, {color: theme.primaryBGColor}]}
             onPress={() => navigation.navigate('Home')}>
                {t("tokendetails:backToWallet")}
+            </Text>
+          </TouchableOpacity> */}
+          <TouchableOpacity style={[styles.button, {backgroundColor: theme.primaryGoldHex} ]}
+          // onPress={onPressToken} 
+          onPress={() => navigation.navigate('SendAsset', {token})}
+           >
+            <Text style={[styles.buttonText, {color: theme.primaryBGColor}]}
+           
+           >
+               {'Send Asset'}
             </Text>
           </TouchableOpacity>
       </View>
@@ -91,7 +105,8 @@ const TokenDetails: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: 20,
     justifyContent:'space-between'
   },
   assetContainer: {

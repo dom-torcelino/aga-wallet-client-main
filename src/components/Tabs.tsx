@@ -1,20 +1,22 @@
-import React, {useMemo} from 'react';
-import {Text, View, TouchableOpacity, FlatList} from 'react-native';
+import React, { useMemo } from 'react';
+import { Text, View, TouchableOpacity, FlatList } from 'react-native';
 import { FONTFAMILY, FONTSIZE, SPACING } from '../constants/theme';
-import {useTheme} from '../utils/ThemeContext';
+import { useTheme } from '../utils/ThemeContext';
 
 interface TabButtonProps {
   name: string;
   activeTab: string;
-  onHandleSearchType: () => void;
+  onPress: (name: string) => void;
 }
 
 const TabButton: React.FC<TabButtonProps> = ({
   name,
   activeTab,
-  onHandleSearchType,
+  onPress,
 }) => {
-  const {isDarkMode, toggleTheme, theme} = useTheme();
+  const { theme } = useTheme();
+  
+  // Memoized styles for performance optimization
   const tabButtonStyle = useMemo(
     () => ({
       width: 120,
@@ -25,10 +27,10 @@ const TabButton: React.FC<TabButtonProps> = ({
       borderRadius: SPACING.space_32,
       padding: SPACING.space_10,
       borderWidth: 1,
-      borderColor: 
-      name === activeTab ? theme.primaryColor : theme.borderStroke,
+      borderColor:
+        name === activeTab ? theme.primaryColor : theme.borderStroke,
     }),
-    [name, activeTab, theme],
+    [name, activeTab, theme]
   );
 
   const tabTextStyle = useMemo(
@@ -38,11 +40,11 @@ const TabButton: React.FC<TabButtonProps> = ({
       color: name === activeTab ? theme.primaryBGColor : theme.textColor,
       textAlign: 'center' as 'center',
     }),
-    [name, activeTab, theme],
+    [name, activeTab, theme]
   );
 
   return (
-    <TouchableOpacity style={tabButtonStyle} onPress={onHandleSearchType}>
+    <TouchableOpacity style={tabButtonStyle} onPress={() => onPress(name)}>
       <Text style={tabTextStyle}>{name}</Text>
     </TouchableOpacity>
   );
@@ -54,24 +56,21 @@ interface TabsProps {
   setActiveTab: (tab: string) => void;
 }
 
-const Tabs: React.FC<TabsProps> = ({ tabs, activeTab, setActiveTab}) => {
+const Tabs: React.FC<TabsProps> = ({ tabs, activeTab, setActiveTab }) => {
   return (
     <View>
       <FlatList
         data={tabs}
-        renderItem={({item, index }) => (
+        renderItem={({ item }) => (
           <TabButton
             name={item}
             activeTab={activeTab}
-            onHandleSearchType={() =>
-              setActiveTab(item)
-            }
-            key={index}
+            onPress={setActiveTab} // Pass the setActiveTab directly
           />
         )}
         horizontal
         showsHorizontalScrollIndicator={false}
-        keyExtractor={item => item}
+        keyExtractor={(item) => item} // Use item (which is the tab name) as the key
       />
     </View>
   );

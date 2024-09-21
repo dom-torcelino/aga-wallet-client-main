@@ -1,7 +1,9 @@
-import {Image, StyleSheet, Text, View, TouchableOpacity, Dimensions,} from 'react-native';
-import React from 'react';
+import React, {useRef} from 'react';
+import {Image, StyleSheet, Text, View, TouchableOpacity, Dimensions, Alert, } from 'react-native';
 import {RouteProp, useRoute} from '@react-navigation/native';
+import {captureRef} from 'react-native-view-shot';
 import {BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
+import Share from 'react-native-share';
 
 import {RootStackParamList} from '../types/types'; // Import the type
 import moment from 'moment';
@@ -25,7 +27,9 @@ const TransactionDetails: React.FC = () => {
   const route = useRoute<TransactionDetailsRouteProp>();
   const {transaction} = route.params;
   const {theme} = useTheme();
-  console.log(transaction); 
+
+  const viewRef = useRef(null); // Ref to capture the view
+
 
   const formatTransactionType = (type: string) => {
     return type === 't' ? 'Transferred' : 'Received';
@@ -47,12 +51,28 @@ const TransactionDetails: React.FC = () => {
     )}`;
   };
 
+  const onCaptureAndShare = async () => {
+    try {
+      const uri = await captureRef(viewRef, {
+        format: 'png',
+        quality: 0.8,
+      });
 
+      await Share.open({
+        title: 'Transaction Details',
+        url: uri,
+        message: 'Here are the transaction details',
+      });
+    } catch (error: any) {
+      console.log('Error', error.message);
+    }
+  };
 
   return (
     <View style={[styles.container, {backgroundColor: theme.primaryBGColor}]}>
       {/* <BackButton /> */}
       <View
+      ref={viewRef}
         style={[
           styles.settingsWrapper,
           {
@@ -101,7 +121,7 @@ const TransactionDetails: React.FC = () => {
           </View>
          </View>
         
-        <View style={[styles.lineStyles, {backgroundColor: theme.primaryBGColor}]} />
+        <View style={[styles.lineStyles, {backgroundColor: theme.textColor}]} />
 
         <View style={styles.bottomContainer}>
         <View style={styles.row}>
@@ -128,13 +148,15 @@ const TransactionDetails: React.FC = () => {
         <Text style={[styles.detail, {color: theme.textColor}]}>
           {formatDate(transaction.tx_created_at)}
         </Text> */}
-        <TouchableOpacity style={[styles.shareBtn, {
+      </View>
+        <TouchableOpacity 
+            onPress={onCaptureAndShare}
+            style={[styles.shareBtn, {
             backgroundColor: theme.primaryGoldHex,
             borderColor: theme.borderStroke,
           }]}>
                <Text style={[styles.shareBtnText, {color: theme.primaryBGColor}]}>Share</Text>
           </TouchableOpacity>
-      </View>
     </View>
   );
 };
@@ -143,6 +165,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.primaryBGColor,
+    justifyContent: 'space-between',
     padding: 20,
   },
 

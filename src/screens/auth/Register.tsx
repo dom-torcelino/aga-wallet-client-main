@@ -24,6 +24,7 @@ import {useAuth} from './AuthContext'; // Import the useAuth hook
 // @ts-ignore
 import {API_URL} from '@env';
 import {useTheme} from '../../utils/ThemeContext';
+import { t } from 'i18next';
 
 const {width, height} = Dimensions.get('window');
 
@@ -102,28 +103,28 @@ const Register: React.FC = () => {
                 style={styles.imageStyle}
               />
             </View>
-            <Text style={[styles.signupTxt, {color: theme.textColor}]}>Sign up</Text>
+            <Text style={[styles.signupTxt, {color: theme.textColor}]}>{t("login:signUp")}</Text>
             <TextInput
-              placeholder="Name"
+              placeholder={t("login:name")}
               value={name}
               onChangeText={setName}
               secureTextEntry={false}
             />
             <TextInput
-              placeholder="Email"
+              placeholder={t("login:email")}
               value={email}
               onChangeText={setEmail}
               secureTextEntry={false}
             />
             <TextInput
-              placeholder="Password"
+              placeholder={t("login:password")}
               value={password}
               onChangeText={setPassword}
               secureTextEntry={true}
               showVisibilityToggle={true}
             />
             <TextInput
-              placeholder="Confirm Password"
+              placeholder={t("login:confirmPassword")}
               value={confirmPassword}
               onChangeText={setConfirmPassword}
               secureTextEntry={true}
@@ -140,7 +141,7 @@ const Register: React.FC = () => {
                 {loading ? (
                   <ActivityIndicator color={COLORS.primaryBGColor} />
                 ) : (
-                  <Text style={[styles.loginText, {color: theme.primaryBGColor}]}>Register</Text>
+                  <Text style={[styles.loginText, {color: theme.primaryBGColor}]}>{t("login:register")}</Text>
                 )}
               </TouchableOpacity>
             </View>

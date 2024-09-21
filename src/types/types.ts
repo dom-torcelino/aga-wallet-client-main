@@ -38,8 +38,11 @@ export type RootStackParamList = {
   Transaction: undefined;
   TransactionDetails: {transaction: TransactionData};
   TransactionSuccess: { 
+    amount: number,
+    destination_address: string,
     blockHash: string, 
-    transactionHash: string 
+    transactionHash: string,
+    timestamp: string ,
   };
   TransactionFailure: undefined;
   NotificationsScreen: undefined;

@@ -18,5 +18,6 @@
     "searchTokenName": "搜索代币名称",
     "myWalletDetails": "我的钱包详情",
     "myWalletDetailsDescription": "您只能接收AGA钱包支持的代币。接收其他网络的代币可能会导致资产丢失。",
-    "copyWalletAddress": "复制钱包地址"
+    "copyWalletAddress": "复制钱包地址",
+    "loadMore": "加载更多"
   }

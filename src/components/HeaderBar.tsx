@@ -35,8 +35,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({title, showNotificationIcon, balan
       {balanceComponent && 
         <View style={[styles.balanceContainer, {backgroundColor: theme.secondaryBGColor}]}>
           <Text style={[styles.balanceText, {color: theme.textColor} ]}>
-            {/* {balance.toLocaleString()} */}
-            25,000
+            {balance.toLocaleString()}
           </Text>
         </View>}
     </View>

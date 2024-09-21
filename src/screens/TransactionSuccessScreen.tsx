@@ -8,7 +8,7 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
-import {useNavigation, NavigationProp} from '@react-navigation/native';
+import {useNavigation, NavigationProp, useRoute, RouteProp } from '@react-navigation/native';
 import axios from 'axios';
 import {useAuth} from '../screens/auth/AuthContext';
 import {RootStackParamList} from '../types/types';
@@ -29,9 +29,15 @@ import { useTranslation } from 'react-i18next';
 
 const {height, width} = Dimensions.get('window');
 
+type TransactionSuccessRouteProp = RouteProp<RootStackParamList, 'TransactionSuccess'>;
+
 const TransactionSuccessScreen: React.FC = () => {
   const { t } = useTranslation("transactionsuccess");
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const route = useRoute<TransactionSuccessRouteProp>();
+
+  const { blockHash, transactionHash, timestamp, amount, destination_address } = route.params;
+  
   const [transaction, setTransaction] = useState<Record<string, string> | null>(null)
   const [loading, setLoading] = useState<boolean>(true);
   const {token, accountAddress, loggedIn} = useAuth();
@@ -44,21 +50,24 @@ const TransactionSuccessScreen: React.FC = () => {
     const fetchLastTransaction = async () => {
       if (loggedIn && accountAddress) {
         try {
-          // First fetch to get the count of transactions
+          // Fetch metadata to get the total count of transactions
           const metadataResponse = await axios.get(
-            `${API_URL}/v1/wallets/${accountAddress}/transactions?limit=1&offset=0`,
+            `${API_URL}/v1/accounts/${accountAddress}/transactions?limit=1&offset=0`,
             {
               headers: {
                 Authorization: `Bearer ${token?.accessToken}`,
               },
             },
           );
-
+  
           const totalTransactions = metadataResponse.data.metadata.count;
-
+          // console.log('metadataResponse:', metadataResponse);
+          // console.log('totalTransactions:', totalTransactions);
+  
           if (totalTransactions > 0) {
+            // Fetch the last transaction using the offset based on the total count
             const lastTransactionResponse = await axios.get(
-              `${API_URL}/v1/wallets/${accountAddress}/transactions?limit=1&offset=${
+              `${API_URL}/v1/accounts/${accountAddress}/transactions?limit=1&offset=${
                 totalTransactions - 1
               }`,
               {
@@ -67,10 +76,12 @@ const TransactionSuccessScreen: React.FC = () => {
                 },
               },
             );
+  
             if (
               lastTransactionResponse.status === 200 &&
               lastTransactionResponse.data.transactions.length > 0
             ) {
+              // Set the last transaction as the current transaction
               setTransaction(lastTransactionResponse.data.transactions[0]);
             }
           }
@@ -81,10 +92,10 @@ const TransactionSuccessScreen: React.FC = () => {
         }
       }
     };
-
+  
     fetchLastTransaction();
   }, [token, accountAddress, loggedIn]);
-
+  
   if (loading || !transaction) {
     return (
       <View style={styles.loadingContainer}>
@@ -131,7 +142,8 @@ const TransactionSuccessScreen: React.FC = () => {
                 {t("transactionsuccess:amount")}
               </Text>
               <Text style={[styles.apiText, {color: theme.textColor}]}>
-                {transaction.tx_amount}
+                {/* {transaction.tx_amount} */}
+                {amount}
               </Text>
             </View>
             <View
@@ -144,7 +156,8 @@ const TransactionSuccessScreen: React.FC = () => {
               ]}>
               <Text style={styles.detailText}>{t("transactionsuccess:receiver")}</Text>
               <Text style={[styles.apiText, {color: theme.textColor}]}>
-                {transaction.tx_wallet_recipient_address}
+                {/* {transaction.tx_wallet_recipient_address} */}
+                {destination_address}
               </Text>
             </View>
             <View
@@ -157,7 +170,8 @@ const TransactionSuccessScreen: React.FC = () => {
               ]}>
               <Text style={styles.detailText}>{t("transactionsuccess:transactionHash")}</Text>
               <Text style={[styles.apiText, {color: theme.textColor}]}>
-                {transaction.tx_hash}
+                {/* {transaction.tx_hash} */}
+                {blockHash}
               </Text>
             </View>
           </>
@@ -172,7 +186,7 @@ const TransactionSuccessScreen: React.FC = () => {
         <TouchableOpacity
           onPress={() => navigation.navigate('Home')}
           style={styles.button}>
-          <Text style={[styles.buttonText, {color: theme.textColor}]}>
+          <Text style={[styles.buttonText, {color: theme.primaryBGColor}]}>
             Back to Wallet
           </Text>
         </TouchableOpacity>

@@ -27,15 +27,12 @@ import { LoginManager, AccessToken, Settings } from 'react-native-fbsdk-next';
 import { useAuth } from './AuthContext';
 import { useTheme } from '../../utils/ThemeContext';
 
-
 // @ts-ignore
 import { API_URL } from '@env';
 import { useTranslation } from 'react-i18next';
 
-const { width, height } = Dimensions.get('window');
-
-const Login: React.FC = () => {
-
+  const { width, height } = Dimensions.get('window');
+  const Login: React.FC = () => {
   const { t } = useTranslation(['login']);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [email, setEmail] = useState<string>('');
@@ -52,9 +49,6 @@ const Login: React.FC = () => {
         '68753555206-9abvln0g5a4bmqjf4ed2s3eb1nb07lro.apps.googleusercontent.com',
     });
   }, []);
-
-  
-
  
   //Email Input Validation 
   const validateEmail = (email: string) => {
@@ -85,6 +79,7 @@ const Login: React.FC = () => {
       });
 
       setLoading(false);
+
       if (response.ok) {
         const loginData: AuthResponse = await response.json();
         const { token, user } = loginData;
@@ -102,7 +97,6 @@ const Login: React.FC = () => {
       setError('An error occurred. Please try again.');
       console.error(error);
     }
-
   };
 
   // Google Login
@@ -126,7 +120,6 @@ const Login: React.FC = () => {
         const { token, user } = data;
         const { user_id } = user;
         await login(token, user_id);
-        // await registerFCMToken(token);
         navigation.navigate('Home');
       } else {
         const errorData = await response.json();

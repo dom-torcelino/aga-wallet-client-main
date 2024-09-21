@@ -8,7 +8,7 @@
     "noWalletFound": "No wallet found",
     "noWalletDescription": "You can't use this feature if you have no wallet.",
     "createWallet": "Create Wallet",
-    "emptyTransaction": "Empty Transaction",
+    " ": "Empty Transaction",
     "emptyTransactionDescription": "It seems there are no transactions added yet.",
     "NoGameFound":"Games not found",
     "NoGameFoundDescription":"It seems there are no games available",
@@ -18,5 +18,6 @@
     "searchTokenName": "Search token name",
     "myWalletDetails": "My Wallet Details",
     "myWalletDetailsDescription": "You can only receive tokens supported by AGA Wallet. Receiving tokens from other networks may result to loss of your assets.",
-    "copyWalletAddress": "Copy Wallet Address"
+    "copyWalletAddress": "Copy Wallet Address",
+    "loadMore": "Load more"
   }

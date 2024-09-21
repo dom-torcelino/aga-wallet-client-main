@@ -23,19 +23,23 @@ const Carousel: React.FC = () => {
   const carouselData: CarouselItem[] = [
     {
       id: '01',
-      image: require('../../assets/images/carousel-image1.jpg'),
+      // image: require('../../assets/images/carousel-image1.jpg'),
+      image: require('../../assets/images/game_banner1.png'),
     },
     {
       id: '02',
-      image: require('../../assets/images/carousel-image2.jpg'),
+      // image: require('../../assets/images/carousel-image2.jpg'),
+      image: require('../../assets/images/game_banner2.png'),
     },
     {
       id: '03',
-      image: require('../../assets/images/carousel-image3.jpg'),
+      // image: require('../../assets/images/carousel-image3.jpg'),
+      image: require('../../assets/images/game_banner3.png'),
     },
     {
       id: '04',
-      image: require('../../assets/images/carousel-image4.jpg'),
+      // image: require('../../assets/images/carousel-image4.jpg'),
+      image: require('../../assets/images/game_banner4.png'),
     },
     {
       id: '05',
@@ -88,6 +92,7 @@ const Carousel: React.FC = () => {
         onScroll={handleScroll}
         scrollEventThrottle={16}
       />
+      
       <View style={styles.pagination}>
         <Text style={styles.paginationText}>{`${currentIndex + 1} / ${
           carouselData.length
@@ -100,9 +105,11 @@ const Carousel: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     borderRadius: BORDERRADIUS.radius_15,
+    // justifyContent: 'flex-start',
+    alignItems: 'flex-start',
     overflow: 'hidden',
     // marginVertical: 10,
-    backgroundColor: 'red',
+    // backgroundColor: 'red',
   },
   pagination: {
     position: 'absolute',
@@ -111,7 +118,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     paddingHorizontal: 10,
     paddingVertical: 5,
-    borderRadius: 20,
+    // borderRadius: 20,
   },
   paginationText: {
     color: COLORS.primaryWhite,
@@ -119,6 +126,8 @@ const styles = StyleSheet.create({
   imageStyle: {
     height: 200,
     width: Dimensions.get('window').width,
+    resizeMode: 'cover',
+    alignSelf: 'flex-start',
   },
 });
 

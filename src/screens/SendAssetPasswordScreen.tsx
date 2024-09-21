@@ -46,7 +46,9 @@ const EnterPasswordScreen: React.FC = () => {
       setError(null); // Clear previous errors
 
       try {
-        const response = await fetch(`${API_URL}/v1/transactions/send`, {
+        // const response = await fetch(`${API_URL}/v1/transactions/send`,
+        const response = await fetch(`${API_URL}/v1/accounts/${sender_address}/transactions/send`,
+           {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -54,18 +56,23 @@ const EnterPasswordScreen: React.FC = () => {
           },
           body: JSON.stringify({
             amount,
-            sender_address,
-            recipient_address: recipientAddress,
+            // sender_address,
+            // recipient_address: recipientAddress,
+            destination_address: recipientAddress,
             password,
           }),
         });
 
-        const transaction = await response.json()
+        const transactionHash = await response.json()
 
         if (response.ok) {
+          console.log("response :", transactionHash)
           navigation.navigate('TransactionSuccess', { 
-            blockHash: transaction.block_hash,
-            transactionHash:  transaction.transaction_hash
+            amount,
+            destination_address: recipientAddress,
+            blockHash: transactionHash.block_hash,
+            transactionHash:  transactionHash.transaction_hash,
+            timestamp: transactionHash.timestamp
           });
         } else {
           setError('Incorrect password and try again.');

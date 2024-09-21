@@ -18,5 +18,6 @@
   "searchTokenName": "トークン名を検索",
   "myWalletDetails": "私のウォレットの詳細",
   "myWalletDetailsDescription": "AGAウォレットがサポートするトークンのみ受け取ることができます。他のネットワークからのトークンを受け取ると、資産を失う可能性があります。",
-  "copyWalletAddress": "ウォレットアドレスをコピー"
+  "copyWalletAddress": "ウォレットアドレスをコピー",
+  "loadMore": "もっと読み込む"
 }

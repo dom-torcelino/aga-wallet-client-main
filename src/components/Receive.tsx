@@ -40,8 +40,6 @@ const Receive: React.FC<TransferProps> = ({closeBottomSheet2, showToast}) => {
     closeBottomSheet2();
   };
 
-  // console.log(accountAddress)
-
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <SafeAreaView style={styles.receiveContainer}>

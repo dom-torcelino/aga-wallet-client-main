@@ -15,6 +15,7 @@ import {BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE} from '../constants/theme';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
 import {RootStackParamList} from '../types/types'; // Import the type
 import BackButtonIcon from '../../assets/SVG/BackButtonIcon';
+import { t } from 'i18next';
 
 const {width, height} = Dimensions.get('window');
 
@@ -110,7 +111,7 @@ const ResetPassword: React.FC = () => {
           />
           <TextInput
             style={styles.input}
-            placeholder="Confirm Password"
+            placeholder={t("login:confirmPassword")}
             placeholderTextColor="#888"
             secureTextEntry
             value={confirmPassword}

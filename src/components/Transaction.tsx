@@ -8,20 +8,19 @@ import {
   ActivityIndicator,
   Image,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
-import {useAuth} from '../screens/auth/AuthContext';
-import TransactionSkeleton from './ui/TransactionSkeleton'; // Import the skeleton loader component
-import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {RootStackParamList} from '../types/types'; // Import the type
-import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
+import { useAuth } from '../screens/auth/AuthContext';
+import TransactionSkeleton from './ui/TransactionSkeleton';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { RootStackParamList } from '../types/types';
+import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../constants/theme';
 import MoneySendIcon from '../../assets/SVG/MoneySendIcon';
 import MoneyReceivedIcon from '../../assets/SVG/MoneyReceivedIcon';
 import EmptyTransactionDark from '../../assets/images/emptyState/EmptyTransaction.png';
 import EmptyTransactionLight from '../../assets/images/emptyState/EmptyTransactionLight.png';
-// @ts-ignore
-import {API_URL} from '@env';
-import {useTheme} from '../utils/ThemeContext';
+import { API_URL } from '@env';
+import { useTheme } from '../utils/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import EmptyState from './ui/EmptyState';
 
@@ -31,19 +30,17 @@ interface TransactionData {
   tx_wallet_recipient_address: string;
   tx_amount: number;
   tx_status: string;
-  tx_hash: string;
-  tx_block_hash: string;
   tx_created_at: string;
   tx_updated_at: string;
   tx_type: string;
 }
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const groupByDate = (transactions: TransactionData[]) => {
   return transactions.reduce(
-    (grouped: {title: string; data: TransactionData[]}[], transaction) => {
-      const date = new Date(transaction.tx_created_at).toLocaleDateString('en-US',{ 
+    (grouped: { title: string; data: TransactionData[] }[], transaction) => {
+      const date = new Date(transaction.tx_created_at).toLocaleDateString('en-US', {
         weekday: 'short',
         year: 'numeric',
         month: 'short',
@@ -53,250 +50,206 @@ const groupByDate = (transactions: TransactionData[]) => {
       if (group) {
         group.data.push(transaction);
       } else {
-        grouped.push({title: date, data: [transaction]});
+        grouped.push({ title: date, data: [transaction] });
       }
       return grouped;
     },
-    [],
+    []
   );
 };
 
 const truncateAddress = (address: string) => {
-  return `${address.substring(0, 6)}...${address.substring(
-    address.length - 4,
-  )}`;
+  return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
 };
 
 const Transaction: React.FC = () => {
-  const { t } = useTranslation(["wallet"])
+  const { t } = useTranslation(['wallet']);
   const [transactions, setTransactions] = useState<TransactionData[]>([]);
   const [transactionCount, setTransactionCount] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(10); // Initial limit set to 10
-  const {token, accountAddress, loggedIn} = useAuth();
+  const [limit, setLimit] = useState<number>(10);
+  const { token, accountAddress, loggedIn } = useAuth();
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const skeletonCount = 5;
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const {theme, isDarkMode} = useTheme();
+  const { theme, isDarkMode } = useTheme();
+
+  const fetchTransactions = useCallback(async (isLoadMore = false) => {
+    if (loggedIn && accountAddress) {
+      try {
+        const response = await axios.get(
+          `${API_URL}/v1/accounts/${accountAddress}/transactions?limit=${limit}&sort_by=tx_id&order_by=desc`,
+          {
+            headers: {
+              Authorization: `Bearer ${token?.accessToken}`,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+
+
+          const transactions = response.data.transactions;
+
+          if (isLoadMore) {
+            setTransactions(prevTransactions => [...prevTransactions, ...transactions]);
+          } else {
+            setTransactions(transactions);
+          }
+
+          setTransactionCount(response.data.metadata.count);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Error fetching transactions:', error);
+      }
+    }
+  }, [accountAddress, loggedIn, limit, token]);
 
   useEffect(() => {
-    let isMounted = true;
-
-    const fetchTransactions = async () => {
-      if (loggedIn && accountAddress) {
-        try {
-          const response = await axios.get(
-            `${API_URL}/v1/wallets/${accountAddress}/transactions?limit=${limit}&offset=${Math.max(
-              0,
-              transactionCount - limit,
-            )}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token?.accessToken}`,
-              },
-            },
-          );
- 
-          if (isMounted && response.status === 200) {
-            const sortedTransactions = response.data.transactions.sort(
-              (a: TransactionData, b: TransactionData) =>
-                new Date(b.tx_created_at).getTime() -
-                new Date(a.tx_created_at).getTime(),
-            );
-            setTransactionCount(response.data.metadata.count);
-            setTransactions(sortedTransactions);
-          }
-        } catch (error) {
-          if (isMounted) {
-            // console.error('Error fetching transactions:', error);
-          }
-        } finally {
-          if (isMounted) {
-            setLoading(false);
-          }
-        }
-      }
-    };
-    
     fetchTransactions();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [token, accountAddress, loggedIn, transactionCount, limit]);
-
-  useEffect(() => {
-    const intervalId = setInterval(async () => {
-      if (loggedIn && accountAddress) {
-        
-        try {
-          const response = await axios.get(
-            `${API_URL}/v1/wallets/${accountAddress}/transactions?limit=1&offset=0`,
-            {
-              headers: {
-                Authorization: `Bearer ${token?.accessToken}`,
-              },
-            },
-          );
-
-          if (
-            response.status === 200 &&
-            response.data.metadata.count > transactionCount
-          ) {
-            // setTransactionCount(response.data.metadata.count);
-          }
-        } catch (error) {
-          // console.error('Error polling transactions:', error);
-        }
-      }
-    }, 10000); // Poll every 10 seconds
-    
-    return () => clearInterval(intervalId);
-  }, [transactionCount, loggedIn, accountAddress, token]);
-
-  const groupedData = groupByDate(transactions);
+  }, [fetchTransactions]);
 
   const loadMore = async () => {
-    if (transactions.length >= transactionCount) {
+    if (transactions.length >= transactionCount || loadingMore) {
       return;
     }
 
     setLoadingMore(true);
+
+    // Increase the limit to fetch more transactions
     setLimit(prevLimit => prevLimit + 10);
+
+    // Call fetchTransactions to load more data
+    await fetchTransactions(true);
+
     setLoadingMore(false);
   };
 
-  const renderItem = ({item}: {item: TransactionData}) => (
-    <TouchableOpacity
-      key={item.tx_id.toString()}
-      style={[
-        styles.container,
-        {
-          backgroundColor: theme.secondaryBGColor,
-          borderColor: theme.borderStroke,
-        },
-      ]}
-      onPress={() =>
-        navigation.navigate('TransactionDetails', {transaction: item})
-      }>
-      <View style={styles.dataContainer}>
-        <View style={[styles.iconWrapper, {backgroundColor: theme.layeBGColor}]}>
-          
-          {item.tx_type === 't' ? (
-            <MoneySendIcon size={30} fillColor={'#C12727'} />
-          ) : (
-            <MoneyReceivedIcon size={30} fillColor={'#48B22E'} />
-          )}
-        </View>
-        <View>
-          <Text style={[styles.name, {color: theme.textColor}]}>
-            {item.tx_type === 't'
-              ? truncateAddress(item.tx_wallet_sender_address)
-              : truncateAddress(item.tx_wallet_recipient_address) }
-          </Text>
-          <Text style={styles.type}>
-            {item.tx_type === 't' ? 'transfer' : 'received'}
-          </Text>
-        </View>
-      </View>
-      <Text
-        style={[
-          styles.amount,
-          {
-            color:
-            item.tx_type === 't'
-                ? COLORS.redTextColor
-                : COLORS.greenTextColor,
-          },
-        ]}>
-        {item.tx_type === 't' ? `-${item.tx_amount}` : `+${item.tx_amount}`}
-      </Text>
-    </TouchableOpacity>
-  );
+  const groupedData = groupByDate(transactions);
 
-  const renderSectionHeader = ({
-    section: {title},
-  }: {
-    section: {title: string};
-  }) => (
-    <Text style={[styles.dateHeader, {color: theme.textColor}]}>{title}</Text>
+  const renderItem = ({ item }: { item: TransactionData | null }) => {
+    if (!item) {
+      return <TransactionSkeleton />;
+    }
+
+    const senderAddress = truncateAddress(item.tx_wallet_sender_address);
+    const recipientAddress = truncateAddress(item.tx_wallet_recipient_address);
+
+    return (
+      <TouchableOpacity
+        style={[
+          styles.container,
+          {
+            backgroundColor: theme.secondaryBGColor,
+            borderColor: theme.borderStroke,
+          },
+        ]}
+        onPress={() => navigation.navigate('TransactionDetails', { transaction: item })}
+      >
+        <View style={styles.dataContainer}>
+          <View style={[styles.iconWrapper, { backgroundColor: theme.layeBGColor }]}>
+            {item.tx_type === 't' ? (
+              <MoneySendIcon size={30} fillColor={'#C12727'} />
+            ) : (
+              <MoneyReceivedIcon size={30} fillColor={'#48B22E'} />
+            )}
+          </View>
+
+          <View>
+            <Text style={[styles.name, { color: theme.textColor }]}>
+              {item.tx_type === 't' ?  recipientAddress : senderAddress}
+            </Text>
+            <Text style={[styles.type, { color: theme.secondaryTextColor }]}>
+              {item.tx_type === 't' ? t('wallet:transfer') : t('wallet:receive')}
+            </Text>
+          </View>
+        </View>
+
+        <Text
+          style={[
+            styles.amount,
+            {
+              color: item.tx_type === 't' ? COLORS.redTextColor : COLORS.greenTextColor,
+            },
+          ]}
+        >
+          {item.tx_type === 't' ? `-${item.tx_amount}` : `+${item.tx_amount}`}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
+  const renderSectionHeader = ({ section: { title } }: { section: { title: string } }) => (
+    <Text style={[styles.dateHeader, { color: theme.textColor }]}>{title}</Text>
   );
 
   const renderFooter = () => {
-    if (!loadingMore) {
-      return null;
-    }
-
+    if (!loadingMore) return null;
     return (
       <View style={styles.footer}>
-        <ActivityIndicator size="large" color={COLORS.primaryWhite} />
+        <ActivityIndicator size="large" color={theme.textColor} />
       </View>
     );
   };
 
   const renderEmptyState = () => (
-    // <View style={styles.emptyStateContainer}>
-    //   <Image
-    //     source={isDarkMode ? EmptyTransactionDark : EmptyTransactionLight}
-    //     style={styles.emptyStateImage}
-    //     resizeMode="contain"
-    //   />
-    //   <Text style={[styles.emptyStateHeaderText, {color: theme.textColor}]}>{t("wallet:emptyTransaction")}</Text>
-    //   <Text style={[styles.bodyText, {color: theme.secondaryTextColor}]}>
-    //    {t("wallet:emptyTransactionDescription")}
-    //   </Text>
-    // </View>
     <View style={styles.emptyContainer}>
       <EmptyState
-      image={isDarkMode ? EmptyTransactionDark : EmptyTransactionLight}
-      headerText={t('wallet:emptyTransaction')}
-      bodyText={t('wallet:emptyTransactionDescription')}
-      theme={theme}
-    />
+        image={isDarkMode ? EmptyTransactionDark : EmptyTransactionLight}
+        headerText={t('wallet:emptyTransaction')}
+        bodyText={t('wallet:emptyTransactionDescription')}
+        theme={theme}
+      />
     </View>
-    
   );
 
   return (
     <View style={styles.TransactionStyles}>
       <SectionList
-        sections={
-          loading
-            ? [{title: '', data: Array(skeletonCount).fill(null)}]
-            : groupedData
-        }
+        sections={loading ? [{ title: '', data: Array(skeletonCount).fill(null) }] : groupedData}
         renderItem={loading ? () => <TransactionSkeleton /> : renderItem}
         renderSectionHeader={renderSectionHeader}
-        keyExtractor={(item, index) =>
-          loading ? index.toString() : item.tx_id.toString()
-        }
+        keyExtractor={(item, index) => loading ? index.toString() : `${item.tx_id}:${index}`} // Ensure uniqueness
         ListFooterComponent={renderFooter}
-        ListEmptyComponent={
-          !loading && transactions.length === 0 ? renderEmptyState : null
-        }
-        onEndReached={loadMore}
-        onEndReachedThreshold={0.1} // Fetch more data when the list is close to the end
+        ListEmptyComponent={!loading && transactions.length === 0 ? renderEmptyState : null}
+        // onEndReached={loadMore}
+        // onEndReachedThreshold={0.1}
       />
-      {transactions.length < transactionCount && !loading && (
+      {/* {transactions.length < transactionCount && !loading && (
         <TouchableOpacity
-          style={[styles.loadMoreButton, {backgroundColor: theme.layeBGColor, borderColor: theme.borderStroke}]}
+          style={[styles.loadMoreButton, { backgroundColor: theme.layeBGColor, borderColor: theme.borderStroke }]}
           onPress={loadMore}
-          disabled={loadingMore}>
+          disabled={loadingMore}
+        >
           {loadingMore ? (
             <ActivityIndicator size="small" color={COLORS.primaryWhite} />
           ) : (
-            <Text style={[styles.loadMoreText, { color: theme.textColor}]}>Load More</Text>
+            <Text style={[styles.loadMoreText, { color: theme.textColor }]}>Load More</Text>
           )}
         </TouchableOpacity>
-      )}
+      )} */}
+       {transactions.length < transactionCount && !loading && (
+  loadingMore ? (
+    <></>  // You can leave this empty or add a loading indicator
+  ) : (
+    <TouchableOpacity
+      style={[styles.loadMoreButton, { backgroundColor: theme.layeBGColor, borderColor: theme.borderStroke }]}
+      onPress={loadMore}
+      disabled={loadingMore}
+    >
+      <Text style={[styles.loadMoreText, { color: theme.textColor }]}>{t('wallet:loadMore')}</Text>
+    </TouchableOpacity>
+  )
+)}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   TransactionStyles: {
-    // marginBottom: 20,
     flex: 1,
+    marginBottom: 20,
   },
   dateHeader: {
     fontSize: FONTSIZE.size_14,
@@ -324,7 +277,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 50,
-    
   },
   iconWrapper: {
     marginRight: 10,
@@ -366,30 +318,6 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  emptyStateContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 20,
-    // backgroundColor: 'red',
-  },
-  emptyStateHeaderText: {
-    fontSize: FONTSIZE.size_20,
-    fontFamily: FONTFAMILY.poppins_medium,
-    color: COLORS.primaryWhite,
-  },
-  emptyStateImage: {
-    width: 150,
-    height: 150,
-    marginVertical: 10,
-  },
-  bodyText: {
-    fontSize: FONTSIZE.size_16,
-    fontFamily: FONTFAMILY.poppins_regular,
-    color: COLORS.secondaryTextColor,
-    textAlign: 'center',
-    paddingHorizontal: 20,
   },
 });
 

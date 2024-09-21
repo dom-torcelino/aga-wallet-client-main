@@ -185,7 +185,7 @@ const BottomSheetScrollView = forwardRef<BottomSheetMethods, Props>(
                 <Text style={[styles.textStyles, {color: theme.textColor}]}>
                   {t("wallet:myWalletDetails")}
                 </Text>
-                <TextInput
+                {/* <TextInput
                   placeholder={t("wallet:searchTokenName")}
                   style={[
                     styles.searchBox,
@@ -201,7 +201,7 @@ const BottomSheetScrollView = forwardRef<BottomSheetMethods, Props>(
                   value={searchQuery}
                   onChangeText={query => handleSearch(query)}
                   placeholderTextColor={COLORS.strokeColor}
-                />
+                /> */}
               </View>
             </View>
             <GestureDetector

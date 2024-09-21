@@ -1,7 +1,10 @@
 {
+  "name": "Name",
   "login": "Login",
   "email": "Email",
   "password": "Password",
+  "confirmPassword": "Confirm Password",
+  "register": "Register",
   "dontHaveAnAccount": "Don't have an account? ",
   "signUp": "Sign up",
   "orSignInWith": "Or sign in with",

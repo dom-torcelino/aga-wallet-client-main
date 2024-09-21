@@ -1,7 +1,10 @@
 {
+  "name": "名前",
   "login": "ログイン",
   "email": "メール",
   "password": "パスワード",
+  "confirmPassword": "パスワードの確認",
+  "register": "登録",
   "dontHaveAnAccount": "アカウントがありませんか？",
   "signUp": "サインアップ",
   "orSignInWith": "または次でサインイン",

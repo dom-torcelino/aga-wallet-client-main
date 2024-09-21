@@ -110,40 +110,44 @@ const Tokens: React.FC<TokensProps> = ({onPressToken }) => {
       return null;
     }
 
-    return (
-      <TouchableOpacity
-        style={[
-          styles.tokenContainer,
-          {
-            backgroundColor: theme.secondaryBGColor,
-            borderColor: theme.borderStroke,
-          },
-        ]}
-        onPress={() => onPressToken(item)}>
-        <View style={styles.leftSideContainer}>
-          <View style={styles.coinContainer}>
-            <Image source={{uri: item.image}} style={styles.TokenImage} />
+    if (item.id === 1) {
+      return (
+        <TouchableOpacity
+          style={[
+            styles.tokenContainer,
+            {
+              backgroundColor: theme.secondaryBGColor,
+              borderColor: theme.borderStroke,
+            },
+          ]}
+          onPress={() => onPressToken(item)}>
+          <View style={styles.leftSideContainer}>
+            <View style={styles.coinContainer}>
+              <Image source={{uri: item.image}} style={styles.TokenImage} />
+            </View>
+            <View>
+              <Text style={[styles.coin, {color: theme.textColor}]}>
+                {item.coin}
+              </Text>
+              <Text style={styles.coinName}>{item.coinName}</Text>
+            </View>
           </View>
-          <View>
-            <Text style={[styles.coin, {color: theme.textColor}]}>
-              {item.coin}
+          <View style={styles.rightSideContainer}>
+            <Text style={[styles.crypto, {color: theme.textColor}]}>
+              {/* {item.crypto} */}
+              {index === 0 ? balance.toFixed(2) : item.crypto}
             </Text>
-            <Text style={styles.coinName}>{item.coinName}</Text>
+            {/* <Text style={styles.fiat}>(${item.fiat})</Text> */}
+            <Text style={styles.fiat}>
+            {index === 0 ? '$' + balance.toFixed(2) : '$' + item.crypto}
+              {/* ${balance.toFixed(2)} */}
+              </Text>
           </View>
-        </View>
-        <View style={styles.rightSideContainer}>
-          <Text style={[styles.crypto, {color: theme.textColor}]}>
-            {/* {item.crypto} */}
-            {index === 0 ? balance.toFixed(2) : item.crypto}
-          </Text>
-          {/* <Text style={styles.fiat}>(${item.fiat})</Text> */}
-          <Text style={styles.fiat}>
-          {index === 0 ? '$' + balance.toFixed(2) : '$' + item.crypto}
-            {/* ${balance.toFixed(2)} */}
-            </Text>
-        </View>
-      </TouchableOpacity>
-    );
+        </TouchableOpacity>
+      );
+    }
+
+   
   };
 
   const renderEmptyState = () => {

@@ -39,7 +39,7 @@ const registerFCMToken = async (authToken: string) => {
       body: JSON.stringify({ messaging_token: fcmToken }),
     });
 
-    console.log('FCM Token Registered');
+    // console.log('FCM Token Registered');
   } catch (error) {
     console.error('Failed to register FCM token:', error);
   }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, PermissionsAndroid, Platform } from 'react-native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; // Updated to Bottom Tab Navigator
 import GameScreen from '../screens/GameScreen';
 import WalletScreen from '../screens/WalletScreen';
 import SettingsScreen from '../screens/SettingsScreen';
@@ -15,10 +15,10 @@ import { useTheme } from '../utils/ThemeContext';
 import messaging from '@react-native-firebase/messaging';
 import { useAuth } from '../screens/auth/AuthContext';
 // @ts-ignore
-import {API_URL} from '@env';
+import { API_URL } from '@env';
 
 const { height } = Dimensions.get('window');
-const Tab = createMaterialTopTabNavigator();
+const Tab = createBottomTabNavigator(); // Updated
 
 const WalletTabIcon = ({ focused }: { focused: boolean }) => {
   const { theme } = useTheme();
@@ -70,7 +70,6 @@ const BottomTabNavigator = () => {
           },
           body: JSON.stringify({ messaging_token: fcmToken }),
         });
-        console.log('FCM Token Registered:', fcmToken);
       }
     } catch (error) {
       console.error('Failed to register FCM token:', error);
@@ -137,8 +136,6 @@ const BottomTabNavigator = () => {
           },
         });
 
-        // console.log('response: ', response)
-
         if (!response.ok) {
           navigation.navigate('WalletCreation');
           return;
@@ -151,8 +148,6 @@ const BottomTabNavigator = () => {
         } else {
           setData(wallets);
           setAccountAddress(wallets.accounts[0].account_address);
-
-     
         }
       } catch (error) {
         console.error('Error fetching wallets:', error);
@@ -171,18 +166,18 @@ const BottomTabNavigator = () => {
 
   return (
     <Tab.Navigator
-      tabBarPosition="bottom"
       initialRouteName="Wallet"
       screenOptions={{
+
         tabBarShowLabel: false,
-        tabBarIndicatorStyle: { height: 0 },
+        headerShown: false,
         tabBarStyle: {
           paddingTop: 2,
           paddingBottom: 6,
           backgroundColor: theme.secondaryBGColor,
         },
-        tabBarPressOpacity: 1,
-        tabBarPressColor: 'transparent',
+        // tabBarPressOpacity: 1,
+        // tabBarPressColor: 'transparent',
       }}
     >
       <Tab.Screen

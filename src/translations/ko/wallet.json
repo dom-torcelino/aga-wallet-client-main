@@ -18,5 +18,6 @@
   "searchTokenName": "토큰 이름 검색",
   "myWalletDetails": "내 지갑 세부 정보",
   "myWalletDetailsDescription": "AGA 지갑이 지원하는 토큰만 수신할 수 있습니다. 다른 네트워크에서 토큰을 받으면 자산을 잃을 수 있습니다.",
-  "copyWalletAddress": "지갑 주소 복사"
+  "copyWalletAddress": "지갑 주소 복사",
+  "loadMore": "더 불러오기"
 }
