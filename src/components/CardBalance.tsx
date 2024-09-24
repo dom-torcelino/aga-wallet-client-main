@@ -22,6 +22,7 @@ import type {TouchableOpacityProps} from 'react-native';
 import {useBottomSheet} from './BottomSheetContext';
 import { useTheme } from '../utils/ThemeContext';
 import { useTranslation } from 'react-i18next';
+import SwapIcon from '../../assets/SVG/SwapIcon';
 
 type CustomButtonProps = {
   title: string;
@@ -85,7 +86,7 @@ const CardBalance: React.FC<CardBalanceProps> = ({balance}) => {
           onPress={pressHandler2}
           Icon={MoneyReceivedIcon}
         />
-        {/* <CustomButton title="Swap" onPress={() => {}} Icon={SwapIcon} /> */}
+        <CustomButton title="Swap" onPress={() => {}} Icon={SwapIcon} />
       </View>
     </View>
   );
