@@ -6,7 +6,7 @@ import { AuthAction, AuthState } from "../store/auth/interface";
 // REGISTER ALL STORES HERE
 interface AppContextType {
     state: WalletState & UserState & AuthState;
-    dispatch: Dispatch<WalletAction & UserAction & AuthAction >
+    dispatch: Dispatch<WalletAction | UserAction | AuthAction >
 }
 
 interface AppStateProviderProps {
