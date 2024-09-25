@@ -38,7 +38,10 @@ const SKELETON_COUNT = 6;
 
 const NotificationsScreen: React.FC = () => {
   const { t } = useTranslation(["notifications"]);
+  // TODO: REMOVE THIS AND USE useAppContext()
   const { token, loggedIn, userId } = useAuth();
+  // TODO: Create Notifications Context
+  // REMOVE THIS AND USE useAppContext()
   const [totalNotifications, setTotalNotifications] = useState<number>(0);
   const [page, setPage] = useState(1);
   const [notifications, setNotifications] = useState<any[]>([]);

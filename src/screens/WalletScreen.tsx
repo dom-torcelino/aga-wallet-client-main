@@ -35,10 +35,15 @@ import NoWalletFoundImageLight from '../../assets/images/emptyState/NoWalletFoun
 const { height } = Dimensions.get('window');
 
 const WalletScreen: React.FC = () => {
-  const { t } = useTranslation(['wallet']);
-  const [assets, setAssets] = useState<Asset[]>([]);
+  const { t } = useTranslation(["wallet"]);
+  // TODO: REMOVE THIS AND STORE IT INSIDE WALLET CONTEXTS
+  const [assets, setAssets] = useState<Asset[]>([])
   const isFocused = useIsFocused();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  // TODO: REMOVE THIS AND STORE IT INSIDE AUTH STATE
+  /**
+   * STORE VALUES TO IT'S DESIGNATED STATE
+   */
   const { token, userId, setAccountAddress, setBalance, balance, loggedIn } = useAuth();
   const [activeTab, setActiveTab] = useState<string>(t("wallet:assets"));
   const tabs =  [t("wallet:assets"), t("wallet:transactions")]

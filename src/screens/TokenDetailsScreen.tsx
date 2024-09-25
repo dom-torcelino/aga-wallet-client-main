@@ -21,6 +21,7 @@ const TokenDetails: React.FC = () => {
   const { t } = useTranslation("tokendetails");
   const route = useRoute<TokenDetailsRouteProp>();
   const { token } = route.params;
+  // TODO: use the useAppContext hook for the balance
   const { balance } = useAuth();
   const { theme } = useTheme();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();

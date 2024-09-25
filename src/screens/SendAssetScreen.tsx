@@ -42,6 +42,7 @@ export const SendAssetScreen: React.FC = () => {
   const { pressHandler } = useBottomSheet();
   const route = useRoute<SendAssetScreenProp>();
   const {token} = route.params;
+  // TODO: use the useAppContext hook for the balance
   const {balance} = useAuth();
 
   const [recipientAddress, setRecipientAddress] = useState<string>('');

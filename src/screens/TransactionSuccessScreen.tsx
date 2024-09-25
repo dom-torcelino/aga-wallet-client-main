@@ -47,6 +47,8 @@ const TransactionSuccessScreen: React.FC = () => {
   const {isDarkMode, theme} = useTheme();
 
   useEffect(() => {
+    // TODO: add new state inside wallet for transactions
+    // REMOVE THIS AND useAppContext() Hook
     const fetchLastTransaction = async () => {
       if (loggedIn && accountAddress) {
         try {

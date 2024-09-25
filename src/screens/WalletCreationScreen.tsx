@@ -31,7 +31,9 @@ const {height} = Dimensions.get('window');
 const WalletCreationScreen: React.FC = () => {
   const { t } = useTranslation("createwallet"); 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const {token, userId, setAccountAddress } = useAuth();
+  // TODO: REMOVE THIS AND useAppContext() Hook
+  const {token, setAccountAddress} = useAuth();
+  
   const [name, setName] = useState<string>('');
   const [account_password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');

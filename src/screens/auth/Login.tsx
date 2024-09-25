@@ -36,14 +36,6 @@ const { width, height } = Dimensions.get('window');
 
 const Login: React.FC = () => {
   const { state, dispatch } = useAppContext();
-
-  useEffect(() => {
-    console.log(state.assets)
-
-    // dispatch({ type: ActionType.SET_BALANCE, payload: 32 })
-  }, [])
-  
-
   const { t } = useTranslation(['login']);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [email, setEmail] = useState<string>('');
