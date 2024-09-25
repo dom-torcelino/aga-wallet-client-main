@@ -19,7 +19,7 @@ import {
   FONTFAMILY,
   FONTSIZE,
 } from '../../constants/theme';
-import { RootStackParamList, AuthResponse } from '../../types/types';
+import { RootStackParamList, AuthResponse, AssetData } from '../../types/types';
 import TextInput from '../../components/ui/TextInput';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
@@ -30,9 +30,20 @@ import { useTheme } from '../../utils/ThemeContext';
 // @ts-ignore
 import { API_URL } from '@env';
 import { useTranslation } from 'react-i18next';
+import { useAppContext } from '../../state';
 
-  const { width, height } = Dimensions.get('window');
-  const Login: React.FC = () => {
+const { width, height } = Dimensions.get('window');
+
+const Login: React.FC = () => {
+  const { state, dispatch } = useAppContext();
+
+  useEffect(() => {
+    console.log(state.assets)
+
+    // dispatch({ type: ActionType.SET_BALANCE, payload: 32 })
+  }, [])
+  
+
   const { t } = useTranslation(['login']);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [email, setEmail] = useState<string>('');
@@ -194,6 +205,7 @@ import { useTranslation } from 'react-i18next';
             style={styles.imageStyle}
           />
         </View>
+        <Text>{JSON.stringify(state)}</Text>
         <View style={[styles.container, {backgroundColor: theme.primaryBGColor}]}>
           <View style={styles.wFull}>
             <Text style={[styles.loginContinueTxt, {color: theme.textColor}]}>{t('login:login')}</Text>

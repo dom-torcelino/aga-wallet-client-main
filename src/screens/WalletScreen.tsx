@@ -39,9 +39,9 @@ const WalletScreen: React.FC = () => {
   const [assets, setAssets] = useState<Asset[]>([]);
   const isFocused = useIsFocused();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const { token, userId, accountAddress, setAccountAddress, setBalance, balance, loggedIn } = useAuth();
-  const [activeTab, setActiveTab] = useState<string>('assets'); // Use identifier for tab
-  const tabs = ['assets', 'transactions']; // Use identifiers instead of translated text
+  const { token, userId, setAccountAddress, setBalance, balance, loggedIn } = useAuth();
+  const [activeTab, setActiveTab] = useState<string>(t("wallet:assets"));
+  const tabs =  [t("wallet:assets"), t("wallet:transactions")]
   const [refreshing, setRefreshing] = useState(false);
   const [hasWallet, setHasWallet] = useState<boolean>(true);
   const { theme, isDarkMode } = useTheme();

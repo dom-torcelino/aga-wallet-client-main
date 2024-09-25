@@ -60,3 +60,14 @@ export interface AuthResponse {
   hasPassword: boolean;
   user: any;
 }
+
+// All types where string because
+// of how blockchain send it's own datatype
+export type AssetData = {
+    tokenId: string | null,
+    tokenIcon: string,
+    balance: string,
+    tokenDecimal: string,
+    tokenSymbol: string
+}
+

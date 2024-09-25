@@ -120,7 +120,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
       console.error('Failed to log out', error);
     }
   };
-
+  
   return (
     <AuthContext.Provider
       value={{
