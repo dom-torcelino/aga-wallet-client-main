@@ -34,6 +34,7 @@ const EnterPasswordScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const route = useRoute<EnterPasswordRouteProp>();
   const {amount, recipientAddress } = route.params;
+  // TODO: use the useAppContext hook
   const {token: authToken, accountAddress: sender_address} = useAuth();
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState<boolean>(false);

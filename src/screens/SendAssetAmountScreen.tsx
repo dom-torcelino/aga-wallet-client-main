@@ -31,6 +31,7 @@ export const SendAssetAmountScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const route = useRoute<SendAmountRouteProp>();
   const { token, recipientAddress } = route.params;
+  // TODO: use the useAppContext hook
   const {balance, accountAddress} = useAuth();
   const {theme} = useTheme();
   const [amount, setAmount] = useState('0');
