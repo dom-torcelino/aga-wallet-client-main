@@ -19,8 +19,24 @@ import './src/translations'; // Ensure translations are imported
 import i18next from 'i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LANGUAGE_KEY } from './src/screens/SettingsScreen';
+import { AppStateProvider } from './src/state';
+import useStateAndDispatch from './src/hooks/useStateAndDispatch';
+import { ActionType } from './src/types/enum';
 
 const App: React.FC = () => {
+  const { dispatch, state } = useStateAndDispatch();
+
+  useEffect(() => {
+    const assets = [{
+      tokenId: null,
+      tokenIcon: "",
+      balance: "323232",
+      tokenDecimal: "12",
+      tokenSymbol: "323"
+    }]
+    dispatch({ type: ActionType.SET_ASSETS, payload: assets })
+  }, [])
+
   const bottomSheetRef = useRef<BottomSheetMethods>(null);
   const bottomSheetRef2 = useRef<BottomSheetMethods>(null);
   const toastRef = useRef<any>(null);
@@ -103,39 +119,41 @@ const App: React.FC = () => {
 
   return (
     <ThemeProvider>
-      <SafeAreaProvider>
-        <StatusBar backgroundColor={COLORS.primaryBGColor} />
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <BottomSheetProvider
-            pressHandler={pressHandler}
-            pressHandler2={pressHandler2}
-          >
-            <AuthProvider>
-              <NavigationContainer theme={DarkTheme}>
-                <AuthNavigator />
-                <BottomSheetScrollView
-                  ref={bottomSheetRef}
-                  snapTo="80%"
-                  backDropColor="black"
-                >
-                  <Transfer closeBottomSheet={closeBottomSheet} />
-                </BottomSheetScrollView>
-                <BottomSheet
-                  ref={bottomSheetRef2}
-                  snapTo="80%"
-                  backDropColor="black"
-                >
-                  <Receive
-                    closeBottomSheet2={closeBottomSheet2}
-                    showToast={showToast}
-                  />
-                </BottomSheet>
-              </NavigationContainer>
-            </AuthProvider>
-          </BottomSheetProvider>
-          <Toast ref={toastRef} />
-        </GestureHandlerRootView>
-      </SafeAreaProvider>
+      <AppStateProvider state={state} dispatch={dispatch}>
+        <SafeAreaProvider>
+          <StatusBar backgroundColor={COLORS.primaryBGColor} />
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <BottomSheetProvider
+              pressHandler={pressHandler}
+              pressHandler2={pressHandler2}
+            >
+              <AuthProvider>
+                <NavigationContainer theme={DarkTheme}>
+                  <AuthNavigator />
+                  <BottomSheetScrollView
+                    ref={bottomSheetRef}
+                    snapTo="80%"
+                    backDropColor="black"
+                  >
+                    <Transfer closeBottomSheet={closeBottomSheet} />
+                  </BottomSheetScrollView>
+                  <BottomSheet
+                    ref={bottomSheetRef2}
+                    snapTo="80%"
+                    backDropColor="black"
+                  >
+                    <Receive
+                      closeBottomSheet2={closeBottomSheet2}
+                      showToast={showToast}
+                    />
+                  </BottomSheet>
+                </NavigationContainer>
+              </AuthProvider>
+            </BottomSheetProvider>
+            <Toast ref={toastRef} />
+          </GestureHandlerRootView>
+        </SafeAreaProvider>
+      </AppStateProvider>
     </ThemeProvider>
   );
 };

@@ -36,7 +36,7 @@ const WalletScreen: React.FC = () => {
   const [assets, setAssets] = useState<Asset[]>([])
   const isFocused = useIsFocused();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const {token, userId, setAccountAddress, setBalance, balance, loggedIn} = useAuth();
+  const { token, userId, setAccountAddress, setBalance, balance, loggedIn } = useAuth();
   const [activeTab, setActiveTab] = useState<string>(t("wallet:assets"));
   const tabs =  [t("wallet:assets"), t("wallet:transactions")]
   const [refreshing, setRefreshing] = useState(false);

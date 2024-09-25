@@ -23,6 +23,7 @@ import { useTheme } from '../utils/ThemeContext';
 import { Picker } from '../components/Picker';
 import { useTranslation } from 'react-i18next';
 import i18next from 'i18next';
+import { useAppContext } from '../state';
 
 const { width } = Dimensions.get('window');
 
@@ -43,6 +44,7 @@ const currencyOptions = [
 export const LANGUAGE_KEY = "selectedLanguage";  // Key for AsyncStorage
 
 const SettingsScreen: React.FC = () => {
+  const { state, dispatch } = useAppContext();
   const { t } = useTranslation(['settings']);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { logout } = useAuth();
