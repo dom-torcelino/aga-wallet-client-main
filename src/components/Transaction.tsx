@@ -23,6 +23,7 @@ import { API_URL } from '@env';
 import { useTheme } from '../utils/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import EmptyState from './ui/EmptyState';
+import { useAppContext } from '../state';
 
 interface TransactionData {
   tx_id: number;
@@ -67,12 +68,14 @@ const Transaction: React.FC = () => {
   const [transactions, setTransactions] = useState<TransactionData[]>([]);
   const [transactionCount, setTransactionCount] = useState<number>(0);
   const [limit, setLimit] = useState<number>(10);
-  const { token, accountAddress, loggedIn } = useAuth();
+  const { token } = useAuth();
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const skeletonCount = 5;
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { theme, isDarkMode } = useTheme();
+  const { state, dispatch } = useAppContext();
+  const {loggedIn, accountAddress, accessToken} = state;
 
   const fetchTransactions = useCallback(async (isLoadMore = false) => {
     if (loggedIn && accountAddress) {
@@ -81,7 +84,7 @@ const Transaction: React.FC = () => {
           `${API_URL}/v1/accounts/${accountAddress}/transactions?limit=${limit}&sort_by=tx_id&order_by=desc`,
           {
             headers: {
-              Authorization: `Bearer ${token?.accessToken}`,
+              Authorization: `Bearer ${accessToken}`,
             },
           }
         );
@@ -104,7 +107,7 @@ const Transaction: React.FC = () => {
         console.error('Error fetching transactions:', error);
       }
     }
-  }, [accountAddress, loggedIn, limit, token]);
+  }, [accountAddress, loggedIn, limit]);
 
   useEffect(() => {
     fetchTransactions();

@@ -30,12 +30,23 @@ import { useTheme } from '../../utils/ThemeContext';
 // @ts-ignore
 import { API_URL } from '@env';
 import { useTranslation } from 'react-i18next';
+import { loginUser, fetchWalletData, checkIfHasWallet } from '../../services/api';
 import { useAppContext } from '../../state';
+import { ActionType } from '../../types/enum';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('window');
 
 const Login: React.FC = () => {
   const { state, dispatch } = useAppContext();
+  const { userId, accessToken } = state;
+
+  useEffect(() => {
+    console.log(state.assets)
+    console.log("userId::",state.userId)
+    // dispatch({ type: ActionType.SET_BALANCE, payload: 32 })
+  }, [])
+
   const { t } = useTranslation(['login']);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [email, setEmail] = useState<string>('');
@@ -59,50 +70,122 @@ const Login: React.FC = () => {
     return re.test(String(email).toLowerCase());
   };
 
+  // const handleLogin = async () => {
+  //   if (!validateEmail(email)) {
+  //     setError(t("login:errorInvalidEmail"));
+  //     return;
+  //   }
+
+  //   if (!password) {
+  //     setError(t("login:errorEnterPassword"));
+  //     return;
+  //   }
+
+  //   setLoading(true);
+  //   setError('');
+  //   try {
+  //     const response = await fetch(`${API_URL}/v1/auth/login`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ email, password }),
+  //     });
+
+  //     setLoading(false);
+
+  //     if (response.ok) {
+  //       const loginData: AuthResponse = await response.json();
+  //       const { token, user } = loginData;
+  //       const { user_id } = user;
+  //       await login(token, user_id);
+  //       // await registerFCMToken(token);
+  //       navigation.navigate('Home');
+  //       console.log('Log In Sucess');
+  //     } else {
+  //       const errorData = await response.json();
+  //       setError(errorData.message || 'Login failed');
+  //     }
+  //   } catch (error) {
+  //     setLoading(false);
+  //     setError('An error occurred. Please try again.');
+  //     console.error(error);
+  //   }
+  // };
+
+
+
+
+  // Google Login
+  
   const handleLogin = async () => {
+    // Validate email
     if (!validateEmail(email)) {
       setError(t("login:errorInvalidEmail"));
       return;
     }
-
+  
+    // Validate password
     if (!password) {
       setError(t("login:errorEnterPassword"));
       return;
     }
-
-    setLoading(true);
-    setError('');
+  
+    setLoading(true);  // Start loading state
+    setError('');      // Reset error message
+  
     try {
-      const response = await fetch(`${API_URL}/v1/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
+      // Step 1: Call the login API
+      const loginData = await loginUser(email, password);
+      const { token, user } = loginData;
+      const { user_id } = user; // Extract user ID
+  
+      // Store token and user ID in AsyncStorage
+      await AsyncStorage.setItem('userToken', JSON.stringify({ token, userId: user_id }));
+  
+      // Dispatch actions to update the global state
+      dispatch({ type: ActionType.SET_ACCESS_TOKEN, payload: token.accessToken });
+      dispatch({ type: ActionType.SET_USER_ID, payload: user_id });
+      dispatch({ type: ActionType.SET_LOGGED_IN });
+  
+      // // Step 2: Check if the user has a wallet
+      // try {
+      //   const accountData = await checkIfHasWallet(user_id, token.accessToken);
+      //   console.log("Account Data:", accountData);
+  
+      //   // If account data is available, set hasWallet to true and navigate to the Wallet screen
+      //   if (accountData && accountData.accounts?.length > 0) {
+      //     dispatch({ type: ActionType.SET_HAS_WALLET, payload: true });
+      //     console.log("Navigating to WalletScreen...");
+      //     // navigation.navigate('Home'); // Navigate to the Wallet screen
+      //   } else {
+      //     // If no wallet data is found, navigate to Wallet Creation
+      //     dispatch({ type: ActionType.SET_HAS_WALLET, payload: false });
+      //     console.log("Navigating to WalletCreation...");
+      //     navigation.navigate('WalletCreation'); // Navigate to Wallet Creation screen
+      //   }
+      // } catch (walletError) {
+      //   console.log("No wallet found. Navigating to wallet creation.");
+      //   dispatch({ type: ActionType.SET_HAS_WALLET, payload: false });
+      //   navigation.navigate('WalletCreation'); // Navigate to Wallet Creation screen if no wallet is found
+      // }
+      
+      navigation.navigate('Home'); 
       setLoading(false);
-
-      if (response.ok) {
-        const loginData: AuthResponse = await response.json();
-        const { token, user } = loginData;
-        const { user_id } = user;
-        await login(token, user_id);
-        // await registerFCMToken(token);
-        navigation.navigate('Home');
-        console.log('Log In Sucess');
-      } else {
-        const errorData = await response.json();
-        setError(errorData.message || 'Login failed');
-      }
+      console.log('Log In Success');
     } catch (error) {
-      setLoading(false);
       setError('An error occurred. Please try again.');
-      console.error(error);
+      console.error('Login error:', error);
+      setLoading(false);
     }
   };
+  
 
-  // Google Login
+  useEffect(() => {
+    console.log("Updated userID: ", userId);
+    console.log("Updated accessToken: ", accessToken);
+  }, [userId, accessToken]);
+  
   async function onGoogleButtonPress() {
     try {
       await GoogleSignin.signOut();
@@ -122,7 +205,13 @@ const Login: React.FC = () => {
         const data: AuthResponse = await response.json();
         const { token, user } = data;
         const { user_id } = user;
-        await login(token, user_id);
+        // await login(token, user_id);
+        await AsyncStorage.setItem('userToken', JSON.stringify({ token, userId: user_id }));
+        dispatch({ type: ActionType.SET_ACCESS_TOKEN, payload: token });
+        dispatch({ type: ActionType.SET_USER_ID, payload: user_id });
+        dispatch({ type: ActionType.SET_LOGGED_IN}); 
+
+
         navigation.navigate('Home');
       } else {
         const errorData = await response.json();
@@ -168,7 +257,8 @@ const Login: React.FC = () => {
          const data: AuthResponse = await response.json();
          const { token, user } = data;
          const { user_id } = user;
-         await login(token, user_id);
+        //  await login(token, user_id);
+        await AsyncStorage.setItem('userToken', JSON.stringify({ token, userId: user_id }));
         //  await registerFCMToken(token);
          navigation.navigate('Home');
       } else {
@@ -197,7 +287,7 @@ const Login: React.FC = () => {
             style={styles.imageStyle}
           />
         </View>
-        <Text>{JSON.stringify(state)}</Text>
+        {/* <Text>{JSON.stringify(state)}</Text> */}
         <View style={[styles.container, {backgroundColor: theme.primaryBGColor}]}>
           <View style={styles.wFull}>
             <Text style={[styles.loginContinueTxt, {color: theme.textColor}]}>{t('login:login')}</Text>

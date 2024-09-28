@@ -31,6 +31,10 @@ import { useTranslation } from 'react-i18next';
 import EmptyState from '../components/ui/EmptyState';
 import NoWalletFoundImageDark from '../../assets/images/emptyState/NoWalletFound.png';
 import NoWalletFoundImageLight from '../../assets/images/emptyState/NoWalletFoundLight.png';
+// import useStateAndDispatch from '../hooks/useStateAndDispatch'
+import { useAppContext } from '../state';
+import { ActionType } from '../types/enum';
+import { checkIfHasWallet } from '../services/api';
 
 const { height } = Dimensions.get('window');
 
@@ -44,12 +48,19 @@ const WalletScreen: React.FC = () => {
   /**
    * STORE VALUES TO IT'S DESIGNATED STATE
    */
-  const { token, userId, setAccountAddress, setBalance, balance, loggedIn } = useAuth();
+  const { token, setAccountAddress, setBalance,  } = useAuth();
   const [activeTab, setActiveTab] = useState<string>(t("wallet:assets"));
-  const tabs =  [t("wallet:assets"), t("wallet:transactions")]
+  // const tabs =  [t("wallet:assets"), t("wallet:transactions")]
+  const tabs = ['assets', 'transactions'];
   const [refreshing, setRefreshing] = useState(false);
   const [hasWallet, setHasWallet] = useState<boolean>(true);
   const { theme, isDarkMode } = useTheme();
+  // const { dispatch, state } = useStateAndDispatch();
+  const { state, dispatch } = useAppContext();
+  const { userId, accessToken, loggedIn, accountAddress, balance } = state;
+
+  
+  console.log("AccessToken: ", accessToken);
 
   const onPressToken = (item: TokenData) => {
     navigation.navigate('TokenDetails', { token: item });
@@ -67,55 +78,103 @@ const WalletScreen: React.FC = () => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
 
     return () => backHandler.remove();
-  }, [isFocused]);
+  }, [isFocused]);  
+
+  // console.log( "Logged In, AccessToken, User ID",loggedIn , accessToken , userId)
+  console.log( "Account Address: ", accountAddress)
 
   const getWalletData = async () => {
     try {
-      if (!loggedIn || !token || !userId) {
+      if (!loggedIn || !accessToken || !userId) {
         throw new Error('User is not logged in or no user token/userId found');
       }
 
-      const response = await fetch(`${API_URL}/v1/users/${userId}/accounts`, {
-        headers: {
-          Authorization: `Bearer ${token.accessToken}`,
-        },
-      });
-
-      if (response.ok) {
-        const accountData = await response.json();
-        const accountAddress = accountData.accounts[0]?.account_address;
-
-        if (!accountAddress) {
-          throw new Error('No account address found.');
+      const accountData = await checkIfHasWallet(userId, accessToken);
+        console.log("Account Data:", accountData);
+  
+        // If account data is available, set hasWallet to true and navigate to the Wallet screen
+        if (accountData && accountData.accounts?.length > 0) {
+          dispatch({ type: ActionType.SET_HAS_WALLET, payload: true });
+          console.log("Navigating to WalletScreen...");
+          navigation.navigate('Home'); // Navigate to the Wallet screen
+        } else {
+          // If no wallet data is found, navigate to Wallet Creation
+          dispatch({ type: ActionType.SET_HAS_WALLET, payload: false });
+          console.log("Navigating to WalletCreation...");
+          navigation.navigate('WalletCreation'); // Navigate to Wallet Creation screen
         }
 
-        setAccountAddress(accountAddress);
-        setHasWallet(true);
+      // const response = await fetch(`${API_URL}/v1/users/${userId}/accounts`, {
+      //   headers: {
+      //     Authorization: `Bearer ${accessToken}`,
+      //   },
+      // });
+      
+      // console.log("Response: ", response)
 
-        const response2 = await fetch(`${API_URL}/v1/users/${userId}/accounts/${accountAddress}`, {
+      // if (response.ok) {
+      //   // const accountData = await response.json();
+      //   // const accountAddress = accountData.accounts[0]?.account_address;
+
+      //   // if (!accountAddress) {
+      //   //   throw new Error('No account address found.');
+      //   // }
+
+      //   // setAccountAddress(accountAddress);
+      //   setHasWallet(true);
+
+      //   const response2 = await fetch(`${API_URL}/v1/users/${userId}/accounts/${accountAddress}`, {
+      //     headers: {
+      //       Authorization: `Bearer ${accessToken}`,
+      //     },
+      //   });
+
+      //   if (response2.ok) {
+          
+      //     const walletData = await response2.json();
+      //     console.log("walletData: ", walletData)
+      //     const freeBalance = walletData?.account_assets?.[0]?.free;
+      //     if (freeBalance === undefined) {
+      //       throw new Error('Free balance not found.');
+      //     }
+
+      //     setBalance(freeBalance);
+
+      //     console.log('getWalletResponse is ok')
+      //   } else {
+      //     console.log('response2 not ok');
+      //   }
+
+      // } else {
+      //   setHasWallet(false);
+      // }
+
+        const response = await fetch(`${API_URL}/v1/users/${userId}/accounts/${accountAddress}`, {
           headers: {
-            Authorization: `Bearer ${token.accessToken}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         });
 
-        if (response2.ok) {
-          const walletData = await response2.json();
-          const freeBalance = walletData?.account_assets?.[0]?.free;
-          if (freeBalance === undefined) {
+      if (response.ok) {
+          const walletData = await response.json();
+          console.log("walletData: ", walletData)
+          dispatch({ type: ActionType.SET_BALANCE, payload: walletData?.account_assets?.[0]?.free})
+
+          if (balance === undefined) {
             throw new Error('Free balance not found.');
           }
 
-          setBalance(freeBalance);
-        } else {
-          console.log('response2 not ok');
-        }
+          setBalance(balance);
+          console.log('getWalletResponse is ok')
       } else {
-        setHasWallet(false);
-      }
+          setHasWallet(false);
+        };
+
     } catch (error) {
       setHasWallet(false);
       console.log('Error fetching wallet data:', error.message);
     }
+    console.log('USER_ID', userId)
   };
 
   useFocusEffect(
@@ -135,6 +194,8 @@ const WalletScreen: React.FC = () => {
     }
   };
 
+  // console.log("RenderTabContent: ", renderTabContent());
+
   const onRefresh = () => {
     setRefreshing(true);
     getWalletData().finally(() => setRefreshing(false));
@@ -146,7 +207,7 @@ const WalletScreen: React.FC = () => {
 
   const data = [{ key: 'content' }];
 
-  console.log(!hasWallet)
+  console.log("Hash Wallet: ", hasWallet)
   
   if (!hasWallet) {
     return (
@@ -184,7 +245,8 @@ const WalletScreen: React.FC = () => {
               />
             </>
           }
-          renderItem={() => <View>{renderTabContent()}</View>}
+          renderItem={() => <View>{renderTabContent()}</View>
+        }
           showsVerticalScrollIndicator={false}
         />
       </View>

@@ -29,7 +29,7 @@ const registerFCMToken = async (authToken: string) => {
   try {
     await messaging().registerDeviceForRemoteMessages();
     const fcmToken = await messaging().getToken();
-    console.log(fcmToken);
+    console.log("FCM Token: ", fcmToken);
     await fetch(`${API_URL}/v1/messagings`, {
       method: 'POST',
       headers: {

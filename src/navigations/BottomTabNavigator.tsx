@@ -16,6 +16,9 @@ import messaging from '@react-native-firebase/messaging';
 import { useAuth } from '../screens/auth/AuthContext';
 // @ts-ignore
 import { API_URL } from '@env';
+import { useAppContext } from '../state';
+import { checkFCMToken } from '../services/api';
+import { ActionType } from '../types/enum';
 
 const { height } = Dimensions.get('window');
 const Tab = createBottomTabNavigator(); // Updated
@@ -51,8 +54,10 @@ const SettingsTabIcon = ({ focused }: { focused: boolean }) => {
 };
 
 const BottomTabNavigator = () => {
-  const [data, setData] = useState<any>(null);
-  const { setAccountAddress } = useAuth();
+  const { state, dispatch } = useAppContext();
+  const { accountAddress, userId, accessToken } = state;
+  // const [data, setData] = useState<any>(null);
+  // const { setAccountAddress } = useAuth();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { theme } = useTheme();
 
@@ -71,6 +76,7 @@ const BottomTabNavigator = () => {
           body: JSON.stringify({ messaging_token: fcmToken }),
         });
       }
+      console.log("FCM Token:", fcmToken)
     } catch (error) {
       console.error('Failed to register FCM token:', error);
     }
@@ -100,7 +106,7 @@ const BottomTabNavigator = () => {
 
   const checkPermissionAndRegisterToken = async (authToken: string) => {
     const hasPermission = await requestNotificationPermission();
-    console.log('Notification permission granted:', hasPermission);
+    // console.log('Notification permission granted:', hasPermission);
 
     if (hasPermission) {
       const authStatus = await messaging().requestPermission();
@@ -119,20 +125,18 @@ const BottomTabNavigator = () => {
   useEffect(() => {
     const checkWalletAndPermissions = async () => {
       try {
-        const userToken = await AsyncStorage.getItem('userToken');
-        if (!userToken) {
+        // const userToken = await AsyncStorage.getItem('userToken');
+        if (!accessToken) {
           navigation.navigate('Login');
           return;
         }
-
-        const { token, userId } = JSON.parse(userToken);
-
+        // const { token, userId } = JSON.parse(userToken);
         // Request permission only after login
-        await checkPermissionAndRegisterToken(token.accessToken);
+        await checkPermissionAndRegisterToken(accessToken);
 
         const response = await fetch(`${API_URL}/v1/users/${userId}/accounts`, {
           headers: {
-            Authorization: `Bearer ${token.accessToken}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         });
 
@@ -142,12 +146,17 @@ const BottomTabNavigator = () => {
         }
 
         const wallets = await response.json();
+        
+        // console.log("Wallet response: ",wallets)
+        // console.log("Wallet meta data count: ",wallets.metadata.count)
+        // console.log("Wallet Address: ", wallets.accounts[0].account_address)
 
         if (wallets.metadata.count === 0) {
           navigation.navigate('WalletCreation');
         } else {
-          setData(wallets);
-          setAccountAddress(wallets.accounts[0].account_address);
+          // setData(wallets);
+          // setAccountAddress(wallets.accounts[0].account_address);
+          dispatch({ type: ActionType.SET_ACCOUNT_ADDRESS, payload: wallets.accounts[0].account_address });
         }
       } catch (error) {
         console.error('Error fetching wallets:', error);
@@ -162,6 +171,7 @@ const BottomTabNavigator = () => {
     messaging().setBackgroundMessageHandler(async (remoteMessage) => {
       console.log('Message handled in the background!', remoteMessage);
     });
+    // console.log("account address: ", accountAddress)
   }, []);
 
   return (

@@ -19,23 +19,23 @@ import './src/translations'; // Ensure translations are imported
 import i18next from 'i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LANGUAGE_KEY } from './src/screens/SettingsScreen';
-import { AppStateProvider } from './src/state';
+import { AppStateProvider } from './src/state'; 
 import useStateAndDispatch from './src/hooks/useStateAndDispatch';
 import { ActionType } from './src/types/enum';
 
 const App: React.FC = () => {
   const { dispatch, state } = useStateAndDispatch();
 
-  useEffect(() => {
-    const assets = [{
-      tokenId: null,
-      tokenIcon: "",
-      balance: "323232",
-      tokenDecimal: "12",
-      tokenSymbol: "323"
-    }]
-    dispatch({ type: ActionType.SET_ASSETS, payload: assets })
-  }, [])
+  // useEffect(() => {
+  //   const assets = [{
+  //     tokenId: null,
+  //     tokenIcon: "",
+  //     balance: "0",
+  //     tokenDecimal: "12",
+  //     tokenSymbol: "323"
+  //   }]
+  //   dispatch({ type: ActionType.SET_ASSETS, payload: assets })
+  // }, [])
 
   const bottomSheetRef = useRef<BottomSheetMethods>(null);
   const bottomSheetRef2 = useRef<BottomSheetMethods>(null);
@@ -120,7 +120,9 @@ const App: React.FC = () => {
 
   return (
     <ThemeProvider>
-      <AppStateProvider state={state} dispatch={dispatch}>
+      <AppStateProvider 
+        state={state} 
+        dispatch={dispatch}>
         <SafeAreaProvider>
           <StatusBar backgroundColor={COLORS.primaryBGColor} />
           <GestureHandlerRootView style={{ flex: 1 }}>

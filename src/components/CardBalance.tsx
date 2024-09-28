@@ -23,6 +23,7 @@ import {useBottomSheet} from './BottomSheetContext';
 import { useTheme } from '../utils/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import SwapIcon from '../../assets/SVG/SwapIcon';
+import { useAppContext } from '../state';
 
 type CustomButtonProps = {
   title: string;
@@ -44,11 +45,13 @@ interface CardBalanceProps {
   balance: number;
 }
 
-const CardBalance: React.FC<CardBalanceProps> = ({balance}) => {
+const CardBalance: React.FC<CardBalanceProps> = () => {
   const { t } = useTranslation(["wallet"]);
   const {pressHandler, pressHandler2} = useBottomSheet();
   const [balanceVisible, setBalanceVisible] = useState<boolean>(true);
   const {theme} = useTheme();
+  const { state } = useAppContext();
+  const { balance } = state;
 
   const toggleBalanceVisibility = () => {
     setBalanceVisible(!balanceVisible);
@@ -69,7 +72,7 @@ const CardBalance: React.FC<CardBalanceProps> = ({balance}) => {
             </View>
             <Text style={[styles.balanceStyle, {color: theme.textColor}]}>
               $ {balanceVisible ? 
-              balance.toLocaleString() 
+              parseFloat(balance.toFixed(2))
               : '*****'}
             </Text>
           </View>

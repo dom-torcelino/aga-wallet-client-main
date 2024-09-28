@@ -18,6 +18,7 @@ import EmptyAssetLight from '../../assets/images/emptyState/NoAssetLight.png'
 import EmptyAssetDark from '../../assets/images/emptyState/NoAssetDark.png'
 import EmptyState from './ui/EmptyState';
 import { useTranslation } from 'react-i18next';
+import { useAppContext } from '../state';
 
 export interface TokenData {
   id: number;
@@ -45,15 +46,19 @@ const skeletonCount = 5;
 
 const Tokens: React.FC<TokensProps> = ({onPressToken }) => {
   const { t } = useTranslation(["wallet"])
-  const {userId, token, loggedIn, balance} = useAuth();
+  const {userId, token, loggedIn ,balance} = useAuth();
   const [tokenData, setTokenData] = useState<TokenData[]>([]);
   const [loading, setLoading] = useState(true);
   const {theme, isDarkMode} = useTheme();
+  const { state, dispatch } = useAppContext();
+  // const { loggedIn } = state;
 
   useEffect(() => { 
     let isMounted = true;
-
+    
     const fetchTokenData = async () => {
+      console.log("fetchTokenData: ", fetchTokenData); 
+      console.log("IsLoggedIn? : ", loggedIn); 
       if (loggedIn) {
         try {
           const response = await fetch(`${API_URL}/v1/assets`, {
@@ -95,15 +100,14 @@ const Tokens: React.FC<TokensProps> = ({onPressToken }) => {
       }
       
     };
-
-   
-
     fetchTokenData();
 
     return () => {
       isMounted = false;
     };
   }, [userId, token, loggedIn]);
+
+  
 
   const renderItem = ({item, index}: {item: TokenData, index: number}) => {
     if (!item.id) {
@@ -167,7 +171,51 @@ const Tokens: React.FC<TokensProps> = ({onPressToken }) => {
     <View style={styles.assetsStyles}>
       <FlatList
         data={loading ? Array(skeletonCount).fill({}) : tokenData}
-        renderItem={loading ? () => <TransactionSkeleton /> : renderItem}
+        renderItem={({ item, index }) => {
+          // Render skeletons when loading
+          if (loading) {
+            return <TransactionSkeleton />;
+          }
+  
+          // Render actual tokens when data is available
+          if (item && item.id) {
+            return (
+              <TouchableOpacity
+                style={[
+                  styles.tokenContainer,
+                  {
+                    backgroundColor: theme.secondaryBGColor,
+                    borderColor: theme.borderStroke,
+                  },
+                ]}
+                onPress={() => onPressToken(item)}
+              >
+                <View style={styles.leftSideContainer}>
+                  <View style={styles.coinContainer}>
+                    <Image source={{ uri: item.image }} style={styles.TokenImage} />
+                  </View>
+                  <View>
+                    <Text style={[styles.coin, { color: theme.textColor }]}>
+                      {item.coin}
+                    </Text>
+                    <Text style={styles.coinName}>{item.coinName}</Text>
+                  </View>
+                </View>
+                <View style={styles.rightSideContainer}>
+                  <Text style={[styles.crypto, { color: theme.textColor }]}>
+                    {index === 0 ? balance.toFixed(2) : item.crypto}
+                  </Text>
+                  <Text style={styles.fiat}>
+                    {index === 0 ? '$' + balance.toFixed(2) : '$' + item.crypto}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            );
+          }
+  
+          // Return null if no valid item exists
+          return null;
+        }}
         keyExtractor={(item, index) =>
           item.id ? item.id.toString() : index.toString()
         }

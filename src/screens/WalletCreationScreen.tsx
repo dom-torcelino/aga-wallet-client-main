@@ -25,21 +25,28 @@ import {API_URL} from '@env';
 import {useTheme} from '../utils/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from './auth/AuthContext';
+import useStateAndDispatch from '../hooks/useStateAndDispatch';
+import { ActionType } from '../types/enum';
 
 const {height} = Dimensions.get('window');
 
 const WalletCreationScreen: React.FC = () => {
   const { t } = useTranslation("createwallet"); 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+// <<<<<<< HEAD
+  // const {token, userId, setAccountAddress } = useAuth();
+// =======
   // TODO: REMOVE THIS AND useAppContext() Hook
-  const {token, setAccountAddress} = useAuth();
+  const {token, setAccountAddress, userId} = useAuth();
   
+// >>>>>>> origin/jay
   const [name, setName] = useState<string>('');
   const [account_password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const {theme} = useTheme();
+  const { dispatch, state } = useStateAndDispatch();
 
   const handleCreateWallet = async () => {
     if (account_password !== confirmPassword) {
@@ -80,7 +87,8 @@ const WalletCreationScreen: React.FC = () => {
       if (walletResponse.ok) {
         const walletData = await walletResponse.json();
         const {wallet_address} = walletData;
-        setAccountAddress(wallet_address);
+        dispatch({ type: ActionType.SET_ACCOUNT_ADDRESS, payload: wallet_address })
+        // setAccountAddress(wallet_address);
         await AsyncStorage.setItem('walletPassword', account_password); // Save the wallet password
         navigation.navigate('Home'); // Navigate to home or other screen
       } else {
