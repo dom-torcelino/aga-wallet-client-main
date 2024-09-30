@@ -21,6 +21,7 @@ import WalletAddressLoading from './ui/WalletAddressLoading';
 import {useAuth} from '../screens/auth/AuthContext';
 import {useTheme} from '../utils/ThemeContext';
 import { useTranslation } from 'react-i18next';
+import { useAppContext } from '../state';
 
 interface TransferProps {
   closeBottomSheet2: () => void;
@@ -31,7 +32,9 @@ const {width} = Dimensions.get('window');
 
 const Receive: React.FC<TransferProps> = ({closeBottomSheet2, showToast}) => {
   const { t } = useTranslation();
-  const {accountAddress} = useAuth();
+  // const {accountAddress} = useAuth();
+  const {state, dispatch} = useAppContext();
+  const { accountAddress } = state;
   const SIZE = width * 0.5;
   const {theme} = useTheme();
   const copyToClipboard = () => {

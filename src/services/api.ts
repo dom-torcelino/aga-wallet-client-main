@@ -60,7 +60,7 @@ export const loginUser = async (email: string, password: string) => {
         },
       });
   
-      console.log("Response:", response);
+      // console.log("Response:", response);
   
       if (!response.ok) {
         // If the response is not OK, it means there was an issue fetching the wallet data

@@ -55,6 +55,7 @@ const Login: React.FC = () => {
   const [error, setError] = useState<string>('');
   const { login } = useAuth();
   const {isDarkMode, theme} = useTheme();
+  const { hasWallet } = state;
 
   useEffect(() => {
     Settings.initializeSDK();
@@ -69,6 +70,11 @@ const Login: React.FC = () => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
   };
+
+
+  // const saveWalletState = async (hasWallet: boolean) => {
+  //   await AsyncStorage.setItem('hasWallet', JSON.stringify(hasWallet));
+  // };
 
   // const handleLogin = async () => {
   //   if (!validateEmail(email)) {
@@ -119,60 +125,44 @@ const Login: React.FC = () => {
   // Google Login
   
   const handleLogin = async () => {
-    // Validate email
     if (!validateEmail(email)) {
-      setError(t("login:errorInvalidEmail"));
+      setError(t('login:errorInvalidEmail'));
       return;
     }
-  
-    // Validate password
+
     if (!password) {
-      setError(t("login:errorEnterPassword"));
+      setError(t('login:errorEnterPassword'));
       return;
     }
-  
-    setLoading(true);  // Start loading state
-    setError('');      // Reset error message
-  
+
+    setLoading(true);
+    setError('');
+
     try {
-      // Step 1: Call the login API
       const loginData = await loginUser(email, password);
       const { token, user } = loginData;
-      const { user_id } = user; // Extract user ID
-  
-      // Store token and user ID in AsyncStorage
+      const { user_id } = user;
+
       await AsyncStorage.setItem('userToken', JSON.stringify({ token, userId: user_id }));
-  
-      // Dispatch actions to update the global state
+
       dispatch({ type: ActionType.SET_ACCESS_TOKEN, payload: token.accessToken });
       dispatch({ type: ActionType.SET_USER_ID, payload: user_id });
       dispatch({ type: ActionType.SET_LOGGED_IN });
-  
-      // // Step 2: Check if the user has a wallet
-      // try {
-      //   const accountData = await checkIfHasWallet(user_id, token.accessToken);
-      //   console.log("Account Data:", accountData);
-  
-      //   // If account data is available, set hasWallet to true and navigate to the Wallet screen
-      //   if (accountData && accountData.accounts?.length > 0) {
-      //     dispatch({ type: ActionType.SET_HAS_WALLET, payload: true });
-      //     console.log("Navigating to WalletScreen...");
-      //     // navigation.navigate('Home'); // Navigate to the Wallet screen
-      //   } else {
-      //     // If no wallet data is found, navigate to Wallet Creation
-      //     dispatch({ type: ActionType.SET_HAS_WALLET, payload: false });
-      //     console.log("Navigating to WalletCreation...");
-      //     navigation.navigate('WalletCreation'); // Navigate to Wallet Creation screen
-      //   }
-      // } catch (walletError) {
-      //   console.log("No wallet found. Navigating to wallet creation.");
-      //   dispatch({ type: ActionType.SET_HAS_WALLET, payload: false });
-      //   navigation.navigate('WalletCreation'); // Navigate to Wallet Creation screen if no wallet is found
-      // }
-      
-      navigation.navigate('Home'); 
+
+      const accountData = await checkIfHasWallet(user_id, token.accessToken);
+
+      if (accountData && accountData.accounts?.length > 0) {
+        dispatch({ type: ActionType.SET_HAS_WALLET, payload: true });
+        console.log(hasWallet);
+        // saveWalletState(true);
+        navigation.navigate('Home');
+      } else {
+        dispatch({ type: ActionType.SET_HAS_WALLET, payload: false });
+        // saveWalletState(false);
+        console.log(hasWallet);
+        navigation.navigate('WalletCreation');
+      }
       setLoading(false);
-      console.log('Log In Success');
     } catch (error) {
       setError('An error occurred. Please try again.');
       console.error('Login error:', error);

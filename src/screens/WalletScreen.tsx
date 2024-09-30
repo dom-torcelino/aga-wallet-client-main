@@ -3,14 +3,11 @@ import {
   View,
   FlatList,
   RefreshControl,
-  Text,
-  TouchableOpacity,
-  Image,
   BackHandler,
   Dimensions,
 } from 'react-native';
 import React, { useState, useEffect, useCallback } from 'react';
-import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../constants/theme';
+import { COLORS, SPACING } from '../constants/theme';
 import HeaderBar from '../components/HeaderBar';
 import CardBalance from '../components/CardBalance';
 import Tabs from '../components/Tabs';
@@ -35,6 +32,7 @@ import NoWalletFoundImageLight from '../../assets/images/emptyState/NoWalletFoun
 import { useAppContext } from '../state';
 import { ActionType } from '../types/enum';
 import { checkIfHasWallet } from '../services/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { height } = Dimensions.get('window');
 
@@ -53,14 +51,14 @@ const WalletScreen: React.FC = () => {
   // const tabs =  [t("wallet:assets"), t("wallet:transactions")]
   const tabs = ['assets', 'transactions'];
   const [refreshing, setRefreshing] = useState(false);
-  const [hasWallet, setHasWallet] = useState<boolean>(true);
+  // const [hasWallet, setHasWallet] = useState<boolean>(true);
   const { theme, isDarkMode } = useTheme();
   // const { dispatch, state } = useStateAndDispatch();
   const { state, dispatch } = useAppContext();
-  const { userId, accessToken, loggedIn, accountAddress, balance } = state;
+  const { userId, accessToken, loggedIn, accountAddress, balance, hasWallet} = state;
 
   
-  console.log("AccessToken: ", accessToken);
+  // console.log("AccessToken: ", accessToken);
 
   const onPressToken = (item: TokenData) => {
     navigation.navigate('TokenDetails', { token: item });
@@ -80,8 +78,16 @@ const WalletScreen: React.FC = () => {
     return () => backHandler.remove();
   }, [isFocused]);  
 
+  // const saveWalletState = async (hasWallet: boolean) => {
+  //   await AsyncStorage.setItem('hasWallet', JSON.stringify(hasWallet));
+  // };
+
   // console.log( "Logged In, AccessToken, User ID",loggedIn , accessToken , userId)
-  console.log( "Account Address: ", accountAddress)
+  // console.log( "Account Address: ", accountAddress)
+  // console.log( "Balance: ", balance)
+  // console.log( "loggedIn: ", loggedIn)
+  // console.log( "accessToken: ", accessToken)
+  // console.log( "userId: ", userId)
 
   const getWalletData = async () => {
     try {
@@ -95,6 +101,7 @@ const WalletScreen: React.FC = () => {
         // If account data is available, set hasWallet to true and navigate to the Wallet screen
         if (accountData && accountData.accounts?.length > 0) {
           dispatch({ type: ActionType.SET_HAS_WALLET, payload: true });
+          // saveWalletState(true);
           console.log("Navigating to WalletScreen...");
           navigation.navigate('Home'); // Navigate to the Wallet screen
         } else {
@@ -102,6 +109,7 @@ const WalletScreen: React.FC = () => {
           dispatch({ type: ActionType.SET_HAS_WALLET, payload: false });
           console.log("Navigating to WalletCreation...");
           navigation.navigate('WalletCreation'); // Navigate to Wallet Creation screen
+          // saveWalletState(false);
         }
 
       // const response = await fetch(`${API_URL}/v1/users/${userId}/accounts`, {
@@ -155,9 +163,10 @@ const WalletScreen: React.FC = () => {
           },
         });
 
+
       if (response.ok) {
           const walletData = await response.json();
-          console.log("walletData: ", walletData)
+          // console.log("walletData: ", walletData)
           dispatch({ type: ActionType.SET_BALANCE, payload: walletData?.account_assets?.[0]?.free})
 
           if (balance === undefined) {
@@ -166,12 +175,16 @@ const WalletScreen: React.FC = () => {
 
           setBalance(balance);
           console.log('getWalletResponse is ok')
+          // setHasWallet(true);
+          dispatch({ type: ActionType.SET_HAS_WALLET, payload: true });
       } else {
-          setHasWallet(false);
+          // setHasWallet(false);
+          dispatch({ type: ActionType.SET_HAS_WALLET, payload: false });
         };
 
     } catch (error) {
-      setHasWallet(false);
+      // setHasWallet(false);
+      dispatch({ type: ActionType.SET_HAS_WALLET, payload: false });
       console.log('Error fetching wallet data:', error.message);
     }
     console.log('USER_ID', userId)
