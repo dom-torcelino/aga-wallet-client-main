@@ -11,6 +11,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import Tokens, { TokenData } from '../components/Tokens';
+import DefaultCoin from '../../assets/images/aga_coin.png'
 
 type TokenDetailsRouteProp = RouteProp<RootStackParamList, 'TokenDetails'>;
 
@@ -51,12 +52,13 @@ const TokenDetails: React.FC = () => {
           backgroundColor: theme.layeBGColor,
         },
       ]}>
-          <Image
+          {/* <Image
             source={
               typeof token.image === 'string' ? { uri: token.image } : token.image
             }
             style={styles.image}
-          />
+          /> */}
+          <Image source={DefaultCoin} style={styles.image} />
         </View>
 
         <Text style={[styles.fiat, {color: theme.textColor}]}>${balance.toLocaleString()}</Text>
