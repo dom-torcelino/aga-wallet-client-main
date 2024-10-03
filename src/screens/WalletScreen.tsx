@@ -141,7 +141,7 @@ const WalletScreen: React.FC = () => {
 
   const data = [{ key: 'content' }];
 
-  console.log(!hasWallet)
+  console.log("has Wallet:", hasWallet)
   
   if (!hasWallet) {
     return (

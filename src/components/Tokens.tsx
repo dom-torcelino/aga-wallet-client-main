@@ -2,80 +2,86 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   FlatList,
   TouchableOpacity,
   Dimensions,
+  Image,
 } from 'react-native';
-import React, {useEffect, useMemo, useState} from 'react';
-import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../constants/theme';
-import {useAuth} from '../screens/auth/AuthContext';
+import React, { useEffect, useState } from 'react';
+import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../constants/theme';
+import { useAuth } from '../screens/auth/AuthContext';
 import TransactionSkeleton from './ui/TransactionSkeleton'; // Import the skeleton loader component
 // @ts-ignore
-import {API_URL} from '@env';
-import {useTheme} from '../utils/ThemeContext';
-import EmptyAssetLight from '../../assets/images/emptyState/NoAssetLight.png'
-import EmptyAssetDark from '../../assets/images/emptyState/NoAssetDark.png'
+import { API_URL } from '@env';
+import { useTheme } from '../utils/ThemeContext';
+import EmptyAssetLight from '../../assets/images/emptyState/NoAssetLight.png';
+import EmptyAssetDark from '../../assets/images/emptyState/NoAssetDark.png';
 import EmptyState from './ui/EmptyState';
 import { useTranslation } from 'react-i18next';
+import DefaultCoin from '../../assets/images/aga_coin.png'
+
 
 export interface TokenData {
-  id: number;
+  id: string | null;
   coin: string;
   coinName: string;
-  image: string;
   crypto: string;
   fiat: string;
-}
-
-
-export interface Asset {
-  tokenSymbol: string,
-  walletAddress: string,
-  balance: number
 }
 
 interface TokensProps {
   onPressToken: (item: TokenData) => void;
 }
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 const IMAGE_SIZE = width * 0.11;
 const skeletonCount = 5;
 
-const Tokens: React.FC<TokensProps> = ({onPressToken }) => {
-  const { t } = useTranslation(["wallet"])
-  const {userId, token, loggedIn, balance} = useAuth();
+const Tokens: React.FC<TokensProps> = ({ onPressToken }) => {
+  const { t } = useTranslation(['wallet']);
+  const { token, loggedIn, balance, accountAddress } = useAuth();
   const [tokenData, setTokenData] = useState<TokenData[]>([]);
   const [loading, setLoading] = useState(true);
-  const {theme, isDarkMode} = useTheme();
+  const { theme, isDarkMode } = useTheme();
 
-  useEffect(() => { 
+  useEffect(() => {
     let isMounted = true;
 
     const fetchTokenData = async () => {
       if (loggedIn) {
         try {
-          const response = await fetch(`${API_URL}/v1/assets`, {
+          const response = await fetch(`${API_URL}/v1/aga/accounts/${accountAddress}/assets`, {
             method: 'GET',
             headers: {
               Authorization: `Bearer ${token?.accessToken}`,
             },
           });
+          
+          if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Error in API response:', errorData.message);
+            return;
+          }
+
           const result = await response.json();
+          console.log('result: ', result.assets);
 
           if (isMounted) {
-            if (result && result.assets) {
+            if (result.assets) {
               const transformedData = result.assets
-                .map((asset: any) => ({
-                  id: asset.asset_id,
-                  coin: asset.asset_symbol,
-                  coinName: asset.asset_name,
-                  image: asset.asset_icon,
-                  crypto: '0',
-                  fiat: '0',
-                }))
-                .filter((item: any) => item.id !== undefined); // Filter out items without an id
+                .map((asset: any) => {
+                  const balanceWithDecimals = parseFloat(
+                    asset.balance.replace(/,/g, '')
+                  ) / Math.pow(10, asset.decimals || 1);
+                  return {
+                    id: asset.id || null,
+                    coin: asset.symbol || '',
+                    coinName: asset.symbol, // Default coinName to symbol if name is missing
+                    crypto: balanceWithDecimals.toFixed(2),
+                    fiat: '0', // Placeholder for fiat conversion
+                  };
+                })
+                .filter((item: TokenData) => item.coin && item.crypto !== '0.00'); // Filter out tokens with no symbol or zero balance
 
               setTokenData(transformedData);
             } else {
@@ -93,84 +99,70 @@ const Tokens: React.FC<TokensProps> = ({onPressToken }) => {
           }
         }
       }
-      
     };
-
-   
-
     fetchTokenData();
 
     return () => {
       isMounted = false;
     };
-  }, [userId, token, loggedIn]);
+  }, [accountAddress, loggedIn, token]);
 
-  const renderItem = ({item, index}: {item: TokenData, index: number}) => {
-    if (!item.id) {
-      return null;
-    }
-
-    if (item.id === 1) {
-      return (
-        <TouchableOpacity
-          style={[
-            styles.tokenContainer,
-            {
-              backgroundColor: theme.secondaryBGColor,
-              borderColor: theme.borderStroke,
-            },
-          ]}
-          onPress={() => onPressToken(item)}>
-          <View style={styles.leftSideContainer}>
-            <View style={styles.coinContainer}>
-              <Image source={{uri: item.image}} style={styles.TokenImage} />
-            </View>
-            <View>
-              <Text style={[styles.coin, {color: theme.textColor}]}>
-                {item.coin}
-              </Text>
-              <Text style={styles.coinName}>{item.coinName}</Text>
-            </View>
+  const renderItem = ({ item, index }: { item: TokenData; index: number }) => {
+    return (
+      <TouchableOpacity
+        style={[
+          styles.tokenContainer,
+          {
+            backgroundColor: theme.secondaryBGColor,
+            borderColor: theme.borderStroke,
+          },
+        ]}
+        onPress={() => onPressToken(item)}
+      >
+        <View style={styles.leftSideContainer}>
+          <View style={styles.coinContainer}>
+            {/* Image could be added here if available */}
+            {/* <Image source={{ uri: item.image }} style={styles.tokenImage} /> */}
+            <Image source={DefaultCoin} style={styles.tokenImage} />
           </View>
-          <View style={styles.rightSideContainer}>
-            <Text style={[styles.crypto, {color: theme.textColor}]}>
-              {/* {item.crypto} */}
-              {index === 0 ? balance.toFixed(2) : item.crypto}
+          <View>
+            <Text style={[styles.coin, { color: theme.textColor }]}>
+              {item.coin}
             </Text>
-            {/* <Text style={styles.fiat}>(${item.fiat})</Text> */}
-            <Text style={styles.fiat}>
-            {index === 0 ? '$' + balance.toFixed(2) : '$' + item.crypto}
-              {/* ${balance.toFixed(2)} */}
-              </Text>
+            <Text style={styles.coinName}>{item.coinName}</Text>
           </View>
-        </TouchableOpacity>
-      );
-    }
-
-   
+        </View>
+        <View style={styles.rightSideContainer}>
+          <Text style={[styles.crypto, { color: theme.textColor }]}>
+            {index === 0 ? balance.toFixed(2) : item.crypto}
+          </Text>
+          <Text style={styles.fiat}>
+            ${index === 0 ? balance.toFixed(2) : item.crypto}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    );
   };
 
   const renderEmptyState = () => {
-    return ( 
+    return (
       <View style={styles.emptyContainer}>
         <EmptyState
-        image={isDarkMode ? EmptyAssetDark : EmptyAssetLight}
-        headerText={t('wallet:emptyAssets')}
-        bodyText={t('wallet:emptyAssetsDescription')}
-        theme={theme}
-      />
+          image={isDarkMode ? EmptyAssetDark : EmptyAssetLight}
+          headerText={t('wallet:emptyAssets')}
+          bodyText={t('wallet:emptyAssetsDescription')}
+          theme={theme}
+        />
       </View>
-    )
-  }
+    );
+  };
 
   return (
     <View style={styles.assetsStyles}>
       <FlatList
         data={loading ? Array(skeletonCount).fill({}) : tokenData}
         renderItem={loading ? () => <TransactionSkeleton /> : renderItem}
-        keyExtractor={(item, index) =>
-          item.id ? item.id.toString() : index.toString()
-        }
+        keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
         scrollEnabled={false}
         ListEmptyComponent={!loading && tokenData.length === 0 ? renderEmptyState : null}
       />
@@ -182,11 +174,6 @@ const styles = StyleSheet.create({
   assetsStyles: {
     marginBottom: 20,
     flex: 1,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   tokenContainer: {
     flexDirection: 'row',
@@ -203,14 +190,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  coinContainer: {
-    marginRight: 10,
-    borderRadius: 20,
-  },
-  TokenImage: {
+  tokenImage: {
     width: IMAGE_SIZE,
     height: IMAGE_SIZE,
     borderRadius: IMAGE_SIZE / 2,
+  },
+  coinContainer: {
+    marginRight: 10,
+    borderRadius: 20,
   },
   coin: {
     fontSize: FONTSIZE.size_18,
